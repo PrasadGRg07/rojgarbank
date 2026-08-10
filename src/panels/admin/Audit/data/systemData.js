@@ -1,0 +1,61 @@
+export const systemLogs = [
+  {
+    id: 4001,
+    user: "System",
+    event: "Server Restarted",
+    module: "Server",
+    service: "API Service",
+    ip: "127.0.0.1",
+    device: "Production Server",
+    time: "30 Jul 2026 • 12:10 PM",
+    status: "Success",
+  },
+
+  {
+    id: 4002,
+    user: "System",
+    event: "Database Backup Failed",
+    module: "Database",
+    service: "Backup Service",
+    ip: "127.0.0.1",
+    device: "Database Server",
+    time: "30 Jul 2026 • 11:30 AM",
+    status: "Critical",
+  },
+
+  {
+    id: 4003,
+    user: "Developer",
+    event: "API Configuration Updated",
+    module: "API",
+    service: "Backend Service",
+    ip: "192.168.1.15",
+    device: "Development Machine",
+    time: "30 Jul 2026 • 10:20 AM",
+    status: "Success",
+  },
+
+  {
+    id: 4004,
+    user: "System",
+    event: "High CPU Usage Detected",
+    module: "Monitoring",
+    service: "Resource Monitor",
+    ip: "127.0.0.1",
+    device: "Production Server",
+    time: "29 Jul 2026 • 09:45 PM",
+    status: "Warning",
+  },
+
+  {
+    id: 4005,
+    user: "System",
+    event: "API Request Timeout",
+    module: "API",
+    service: "Gateway",
+    ip: "127.0.0.1",
+    device: "Load Balancer",
+    time: "29 Jul 2026 • 08:15 PM",
+    status: "Failed",
+  },
+];
