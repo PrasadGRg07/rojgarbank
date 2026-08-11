@@ -14,7 +14,7 @@ export default function EventList() {
         title="Events" 
         subtitle="Manage all events" 
         buttonText="Create Event"
-        buttonLink="/admin/events/create"
+        buttonLink="/admin/dashboard/events/create"
       />
       <EventStatistics />
 
