@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Bell, MessageSquare, Search } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-
-export default function Header({ user }) {
+import JobseekerAccountMenu from "./AccountMenu";
+export default function Header({ user, onMenuClick, onLogout, notificationCount = 0 }) {
   const navigate = useNavigate();
   const [search, setSearch] = useState("");
 
@@ -12,7 +12,6 @@ export default function Header({ user }) {
     console.log("First Name:", user?.first_name);
     console.log("Last Name:", user?.last_name);
     console.log("Username:", user?.username);
-
   }, [user]);
 
   const handleSearch = (e) => {
@@ -26,13 +25,13 @@ export default function Header({ user }) {
       {/* Left */}
       <div>
         <h1 className="text-2xl font-bold text-gray-800">
-              Welcome back,
-              <span className="ml-1 font-semibold">
-                {user?.first_name
-                  ? `${user.first_name}${user.last_name ? " " + user.last_name : ""}`
-                  : user?.name || user?.username || user?.email || "Guest"}{" "}
-              </span>
-            </h1>
+          Welcome back,
+          <span className="ml-1 font-semibold">
+            {user?.first_name
+              ? `${user.first_name}${user.last_name ? " " + user.last_name : ""}`
+              : user?.name || user?.username || user?.email || "Guest"}{" "}
+          </span>
+        </h1>
 
         <p className="text-sm text-gray-500">
           Find your next opportunity today.
@@ -43,10 +42,7 @@ export default function Header({ user }) {
       <div className="flex items-center gap-5">
         {/* Search */}
         <div className="relative hidden md:block">
-          <Search
-            className="absolute left-3 top-3 text-gray-400"
-            size={18}
-          />
+          <Search className="absolute left-3 top-3 text-gray-400" size={18} />
 
           <input
             type="text"
@@ -60,11 +56,12 @@ export default function Header({ user }) {
 
         {/* Messages */}
         <button
-          onClick={() => navigate("/jobseeker/dashboard/message/inbox")}
+          onClick={() =>
+            navigate("/jobseeker/dashboard/messages/inbox")
+          }
           className="rounded-full bg-gray-100 p-3 hover:bg-gray-200"
         >
           <MessageSquare size={20} />
-
         </button>
         {/* Notifications */}
         <button
@@ -74,41 +71,11 @@ export default function Header({ user }) {
           <Bell size={20} />
           <span className="absolute right-2 top-2 h-2 w-2 rounded-full bg-red-500"></span>
         </button>
+        {/* Account Menu */}
+        <JobseekerAccountMenu user={user} onLogout={onLogout} />
 
-        {/* User Profile */}
-        <div className="flex items-center gap-3">
-
-          <img
-            src={
-              user?.profile_picture ||
-              user?.profile ||
-              `https://ui-avatars.com/api/?name=${
-                user?.first_name || user?.name || user?.username || user?.email || "Guest"
-              }+${user?.last_name || ""}&background=06b6d4&color=fff`
-            }
-            alt="Profile"
-            className="h-10 w-10 rounded-full object-cover"
-          />
-
-
-          <div className="hidden md:block">
-
-            <h4 className="font-semibold text-gray-700">
-              {user?.first_name
-                ? `${user.first_name}${user.last_name ? " " + user.last_name : ""}`
-                : user?.name || user?.username || user?.email || "Guest"}
-            </h4>
-
-            <p className="text-xs text-gray-500">
-              Job Seeker
-            </p>
-
-          </div>
-
-        </div>
-
+       
       </div>
-
     </header>
   );
 }

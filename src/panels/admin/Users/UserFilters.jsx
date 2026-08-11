@@ -27,43 +27,8 @@ className="border rounded-lg px-4 py-2 flex-1 min-w-[250px]"
 
 
 
-<select
-
-value={filters.role}
-
-onChange={(e)=>
-setFilters({
-...filters,
-role:e.target.value
-})
-}
-
-className="border rounded-lg px-4 py-2"
-
->
-
-<option value="">
-All Roles
-</option>
-
-<option value="jobseeker">
-Job Seeker
-</option>
-
-<option value="employee">
-Employee
-</option>
-
-<option value="admin">
-Admin
-</option>
-
-<option value="superadmin">
-Super Admin
-</option>
 
 
-</select>
 
 
 

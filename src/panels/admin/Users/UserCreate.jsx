@@ -11,15 +11,15 @@ export default function UserCreate() {
 
   const [saving, setSaving] = useState(false);
 
+  const [error, setError] = useState("");
+
   const [formData, setFormData] = useState({
     username: "",
     password: "",
     first_name: "",
     last_name: "",
     email: "",
-    role: "employee",
-    company: "",
-    employee_id: "",
+    role: "jobseeker",
     is_active: true,
   });
 
@@ -34,6 +34,7 @@ export default function UserCreate() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
 
     try {
       setSaving(true);
@@ -45,7 +46,14 @@ export default function UserCreate() {
       navigate("/admin/dashboard/users");
     } catch (err) {
       console.error(err);
-      alert("Failed to create user.");
+      const serverMsg =
+        err?.response?.data?.detail ||
+        err?.response?.data?.username?.[0] ||
+        err?.response?.data?.email?.[0] ||
+        err?.response?.data?.password?.[0] ||
+        JSON.stringify(err?.response?.data) ||
+        "Failed to create user.";
+      setError(serverMsg);
     } finally {
       setSaving(false);
     }
@@ -161,37 +169,8 @@ export default function UserCreate() {
               onChange={handleChange}
               className="w-full border rounded-lg p-3"
             >
-              <option value="employee">Employee</option>
               <option value="jobseeker">Job Seeker</option>
-              <option value="admin">Admin</option>
-              <option value="superadmin">Super Admin</option>
             </select>
-          </div>
-
-          <div>
-            <label className="block mb-2 font-medium">
-              Company
-            </label>
-
-            <input
-              name="company"
-              value={formData.company}
-              onChange={handleChange}
-              className="w-full border rounded-lg p-3"
-            />
-          </div>
-
-          <div>
-            <label className="block mb-2 font-medium">
-              Employee ID
-            </label>
-
-            <input
-              name="employee_id"
-              value={formData.employee_id}
-              onChange={handleChange}
-              className="w-full border rounded-lg p-3"
-            />
           </div>
 
         </div>
@@ -205,6 +184,12 @@ export default function UserCreate() {
           />
           Active User
         </label>
+
+        {error && (
+          <div className="bg-red-50 border border-red-200 text-red-700 rounded-lg px-4 py-3 text-sm">
+            {error}
+          </div>
+        )}
 
         <div className="flex gap-3">
 

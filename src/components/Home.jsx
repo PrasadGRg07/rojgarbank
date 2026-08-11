@@ -1,7 +1,7 @@
 import React from 'react'
 import Navbar from './Navbar'
 import Header from './Header'
-import Latestjobs from './Latestjobs'
+import LatestJobs from './LatestJobs'
 import Footer from './Footer'
 import Topemployers from './Topemployers'
 import Whyus from './Whyus'
@@ -16,7 +16,7 @@ const Home = () => {
       <Navbar> </Navbar>
       <Header />
       <Topemployers/>
-      <Latestjobs/>
+      <LatestJobs/>
       <Whyus/>
       <FeaturesSection/>
       <CTABanner/>

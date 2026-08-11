@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Upload, FileText, Download, Trash2, RefreshCw } from "lucide-react";
+import { Upload, FileText, Download, Trash2, RefreshCw, Eye, X } from "lucide-react";
 import { getResume, uploadResume, deleteResume } from "../../../lib/jobseekerApi";
 
 export default function Resume() {
@@ -7,6 +7,7 @@ export default function Resume() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [msg, setMsg] = useState({ text: "", type: "" });
+  const [showPreview, setShowPreview] = useState(false);
 
   useEffect(() => {
     fetchResume();
@@ -109,15 +110,25 @@ export default function Resume() {
 
             <div className="flex flex-wrap gap-4 mt-8">
               {resume.file_url && (
-                <a
-                  href={resume.file_url}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="flex items-center gap-2 rounded-xl bg-cyan-600 px-5 py-3 text-white hover:bg-cyan-700 transition"
-                >
-                  <Download size={18} />
-                  Download
-                </a>
+                <>
+                  <button
+                    onClick={() => setShowPreview(true)}
+                    className="flex items-center gap-2 rounded-xl bg-blue-600 px-5 py-3 text-white hover:bg-blue-700 transition shadow-sm"
+                  >
+                    <Eye size={18} />
+                    Preview
+                  </button>
+
+                  <a
+                    href={resume.file_url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="flex items-center gap-2 rounded-xl bg-cyan-600 px-5 py-3 text-white hover:bg-cyan-700 transition shadow-sm"
+                  >
+                    <Download size={18} />
+                    Download
+                  </a>
+                </>
               )}
 
               <label className="flex items-center gap-2 rounded-xl border px-5 py-3 cursor-pointer hover:bg-gray-100 transition">
@@ -142,6 +153,36 @@ export default function Resume() {
           </div>
         )}
       </div>
+
+      {/* Preview Modal */}
+      {showPreview && resume?.file_url && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+          <div className="relative flex h-[85vh] w-full max-w-4xl flex-col rounded-2xl bg-white shadow-2xl overflow-hidden">
+            <div className="flex items-center justify-between border-b px-6 py-4 bg-slate-50">
+              <div className="flex items-center gap-3">
+                <FileText className="text-cyan-600" size={24} />
+                <h3 className="font-semibold text-lg text-slate-800">
+                  {resume.file_name || "Resume Preview"}
+                </h3>
+              </div>
+              <button
+                onClick={() => setShowPreview(false)}
+                className="rounded-lg p-2 text-slate-400 hover:bg-slate-200 hover:text-slate-700 transition"
+              >
+                <X size={20} />
+              </button>
+            </div>
+
+            <div className="flex-1 bg-slate-100 p-2">
+              <iframe
+                src={resume.file_url}
+                title="Resume Preview"
+                className="h-full w-full rounded-lg border-0 bg-white"
+              />
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Tips */}
       <div className="mt-8 bg-cyan-50 border border-cyan-100 rounded-2xl p-6">

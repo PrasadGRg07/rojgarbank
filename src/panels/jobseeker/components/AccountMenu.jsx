@@ -12,7 +12,6 @@ import {
   ChevronDown,
   User,
   Settings,
-  CreditCard,
   Briefcase,
   LogOut,
   Building2,
@@ -28,6 +27,7 @@ function AccountMenu({ user, onLogout }) {
   const toggleMenu = useCallback(() => {
     setOpen((prev) => !prev);
   }, []);
+  
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -51,45 +51,32 @@ function AccountMenu({ user, onLogout }) {
       );
   }, []);
 
-  const companyName =
-    user?.company_name ||
-    user?.company ||
-    user?.name ||
-    user?.username ||
-    "Your Company";
+  const userName = user?.first_name
+    ? `${user.first_name}${user.last_name ? " " + user.last_name : ""}`
+    : user?.name || user?.username || user?.email || "Jobseeker";
 
-  const role =
-    user?.role ||
-    "Employer";
+  const role = user?.role || "Jobseeker";
 
   const menuItems = [
     {
       label: "My Profile",
       icon: User,
-      path: "/employee/dashboard/my-profile"
+      path: "/jobseeker/dashboard/profile",
     },
     {
       label: "Live Jobs",
       icon: Briefcase,
-      path: "/employee/dashboard/jobs",
-    },
-    {
-      label: "Subscription",
-      icon: CreditCard,
-      path: "/employee/dashboard/subscription",
+      path: "/jobseeker/dashboard/jobs/recommended-jobs",
     },
     {
       label: "Settings",
       icon: Settings,
-      path: "/employee/dashboard/settings",
+      path: "/jobseeker/dashboard/job-settings",
     },
   ];
 
   return (
-    <div
-      className="relative"
-      ref={menuRef}
-    >
+    <div className="relative" ref={menuRef}>
       {/* Profile Button */}
 
       <button
@@ -124,32 +111,25 @@ function AccountMenu({ user, onLogout }) {
           {user?.profile_picture || user?.profile ? (
             <img
               src={user.profile_picture || user.profile}
-              alt="Company Logo"
+              alt="User Avatar"
               className="h-full w-full object-cover"
             />
           ) : (
-            <Building2
-              className="text-blue-600"
-              size={20}
-            />
+            <User className="text-blue-600" size={20} />
           )}
         </div>
 
         <div className="hidden text-left sm:block">
           <h4 className="text-sm font-semibold text-slate-800">
-            {companyName}
+            {userName}
           </h4>
 
-          <p className="text-xs text-slate-500">
-            {role}
-          </p>
+          <p className="text-xs text-slate-500">{role}</p>
         </div>
 
         <ChevronDown
           size={18}
-          className={`transition-transform ${
-            open ? "rotate-180" : ""
-          }`}
+          className={`transition-transform ${open ? "rotate-180" : ""}`}
         />
       </button>
 
@@ -179,26 +159,20 @@ function AccountMenu({ user, onLogout }) {
                 {user?.profile_picture || user?.profile ? (
                   <img
                     src={user.profile_picture || user.profile}
-                    alt="Company Logo"
+                    alt="User Profile"
                     className="h-full w-full object-cover"
                   />
                 ) : (
-                  <Building2 size={26} />
+                  <User size={26} />
                 )}
               </div>
 
               <div>
-                <h3 className="font-semibold">
-                  {companyName}
-                </h3>
+                <h3 className="font-semibold">{userName}</h3>
 
-                <p className="text-sm text-blue-100">
-                  {role}
-                </p>
+                <p className="text-sm text-blue-100">{role}</p>
 
-                <p className="text-xs text-blue-200">
-                  {user?.email}
-                </p>
+                <p className="text-xs text-blue-200">{user?.email}</p>
               </div>
             </div>
           </div>
@@ -229,10 +203,7 @@ function AccountMenu({ user, onLogout }) {
                     hover:bg-slate-100
                   "
                 >
-                  <Icon
-                    size={18}
-                    className="text-slate-600"
-                  />
+                  <Icon size={18} className="text-slate-600" />
 
                   <span className="text-sm font-medium text-slate-700">
                     {item.label}
@@ -261,9 +232,7 @@ function AccountMenu({ user, onLogout }) {
             >
               <LogOut size={18} />
 
-              <span className="font-medium">
-                Logout
-              </span>
+              <span className="font-medium">Logout</span>
             </button>
           </div>
         </div>

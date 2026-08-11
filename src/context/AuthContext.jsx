@@ -41,20 +41,20 @@ const normalizeUser = (value) => {
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(() => {
-  try {
-    const saved = localStorage.getItem("user");
+    try {
+      const saved = localStorage.getItem("user");
 
-    if (!saved || saved === "undefined") {
+      if (!saved || saved === "undefined") {
+        return null;
+      }
+
+      return normalizeUser(JSON.parse(saved));
+    } catch (error) {
+      console.error("Invalid user in localStorage:", error);
+      localStorage.removeItem("user");
       return null;
     }
-
-    return normalizeUser(JSON.parse(saved));
-  } catch (error) {
-    console.error("Invalid user in localStorage:", error);
-    localStorage.removeItem("user");
-    return null;
-  }
-});
+  });
 
   // ================= EMPLOYEE LOGIN =================
 
@@ -82,9 +82,7 @@ export function AuthProvider({ children }) {
         });
 
         const access =
-          res.data?.access ||
-          res.data?.access_token ||
-          res.data?.token?.access;
+          res.data?.access || res.data?.access_token || res.data?.token?.access;
 
         const refresh =
           res.data?.refresh ||
@@ -97,7 +95,7 @@ export function AuthProvider({ children }) {
             res.data?.data?.user ||
             res.data?.data?.employee ||
             res.data?.data ||
-            res.data
+            res.data,
         );
 
         localStorage.setItem("access", access);
@@ -137,7 +135,7 @@ export function AuthProvider({ children }) {
     return userData;
   };
 
-   // =================Super ADMIN LOGIN =================
+  // =================Super ADMIN LOGIN =================
   const superAdminLogin = async (username, password) => {
     const res = await api.post("/superadmin/login/", {
       username,
@@ -159,47 +157,41 @@ export function AuthProvider({ children }) {
   };
   // ================= JOBSEEKER LOGIN =================
 
-const jobseekerLogin = async (email, password) => {
-  try {
-    const res = await api.post("/auth/login/", {
-      email,
-      password,
-    });
+  const jobseekerLogin = async (email, password) => {
+    try {
+      const res = await api.post("/auth/login/", {
+        email,
+        password,
+      });
 
-    const access = res.data.access;
-    const refresh = res.data.refresh;
+      const access = res.data.access;
+      const refresh = res.data.refresh;
 
-    const userData = normalizeUser(
-      res.data.user
-    );
+      const userData = normalizeUser(res.data.user);
 
-    localStorage.setItem("access", access);
-    localStorage.setItem("refresh", refresh);
-    localStorage.setItem(
-      "user",
-      JSON.stringify(userData)
-    );
+      localStorage.setItem("access", access);
+      localStorage.setItem("refresh", refresh);
+      localStorage.setItem("user", JSON.stringify(userData));
 
-    setUser(userData);
+      setUser(userData);
 
-    return userData;
-
-  } catch (error) {
-    throw error;
-  }
-};
+      return userData;
+    } catch (error) {
+      throw error;
+    }
+  };
 
   // ================= LOGOUT =================
 
-const logout = () => {
-  console.log("Logout clicked");
+  const logout = () => {
+    console.log("Logout clicked");
 
-  localStorage.removeItem("access");
-  localStorage.removeItem("refresh");
-  localStorage.removeItem("user");
+    localStorage.removeItem("access");
+    localStorage.removeItem("refresh");
+    localStorage.removeItem("user");
 
-  setUser(null);
-};
+    setUser(null);
+  };
 
   // Merge a patch into user state AND localStorage (call after account/profile edits)
   const updateUser = (patch) => {
@@ -225,7 +217,6 @@ const logout = () => {
       {children}
     </AuthContext.Provider>
   );
-  
 }
 
 export const useAuth = () => useContext(AuthContext);

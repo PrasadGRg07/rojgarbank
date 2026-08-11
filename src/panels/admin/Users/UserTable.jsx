@@ -52,22 +52,18 @@ const handleDelete = async (id) => {
 
   const filteredUsers = users.filter((user) => {
 
+    // Only show jobseeker users
+    if (user.role !== "jobseeker") return false;
+
     const name =
       `${user.first_name} ${user.last_name}`
       .toLowerCase();
-
 
     const matchesSearch =
       name.includes(search.toLowerCase()) ||
       user.email
         ?.toLowerCase()
         .includes(search.toLowerCase());
-
-
-    const matchesRole =
-      !filters.role ||
-      user.role === filters.role;
-
 
     const matchesStatus =
       !filters.status ||
@@ -76,10 +72,8 @@ const handleDelete = async (id) => {
         : "inactive"
       ) === filters.status;
 
-
     return (
       matchesSearch &&
-      matchesRole &&
       matchesStatus
     );
 

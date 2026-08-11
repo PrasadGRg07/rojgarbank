@@ -13,13 +13,9 @@ export default function EmptyState({
         <Icon className="text-blue-600" size={40} />
       </div>
 
-      <h2 className="mt-6 text-2xl font-semibold text-gray-800">
-        {title}
-      </h2>
+      <h2 className="mt-6 text-2xl font-semibold text-gray-800">{title}</h2>
 
-      <p className="mt-2 max-w-md text-gray-500">
-        {description}
-      </p>
+      <p className="mt-2 max-w-md text-gray-500">{description}</p>
 
       {buttonText && (
         <button

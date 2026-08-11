@@ -14,6 +14,8 @@ import Aboutus from "./components/Aboutus";
 import Blogs from "./components/Blogs";
 import Blogsdetails from "./components/Blogsdetails";
 import Training from "./components/Training";
+import Events from "./components/Events";
+import PublicJobDetails from "./components/PublicJobDetails";
 // Employee
 import Dashboard from "./panels/employee/Dashboard";
 import DashboardContent from "./panels/employee/DashboardContent";
@@ -30,6 +32,7 @@ import ChangePasswordSetting from "./panels/employee/Settings/ChangePasswordSett
 
 import SearchCandidate from "./panels/employee/Resumesearch/SearchCandidate";
 import CandidateProfile from "./panels/employee/Resumesearch/CandidateProfile";
+import SavedCandidates from "./panels/employee/Resumesearch/SavedCandidates";
 
 import JobList from "./panels/employee/Job/JobList";
 import CreateJob from "./panels/employee/Job/CreateJob";
@@ -153,6 +156,7 @@ import ApplicationStatistics from "./panels/admin/Applications/ApplicationStatis
 import AdminSubscriptionList from "./panels/admin/Subscriptions/SubscriptionList";
 // admin notifications
 import NotificationDashboard from "./panels/admin/Notifications/NotificationDashboard";
+
 import AllNotifications from "./panels/admin/Notifications/AllNotifications";
 import UnreadNotifications from "./panels/admin/Notifications/UnreadNotifications";
 import SystemNotifications from "./panels/admin/Notifications/SystemNotifications";
@@ -256,6 +260,14 @@ const appRouter = createBrowserRouter([
   {
     path: "/training",
     element: <Training />,
+  },
+  {
+    path: "/events",
+    element: <Events />,
+  },
+  {
+    path: "/jobs/:id",
+    element: <PublicJobDetails />,
   },
 
   // ================= SUPER ADMIN =================
@@ -365,9 +377,18 @@ const appRouter = createBrowserRouter([
         element: <SearchCandidate />,
       },
       {
+        path: "saved-candidates",
+        element: <SavedCandidates />,
+      },
+      {
         path: "candidates/:id",
         element: <CandidateProfile />,
       },
+      {
+        path: "resume-search/:id",
+        element: <CandidateProfile />,
+      },
+
 
       {
         path: "jobs",

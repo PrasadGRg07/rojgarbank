@@ -8,12 +8,19 @@ export default function CandidateProfile() {
     const navigate = useNavigate();
     const [candidate, setCandidate] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [isSaved, setIsSaved] = useState(false);
 
     useEffect(() => {
         const fetchCandidate = async () => {
             try {
                 const response = await api.get(`/employee/candidates/${id}/`);
                 setCandidate(response.data);
+                
+                // Check if saved
+                const savedResponse = await api.get("/employee/saved-candidates/");
+                const savedList = savedResponse.data;
+                setIsSaved(savedList.some(item => item.candidate.user_id === parseInt(id)));
+                
             } catch (error) {
                 console.error(error);
             } finally {
@@ -32,6 +39,16 @@ export default function CandidateProfile() {
         } catch (error) {
             console.error("Failed to start conversation:", error);
             alert("Failed to start conversation.");
+        }
+    };
+
+    const handleToggleSave = async () => {
+        try {
+            const response = await api.post(`/employee/saved-candidates/${id}/toggle/`);
+            setIsSaved(response.data.is_saved);
+        } catch (error) {
+            console.error("Failed to toggle save:", error);
+            alert("Failed to save candidate.");
         }
     };
 
@@ -70,13 +87,25 @@ export default function CandidateProfile() {
                         <h1 className="text-3xl font-bold">{candidate.name}</h1>
                         <p className="text-gray-500 mt-1">{candidate.bio || "No bio provided"}</p>
                     </div>
-                    <button
-                        onClick={handleMessage}
-                        className="flex items-center gap-2 rounded-lg bg-cyan-600 px-5 py-2.5 text-white hover:bg-cyan-700 transition"
-                    >
-                        <MessageCircle size={18} />
-                        Message
-                    </button>
+                    <div className="flex gap-3">
+                        <button
+                            onClick={handleToggleSave}
+                            className={`flex items-center gap-2 rounded-lg px-5 py-2.5 transition ${
+                                isSaved 
+                                    ? "bg-red-50 text-red-600 border border-red-200 hover:bg-red-100" 
+                                    : "bg-blue-50 text-blue-600 border border-blue-200 hover:bg-blue-100"
+                            }`}
+                        >
+                            {isSaved ? "Unsave Candidate" : "Save Candidate"}
+                        </button>
+                        <button
+                            onClick={handleMessage}
+                            className="flex items-center gap-2 rounded-lg bg-cyan-600 px-5 py-2.5 text-white hover:bg-cyan-700 transition"
+                        >
+                            <MessageCircle size={18} />
+                            Message
+                        </button>
+                    </div>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">

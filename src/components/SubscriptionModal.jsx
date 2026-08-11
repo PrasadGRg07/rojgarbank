@@ -12,7 +12,6 @@ export default function SubscriptionModal({ onClose }) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
       <div className="relative w-full max-w-lg rounded-3xl bg-white p-8 shadow-2xl">
-
         <button
           onClick={onClose}
           className="absolute right-5 top-5 rounded-full p-2 hover:bg-gray-100"
@@ -35,7 +34,6 @@ export default function SubscriptionModal({ onClose }) {
         </p>
 
         <div className="mt-8 space-y-4 rounded-2xl bg-slate-50 p-6">
-
           <div className="flex items-center gap-3">
             <CheckCircle className="text-green-600" />
             Unlimited Job Posts
@@ -55,7 +53,6 @@ export default function SubscriptionModal({ onClose }) {
             <CheckCircle className="text-green-600" />
             ATS Included
           </div>
-
         </div>
 
         <button
@@ -71,7 +68,6 @@ export default function SubscriptionModal({ onClose }) {
         >
           Maybe Later
         </button>
-
       </div>
     </div>
   );

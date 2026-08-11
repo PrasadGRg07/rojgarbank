@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
+import { useAuth } from "../../../context/AuthContext";
 import {
   LayoutDashboard,
   Search,
@@ -122,14 +123,14 @@ const menuItems = [
     icon: MessageSquare,
     children: [
       {
-        title: "Inbox",
-        icon: MessageSquare,
-        path: "/jobseeker/dashboard/messages/inbox",
-      },
+      title: "Inbox",
+      icon: MessageSquare,
+      path: "/jobseeker/dashboard/messages/inbox",
+    },
 
-    ]
+ ]
 
-  },
+},
 
   {
     title: "Notifications",
@@ -138,10 +139,10 @@ const menuItems = [
   },
 
   {
-    title: "Settings",
+ title:"Settings",
     icon: Settings,
-    path: "/jobseeker/dashboard/job-settings",
-  }
+ path:"/jobseeker/dashboard/job-settings",
+}
 ];
 
 export default function Sidebar({ user }) {
@@ -161,11 +162,10 @@ export default function Sidebar({ user }) {
     }));
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem("access");
-    localStorage.removeItem("refresh");
-    localStorage.removeItem("user");
+  const { logout } = useAuth();
 
+  const handleLogout = () => {
+    logout();
     navigate("/jobseeker/login");
   };
 
@@ -175,19 +175,19 @@ export default function Sidebar({ user }) {
 
       <div className="border-b border-cyan-100 bg-gradient-to-r from-cyan-600 to-blue-600 p-6">
         <div className="flex items-center gap-4">
-          <div className="h-18 w-25 overflow-hidden rounded-2xl bg-white/20 backdrop-blur">
+        <div className="h-18 w-25 overflow-hidden rounded-2xl bg-white/20 backdrop-blur">
+  
+  <img
+    src={logo}
+    alt="Rojgar Bank"
+    className="h-full w-full object-cover"
+    loading="eager"
+  />
 
-            <img
-              src={logo}
-              alt="Rojgar Bank"
-              className="h-full w-full object-cover"
-              loading="eager"
-            />
-
-          </div>
+</div>
 
           <div>
-
+              
 
             <h1 className="text-2xl font-bold text-white">
               Rojgar Bank
@@ -238,112 +238,105 @@ export default function Sidebar({ user }) {
 
       <nav className="flex-1 min-h-0 overflow-y-auto px-4 py-5">
         {menuItems.map((item) => {
-          const Icon = item.icon;
+        const Icon = item.icon;
 
-          if (item.children) {
-            return (
-              <div
-                key={item.title}
-                className="overflow-hidden rounded-2xl"
-              >
-                <button
-                  onClick={() => toggleMenu(item.title)}
-                  className="group flex w-full items-center justify-between rounded-2xl px-4 py-3 font-medium text-slate-700 transition-all duration-300 hover:bg-cyan-50 hover:text-cyan-700"
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="rounded-xl bg-slate-100 p-2 transition group-hover:bg-cyan-100">
-                      <Icon size={19} />
-                    </div>
-
-                    <span>{item.title}</span>
-                  </div>
-
-                  {openMenus[item.title] ? (
-                    <ChevronDown
-                      size={18}
-                      className="text-cyan-600 transition-transform duration-300"
-                    />
-                  ) : (
-                    <ChevronRight
-                      size={18}
-                      className="transition-transform duration-300"
-                    />
-                  )}
-                </button>
-
-                {openMenus[item.title] && (
-                  <div className="ml-6 mt-2 space-y-1 border-l-2 border-cyan-100 pl-4">
-                    {item.children.map((child) => {
-                      const ChildIcon = child.icon;
-
-                      return (
-                        <NavLink
-                          key={child.path}
-                          to={child.path}
-                          className={({ isActive }) =>
-                            `group flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-all duration-300 ${isActive
-                              ? "bg-cyan-600 font-semibold text-white shadow-md"
-                              : "text-slate-600 hover:bg-cyan-50 hover:text-cyan-700"
-                            }`
-                          }
-                        >
-                          <ChildIcon size={16} />
-                          <span>{child.title}</span>
-                        </NavLink>
-                      );
-                    })}
-                  </div>
-                )}
-              </div>
-            );
-          }
-
+        if (item.children) {
           return (
-            <NavLink
-              key={item.path}
-              to={item.path}
-              className={({ isActive }) =>
-                `group mb-2 flex items-center gap-3 rounded-2xl px-4 py-3 transition-all duration-300 ${isActive
-                  ? "bg-cyan-600 text-white shadow-lg"
-                  : "text-slate-700 hover:bg-cyan-50 hover:text-cyan-700"
-                }`
-              }
+            <div
+              key={item.title}
+              className="overflow-hidden rounded-2xl"
             >
-              {({ isActive }) => (
-                <>
-                  <div
-                    className={`rounded-xl p-2 transition ${isActive
-                        ? "bg-white/20"
-                        : "bg-slate-100 group-hover:bg-cyan-100"
-                      }`}
-                  >
+              <button
+                onClick={() => toggleMenu(item.title)}
+                className="group flex w-full items-center justify-between rounded-2xl px-4 py-3 font-medium text-slate-700 transition-all duration-300 hover:bg-cyan-50 hover:text-cyan-700"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="rounded-xl bg-slate-100 p-2 transition group-hover:bg-cyan-100">
                     <Icon size={19} />
                   </div>
 
-                  <span className="font-medium">
-                    {item.title}
-                  </span>
-                </>
+                  <span>{item.title}</span>
+                </div>
+
+                {openMenus[item.title] ? (
+                  <ChevronDown
+                    size={18}
+                    className="text-cyan-600 transition-transform duration-300"
+                  />
+                ) : (
+                  <ChevronRight
+                    size={18}
+                    className="transition-transform duration-300"
+                  />
+                )}
+              </button>
+
+              {openMenus[item.title] && (
+                <div className="ml-6 mt-2 space-y-1 border-l-2 border-cyan-100 pl-4">
+                  {item.children.map((child) => {
+                    const ChildIcon = child.icon;
+
+                    return (
+                      <NavLink
+                        key={child.path}
+                        to={child.path}
+                        className={({ isActive }) =>
+                          `group flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-all duration-300 ${
+                            isActive
+                              ? "bg-cyan-600 font-semibold text-white shadow-md"
+                              : "text-slate-600 hover:bg-cyan-50 hover:text-cyan-700"
+                          }`
+                        }
+                      >
+                        <ChildIcon size={16} />
+                        <span>{child.title}</span>
+                      </NavLink>
+                    );
+                  })}
+                </div>
               )}
-            </NavLink>
+            </div>
           );
-        })}
+        }
+
+        return (
+          <NavLink
+            key={item.path}
+            to={item.path}
+            className={({ isActive }) =>
+              `group mb-2 flex items-center gap-3 rounded-2xl px-4 py-3 transition-all duration-300 ${
+                isActive
+                  ? "bg-cyan-600 text-white shadow-lg"
+                  : "text-slate-700 hover:bg-cyan-50 hover:text-cyan-700"
+              }`
+            }
+          >
+            {({ isActive }) => (
+              <>
+                <div
+                  className={`rounded-xl p-2 transition ${
+                    isActive
+                      ? "bg-white/20"
+                      : "bg-slate-100 group-hover:bg-cyan-100"
+                  }`}
+                >
+                  <Icon size={19} />
+                </div>
+
+                <span className="font-medium">
+                  {item.title}
+                </span>
+              </>
+            )}
+          </NavLink>
+        );
+      })}
       </nav>
 
       {/* ================= FOOTER ================= */}
 
-      <div className="bg-white p-5">
-        <button
-          onClick={handleLogout}
-          className="group flex w-full items-center justify-center gap-3 rounded-2xl bg-gradient-to-r from-red-500 to-red-600 px-4 py-3 font-semibold text-white shadow-lg transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl"
-        >
-          <LogOut
-            size={20}
-            className="transition-transform duration-300 group-hover:rotate-12"
-          />
-
-          Logout
-        </button>
+   
+        
 
         <div className="mt-5 rounded-2xl bg-gradient-to-r from-cyan-50 to-blue-50 p-4 text-center">
           <h3 className="font-semibold text-slate-700">
@@ -362,7 +355,7 @@ export default function Sidebar({ user }) {
             </span>
           </div>
         </div>
-      </div>
+
     </aside>
   );
 }

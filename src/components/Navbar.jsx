@@ -27,6 +27,7 @@ const simpleLinks = [
     { label: 'Blogs', to: '/blogs' },
     { label: 'About Us', to: '/about' },
     { label: 'Contact', to: '/contact' },
+    { label: 'Events', to: '/events' },
 ];
 
 // Reusable plain hover dropdown — no Radix, so no internal pointer conflicts

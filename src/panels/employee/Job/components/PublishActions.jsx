@@ -2,7 +2,6 @@ import {
   Save,
   Eye,
   CalendarDays,
-  Send,
   X,
 } from "lucide-react";
 
@@ -11,7 +10,6 @@ export default function PublishActions({
   onSaveDraft,
   onPreview,
   onSchedule,
-  onPublish,
   onCancel,
 }) {
   return (
@@ -21,11 +19,11 @@ export default function PublishActions({
 
         <div>
           <h2 className="text-xl font-semibold text-slate-800">
-            Ready to Publish?
+            Ready to Submit?
           </h2>
 
           <p className="mt-1 text-sm text-slate-500">
-            Review your job posting before making it live.
+            Preview your job posting before submitting it for review.
           </p>
         </div>
 
@@ -51,15 +49,6 @@ export default function PublishActions({
 
           <button
             type="button"
-            onClick={onPreview}
-            className="flex items-center gap-2 rounded-lg border border-slate-300 px-5 py-3 hover:bg-slate-100"
-          >
-            <Eye size={18} />
-            Preview
-          </button>
-
-          <button
-            type="button"
             onClick={onSchedule}
             className="flex items-center gap-2 rounded-lg border border-slate-300 px-5 py-3 hover:bg-slate-100"
           >
@@ -69,13 +58,11 @@ export default function PublishActions({
 
           <button
             type="button"
-            disabled={loading}
-            onClick={onPublish}
-            className="flex items-center gap-2 rounded-lg bg-blue-600 px-6 py-3 font-medium text-white hover:bg-blue-700 disabled:opacity-50"
+            onClick={onPreview}
+            className="flex items-center gap-2 rounded-lg bg-blue-600 px-6 py-3 font-medium text-white hover:bg-blue-700"
           >
-            <Send size={18} />
-
-            {loading ? "Publishing..." : "Publish Job"}
+            <Eye size={18} />
+            Preview
           </button>
 
         </div>

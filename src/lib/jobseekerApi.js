@@ -221,3 +221,20 @@ export const toggleSavedJob = async (jobId) => {
     const response = await api.post(`/jobseeker/jobs/${jobId}/save/`);
     return response.data;
 };
+
+// ===========================
+// Public Jobs (home page — no auth required)
+// ===========================
+export const getPublicJobs = async () => {
+    const baseURL = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000/api";
+    const response = await fetch(`${baseURL}/jobseeker/jobs/public/`);
+    if (!response.ok) throw new Error("Failed to fetch public jobs");
+    return response.json();
+};
+
+export const getPublicJobDetails = async (id) => {
+    const baseURL = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000/api";
+    const response = await fetch(`${baseURL}/jobseeker/jobs/public/${id}/`);
+    if (!response.ok) throw new Error("Failed to fetch job details");
+    return response.json();
+};
