@@ -233,9 +233,16 @@ export default function CreateEvent() {
 
           {
             image && (
-              <p className="mt-2 text-sm text-gray-600">
-                Selected: {image.name}
-              </p>
+              <div className="mt-4">
+                <p className="text-sm text-gray-600 mb-2">
+                  Selected: {image.name}
+                </p>
+                <img 
+                  src={URL.createObjectURL(image)} 
+                  alt="Preview" 
+                  className="w-full max-w-sm h-auto object-cover rounded-lg border shadow-sm"
+                />
+              </div>
             )
           }
 

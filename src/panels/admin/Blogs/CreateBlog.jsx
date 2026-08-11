@@ -111,6 +111,19 @@ export default function BlogCreate() {
             onChange={handleChange}
             className="w-full"
           />
+
+          {formData.cover_image && (
+            <div className="mt-4">
+              <p className="text-sm text-gray-600 mb-2">
+                Selected: {formData.cover_image.name}
+              </p>
+              <img 
+                src={URL.createObjectURL(formData.cover_image)} 
+                alt="Preview" 
+                className="w-full max-w-sm h-auto object-cover rounded-lg border shadow-sm"
+              />
+            </div>
+          )}
         </div>
 
         <label className="flex items-center gap-2">

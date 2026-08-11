@@ -110,6 +110,19 @@ export default function CreateTraining() {
             onChange={handleChange}
             className="w-full border rounded-lg p-3"
           />
+
+          {formData.image && (
+            <div className="mt-4">
+              <p className="text-sm text-gray-600 mb-2">
+                Selected: {formData.image.name}
+              </p>
+              <img 
+                src={URL.createObjectURL(formData.image)} 
+                alt="Preview" 
+                className="w-full max-w-sm h-auto object-cover rounded-lg border shadow-sm"
+              />
+            </div>
+          )}
         </div>
 
         <div>
