@@ -9,10 +9,16 @@ export const getTrainingSessions = async () => {
   return response.data;
 };
 
+// Alias for components that use getTrainings
+export const getTrainings = getTrainingSessions;
+
 export const getTrainingSession = async (id) => {
   const response = await api.get(`/training/sessions/${id}/`);
   return response.data;
 };
+
+// Alias for components that use getTraining
+export const getTraining = getTrainingSession;
 
 export const createTraining = async (data) => {
   const response = await api.post("/training/sessions/", data);
