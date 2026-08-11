@@ -11,7 +11,6 @@ export const getProfile = () => {
 export const updateProfile = (data) => {
   return api.patch("/jobseeker/profile/", data, {
     headers: {
-      "Content-Type": "multipart/form-data",
     },
   });
 };
@@ -106,7 +105,6 @@ export const getResume = () => {
 
 export const uploadResume = (data) => {
   return api.patch("/jobseeker/resumes/upload/", data, {
-    headers: { "Content-Type": "multipart/form-data" },
   });
 };
 
@@ -125,7 +123,6 @@ export const getPortfolio = () => {
 export const createPortfolio = (data) => {
   return api.post("/jobseeker/portfolio/", data, {
     headers: {
-      "Content-Type": "multipart/form-data",
     },
   });
 };
@@ -133,7 +130,6 @@ export const createPortfolio = (data) => {
 export const updatePortfolio = (id, data) => {
   return api.put(`/jobseeker/portfolio/${id}/`, data, {
     headers: {
-      "Content-Type": "multipart/form-data",
     },
   });
 };
@@ -185,7 +181,6 @@ export const applyJob = async (id, data) => {
         data,
         {
             headers: {
-                "Content-Type": "multipart/form-data",
             },
         }
     );

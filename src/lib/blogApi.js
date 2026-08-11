@@ -16,7 +16,6 @@ export const getBlog = async (slug) => {
 export const createBlog = async (data) => {
   const response = await api.post("/blog/articles/", data, {
     headers: {
-      "Content-Type": "multipart/form-data",
     },
   });
 
@@ -27,7 +26,6 @@ export const createBlog = async (data) => {
 export const updateBlog = async (slug, data) => {
   const response = await api.put(`/blog/articles/${slug}/`, data, {
     headers: {
-      "Content-Type": "multipart/form-data",
     },
   });
 

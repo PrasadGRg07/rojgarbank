@@ -25,7 +25,6 @@ export const createEvent = async (formData) => {
     formData,
     {
       headers: {
-        "Content-Type": "multipart/form-data",
       },
     }
   );
@@ -42,7 +41,6 @@ export const updateEvent = async (id, formData) => {
     formData,
     {
       headers: {
-        "Content-Type": "multipart/form-data",
       },
     }
   );
