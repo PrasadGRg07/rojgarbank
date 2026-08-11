@@ -4,36 +4,28 @@ import api from "./api";
 // Training Sessions
 // =============================
 
-export const getTrainings = async () => {
+export const getTrainingSessions = async () => {
   const response = await api.get("/training/sessions/");
   return response.data;
 };
 
-export const getTraining = async (id) => {
+export const getTrainingSession = async (id) => {
   const response = await api.get(`/training/sessions/${id}/`);
   return response.data;
 };
 
 export const createTraining = async (data) => {
-  const response = await api.post(
-    "/training/sessions/",
-    data
-  );
+  const response = await api.post("/training/sessions/", data);
   return response.data;
 };
 
 export const updateTraining = async (id, data) => {
-  const response = await api.put(
-    `/training/sessions/${id}/`,
-    data
-  );
+  const response = await api.put(`/training/sessions/${id}/`, data);
   return response.data;
 };
 
 export const deleteTraining = async (id) => {
-  const response = await api.delete(
-    `/training/sessions/${id}/`
-  );
+  const response = await api.delete(`/training/sessions/${id}/`);
   return response.data;
 };
 
@@ -42,20 +34,11 @@ export const deleteTraining = async (id) => {
 // =============================
 
 export const getEnrollments = async (sessionId) => {
-  const response = await api.get(
-    `/training/sessions/${sessionId}/enroll/`
-  );
+  const response = await api.get(`/training/sessions/${sessionId}/enroll/`);
   return response.data;
 };
 
-export const createEnrollment = async (
-  sessionId,
-  data
-) => {
-  const response = await api.post(
-    `/training/sessions/${sessionId}/enroll/`,
-    data
-  );
-
+export const createEnrollment = async (sessionId, data) => {
+  const response = await api.post(`/training/sessions/${sessionId}/enroll/`, data);
   return response.data;
 };

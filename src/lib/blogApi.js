@@ -1,39 +1,41 @@
 import api from "./api";
 
+// ============================
 // Get all blogs
+// ============================
 export const getBlogs = async () => {
   const response = await api.get("/blog/articles/");
   return response.data;
 };
 
+// ============================
 // Get single blog
-export const getBlog = async (slug) => {
-  const response = await api.get(`/blog/articles/${slug}/`);
+// ============================
+export const getBlog = async (id) => {
+  const response = await api.get(`/blog/articles/${id}/`);
   return response.data;
 };
 
+// ============================
 // Create blog
-export const createBlog = async (data) => {
-  const response = await api.post("/blog/articles/", data, {
-    headers: {
-    },
-  });
-
+// ============================
+export const createBlog = async (formData) => {
+  const response = await api.post("/blog/articles/", formData);
   return response.data;
 };
 
+// ============================
 // Update blog
-export const updateBlog = async (slug, data) => {
-  const response = await api.put(`/blog/articles/${slug}/`, data, {
-    headers: {
-    },
-  });
-
+// ============================
+export const updateBlog = async (id, formData) => {
+  const response = await api.put(`/blog/articles/${id}/`, formData);
   return response.data;
 };
 
+// ============================
 // Delete blog
-export const deleteBlog = async (slug) => {
-  const response = await api.delete(`/blog/articles/${slug}/`);
+// ============================
+export const deleteBlog = async (id) => {
+  const response = await api.delete(`/blog/articles/${id}/`);
   return response.data;
 };

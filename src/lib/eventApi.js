@@ -20,15 +20,7 @@ export const getEvent = async (id) => {
 // Create event
 // ============================
 export const createEvent = async (formData) => {
-  const response = await api.post(
-    "/events/",
-    formData,
-    {
-      headers: {
-      },
-    }
-  );
-
+  const response = await api.post("/events/", formData);
   return response.data;
 };
 
@@ -36,15 +28,7 @@ export const createEvent = async (formData) => {
 // Update event
 // ============================
 export const updateEvent = async (id, formData) => {
-  const response = await api.put(
-    `/events/${id}/`,
-    formData,
-    {
-      headers: {
-      },
-    }
-  );
-
+  const response = await api.put(`/events/${id}/`, formData);
   return response.data;
 };
 
