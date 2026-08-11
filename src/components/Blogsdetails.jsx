@@ -69,9 +69,9 @@ export default function BlogDetails() {
       <Navbar />
 
       <div className="max-w-4xl mx-auto py-10 px-4">
-        {blog.cover_image && (
+        {blog.cover_image_url && (
           <img
-            src={blog.cover_image}
+            src={blog.cover_image_url}
             alt={blog.title}
             className="w-full h-72 object-cover rounded-xl shadow mb-8"
           />

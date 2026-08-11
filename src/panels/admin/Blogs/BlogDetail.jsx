@@ -62,9 +62,9 @@ export default function BlogDetail() {
 
       <div className="bg-white rounded-xl shadow border p-6 space-y-6">
 
-        {blog.cover_image && (
+        {blog.cover_image_url && (
           <img
-            src={blog.cover_image}
+            src={blog.cover_image_url}
             alt={blog.title}
             className="w-full max-h-96 object-cover rounded-lg"
           />

@@ -104,7 +104,7 @@ const Blogs = () => {
                 className="bg-white shadow-md rounded-lg overflow-hidden hover:shadow-2xl transition-all duration-300 hover:-translate-y-2"
               >
                 <img
-                  src={blog.cover_image}
+                  src={blog.cover_image_url}
                   alt={blog.title}
                   className="w-full h-48 object-cover"
                 />

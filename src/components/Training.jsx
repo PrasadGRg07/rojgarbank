@@ -199,8 +199,8 @@ const Training = () => {
                 ? new Date(course.start_time).toLocaleDateString()
                 : "Self-paced";
               const price = "Contact for Price";
-              const image = course.image
-                ? course.image
+              const image = course.image_url
+                ? course.image_url
                 : i % 2 === 0
                   ? image1
                   : image2;
@@ -226,7 +226,7 @@ const Training = () => {
                     className={`relative h-40 ${iconBg} flex items-center justify-center`}
                   >
                     <img
-                      src={course.image}
+                      src={image}
                       alt={course.title}
                       className="h-full w-full object-cover"
                     />

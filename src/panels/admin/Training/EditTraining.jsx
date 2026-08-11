@@ -36,7 +36,7 @@ export default function EditTraining() {
     try {
       const data = await getTraining(id);
 
-      if (data.image) setCurrentImage(data.image);
+      if (data.image_url) setCurrentImage(data.image_url);
 
       setFormData({
         title: data.title || "",

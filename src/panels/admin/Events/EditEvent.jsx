@@ -40,7 +40,7 @@ export default function EditEvent() {
         is_active: data.is_active,
       });
 
-      setCurrentImage(data.image || "");
+      setCurrentImage(data.image_url || "");
     } catch (err) {
       console.error(err);
       alert("Failed to load event.");

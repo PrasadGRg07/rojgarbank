@@ -181,8 +181,8 @@ const Events = () => {
             events.map((event, index) => {
               const title = event.title || "Untitled Event";
 
-              const image = event.image
-                ? event.image
+              const image = event.image_url
+                ? event.image_url
                 : index % 2 === 0
                   ? image1
                   : image2;

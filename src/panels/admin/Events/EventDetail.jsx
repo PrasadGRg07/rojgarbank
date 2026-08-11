@@ -52,9 +52,9 @@ export default function EventDetail() {
 
       <div className="bg-white rounded-xl shadow border p-6">
 
-        {event.image && (
+        {event.image_url && (
           <img
-            src={event.image}
+            src={event.image_url}
             alt={event.title}
             className="w-full max-h-80 object-cover rounded-lg mb-6"
           />
