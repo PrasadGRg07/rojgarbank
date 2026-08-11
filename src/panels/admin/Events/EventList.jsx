@@ -10,7 +10,12 @@ export default function EventList() {
 
   return (
     <div className="space-y-6">
-      <PageHeader title="Events" subtitle="Manage all events" />
+      <PageHeader 
+        title="Events" 
+        subtitle="Manage all events" 
+        buttonText="Create Event"
+        buttonLink="/admin/events/create"
+      />
       <EventStatistics />
 
       <div className="bg-white rounded-xl shadow border p-5">
