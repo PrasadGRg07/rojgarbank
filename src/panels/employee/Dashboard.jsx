@@ -15,6 +15,7 @@ import { useAuth } from "../../context/AuthContext";
 import Sidebar from "./components/Sidebar";
 import Header from "./components/Header";
 import DashboardSkeleton from "./components/DashboardSkeleton";
+import WelcomeSubscriptionPopup from "./subscription/WelcomeSubscriptionPopup";
 
 // Lazy Components
 const ResumeSearchStats = lazy(() =>
@@ -34,37 +35,76 @@ export default function Dashboard() {
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [dashboardData, setDashboardData] = useState(null);
+  const [showWelcome, setShowWelcome] = useState(false);
+  const [hasActiveSubscription, setHasActiveSubscription] = useState(true); // optimistic default
 
+  // Fetch dashboard data + subscription status on mount
   useEffect(() => {
     let mounted = true;
 
     async function fetchDashboard() {
       try {
         const { data } = await api.get("/employee/dashboard/");
-
-        if (mounted) {
-          setDashboardData(data);
-        }
+        if (mounted) setDashboardData(data);
       } catch (err) {
         console.error(err);
       } finally {
-        if (mounted) {
-          setLoading(false);
-        }
+        if (mounted) setLoading(false);
+      }
+    }
+
+    async function fetchSubscription() {
+      try {
+        const { data } = await api.get("/employee/subscriptions/");
+        const active = data.some((s) => s.status === "active");
+        if (mounted) setHasActiveSubscription(active);
+      } catch (err) {
+        // If we can't fetch, assume no subscription
+        if (mounted) setHasActiveSubscription(false);
       }
     }
 
     fetchDashboard();
+    fetchSubscription();
+
+    return () => { mounted = false; };
+  }, []);
+
+  // Repeating popup interval for non-subscribed users
+  useEffect(() => {
+    if (hasActiveSubscription) return; // do nothing if subscribed
+
+    // Show immediately on first render
+    setShowWelcome(true);
+
+    const scheduleNext = () => {
+      // Random delay between 5 000 ms and 10 000 ms
+      const delay = Math.floor(Math.random() * 5000) + 5000;
+      return setTimeout(() => {
+        setShowWelcome(true);
+        // schedule the next one after this one is set
+        intervalRef.current = scheduleNext();
+      }, delay);
+    };
+
+    const intervalRef = { current: null };
+    intervalRef.current = scheduleNext();
 
     return () => {
-      mounted = false;
+      if (intervalRef.current) clearTimeout(intervalRef.current);
     };
-  }, []);
+  }, [hasActiveSubscription]);
+
+
 
   const handleLogout = useCallback(() => {
     logout();
     navigate("/employee/login");
   }, [logout, navigate]);
+
+  const handleCloseWelcome = () => {
+    setShowWelcome(false);
+  };
 
   // Show right widgets only on dashboard home
   const showRightWidgets = useMemo(() => {
@@ -81,6 +121,7 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen bg-slate-100">
+      <WelcomeSubscriptionPopup open={showWelcome} onClose={handleCloseWelcome} />
       <div className="flex h-screen overflow-hidden">
         {/* Sidebar */}
         <Sidebar
