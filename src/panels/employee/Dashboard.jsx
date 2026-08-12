@@ -143,11 +143,10 @@ export default function Dashboard() {
           {/* Content */}
           <main className="flex-1 overflow-y-auto p-4 sm:p-6">
             <div
-              className={`mx-auto w-full ${
-                showRightWidgets
+              className={`mx-auto w-full ${showRightWidgets
                   ? "max-w-7xl"
                   : "max-w-screen-2xl"
-              }`}
+                }`}
             >
               {showRightWidgets ? (
                 // Dashboard Home Layout
