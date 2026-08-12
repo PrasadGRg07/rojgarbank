@@ -150,7 +150,19 @@ export default function ApplicantDetails() {
                     {applicant.resume && (
                         <div>
                             <a
-                                href={`http://127.0.0.1:8000${applicant.resume}`}
+                                href={
+                                    (() => {
+                                        let url = applicant.resume.startsWith('http') 
+                                            ? applicant.resume 
+                                            : `${import.meta.env.VITE_API_URL ? import.meta.env.VITE_API_URL.replace('/api', '') : 'http://127.0.0.1:8000'}${applicant.resume.startsWith('/') ? '' : '/'}${applicant.resume}`;
+                                        
+                                        // Fix for Cloudinary URLs missing the extension
+                                        if (url.includes('cloudinary.com') && !url.match(/\.[a-zA-Z0-9]{3,4}$/)) {
+                                            url += '.pdf';
+                                        }
+                                        return url;
+                                    })()
+                                }
                                 target="_blank"
                                 rel="noreferrer"
                                 className="flex items-center gap-2 text-blue-600 hover:underline"

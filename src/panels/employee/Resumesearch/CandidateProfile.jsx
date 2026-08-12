@@ -131,7 +131,40 @@ export default function CandidateProfile() {
                         {candidate.portfolio && (
                             <div className="flex items-center gap-3">
                                 <FileText className="text-gray-400" size={18} />
-                                <a href={candidate.portfolio} target="_blank" rel="noreferrer" className="text-blue-600 hover:underline">Portfolio</a>
+                                <a href={candidate.portfolio} target="_blank" rel="noreferrer" className="text-blue-600 hover:underline">Portfolio Website</a>
+                            </div>
+                        )}
+                        {candidate.linkedin && (
+                            <div className="flex items-center gap-3">
+                                <FileText className="text-gray-400" size={18} />
+                                <a href={candidate.linkedin} target="_blank" rel="noreferrer" className="text-blue-600 hover:underline">LinkedIn</a>
+                            </div>
+                        )}
+                        {candidate.github && (
+                            <div className="flex items-center gap-3">
+                                <FileText className="text-gray-400" size={18} />
+                                <a href={candidate.github} target="_blank" rel="noreferrer" className="text-blue-600 hover:underline">GitHub</a>
+                            </div>
+                        )}
+                        {candidate.resume && (
+                            <div className="flex items-center gap-3 mt-4">
+                                <FileText className="text-blue-600" size={18} />
+                                <a 
+                                    href={(() => {
+                                        let url = candidate.resume.startsWith('http') 
+                                            ? candidate.resume 
+                                            : `${import.meta.env.VITE_API_URL ? import.meta.env.VITE_API_URL.replace('/api', '') : 'http://127.0.0.1:8000'}${candidate.resume.startsWith('/') ? '' : '/'}${candidate.resume}`;
+                                        if (url.includes('cloudinary.com') && !url.match(/\.[a-zA-Z0-9]{3,4}$/)) {
+                                            url += '.pdf';
+                                        }
+                                        return url;
+                                    })()}
+                                    target="_blank" 
+                                    rel="noreferrer" 
+                                    className="text-blue-600 hover:underline font-semibold"
+                                >
+                                    View Resume
+                                </a>
                             </div>
                         )}
                     </div>
@@ -179,6 +212,58 @@ export default function CandidateProfile() {
                                 </p>
                             </div>
                         ))}
+                    </div>
+                )}
+
+                {candidate.certifications && candidate.certifications.length > 0 && (
+                    <div className="mt-8 space-y-4">
+                        <h2 className="text-xl font-semibold border-b pb-2">Certifications</h2>
+                        {candidate.certifications.map(cert => (
+                            <div key={cert.id} className="border p-4 rounded-lg">
+                                <h3 className="font-bold text-lg">{cert.title}</h3>
+                                <p className="text-gray-600">{cert.organization}</p>
+                                <p className="text-sm text-gray-500">
+                                    {cert.issue_date} {cert.expiry_date ? `- ${cert.expiry_date}` : ""}
+                                </p>
+                                {cert.credential_url && (
+                                    <a href={cert.credential_url} target="_blank" rel="noreferrer" className="text-blue-600 hover:underline text-sm mt-2 block">
+                                        View Credential
+                                    </a>
+                                )}
+                            </div>
+                        ))}
+                    </div>
+                )}
+
+                {candidate.portfolios && candidate.portfolios.length > 0 && (
+                    <div className="mt-8 space-y-4">
+                        <h2 className="text-xl font-semibold border-b pb-2">Portfolio Projects</h2>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            {candidate.portfolios.map(proj => (
+                                <div key={proj.id} className="border rounded-lg overflow-hidden flex flex-col">
+                                    {proj.image && (
+                                        <img src={proj.image} alt={proj.title} className="w-full h-40 object-cover" />
+                                    )}
+                                    <div className="p-4 flex flex-col flex-1">
+                                        <h3 className="font-bold text-lg">{proj.title}</h3>
+                                        <p className="text-sm text-blue-600 mb-2">{proj.project_type}</p>
+                                        <p className="text-gray-600 text-sm flex-1">{proj.description}</p>
+                                        <div className="flex gap-4 mt-4 pt-4 border-t">
+                                            {proj.project_url && (
+                                                <a href={proj.project_url} target="_blank" rel="noreferrer" className="text-blue-600 hover:underline text-sm">
+                                                    Live Demo
+                                                </a>
+                                            )}
+                                            {proj.github_url && (
+                                                <a href={proj.github_url} target="_blank" rel="noreferrer" className="text-blue-600 hover:underline text-sm">
+                                                    GitHub
+                                                </a>
+                                            )}
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 )}
             </div>
