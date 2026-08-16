@@ -152,7 +152,7 @@ export default function ApplicantDetails() {
                             <a
                                 href={
                                     (() => {
-                                        let url = applicant.resume.startsWith('http') 
+                                        let url = applicant.resume.startsWith('https') 
                                             ? applicant.resume 
                                             : `${import.meta.env.VITE_API_URL ? import.meta.env.VITE_API_URL.replace('/api', '') : 'http://127.0.0.1:8000'}${applicant.resume.startsWith('/') ? '' : '/'}${applicant.resume}`;
                                         

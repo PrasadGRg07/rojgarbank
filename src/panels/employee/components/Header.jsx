@@ -1,15 +1,31 @@
-import React, { memo } from "react";
+import React, { memo, useEffect, useState } from "react";
 import { Menu, Bell } from "lucide-react";
 
 import logo from "../../../assets/logoo.jpeg";
 import AccountMenu from "./AccountMenu";
+import { fetchNotifications } from "../../../lib/notificationApi";
 
 function Header({
   user,
   onMenuClick,
   onLogout,
-  notificationCount = 0,
+  notificationCount: propNotificationCount = 0,
 }) {
+  const [notificationCount, setNotificationCount] = useState(propNotificationCount);
+
+  useEffect(() => {
+    const loadCount = async () => {
+      try {
+        const data = await fetchNotifications();
+        const unreadCount = data.filter(n => !n.is_read).length;
+        setNotificationCount(unreadCount);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    loadCount();
+  }, []);
+
   return (
     <header className="sticky top-0 z-40 rounded-2xl border border-slate-200 bg-white/90 backdrop-blur-md shadow-sm">
       <div className="flex h-20 items-center justify-between px-4 sm:px-6">

@@ -1,13 +1,53 @@
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ArrowLeft, Bell, Calendar, User, Tag } from "lucide-react";
-
-import { notificationData } from "./data/notificationData";
+import { fetchNotifications, markNotificationAsRead } from "../../../lib/notificationApi";
 
 export default function NotificationDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [notification, setNotification] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  const notification = notificationData.find((item) => item.id === Number(id));
+  useEffect(() => {
+    const loadNotification = async () => {
+      setLoading(true);
+      try {
+        const data = await fetchNotifications();
+        const n = data.find((item) => item.id === Number(id));
+        if (n) {
+          const dateObj = new Date(n.created_at);
+          setNotification({
+            id: n.id,
+            title: n.title,
+            message: n.message,
+            type: n.notification_type,
+            user: "System",
+            status: n.is_read ? "Read" : "Unread",
+            date: dateObj.toLocaleDateString(),
+            time: dateObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+          });
+          
+          if (!n.is_read) {
+            await markNotificationAsRead(n.id);
+          }
+        }
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadNotification();
+  }, [id]);
+
+  if (loading) {
+    return (
+      <div className="rounded-2xl bg-white p-6 text-center dark:bg-slate-900">
+        Loading...
+      </div>
+    );
+  }
 
   if (!notification) {
     return (

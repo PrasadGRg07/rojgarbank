@@ -1,42 +1,39 @@
 import { Bell, Search } from "lucide-react";
 import NotificationCard from "../components/NotificationCard";
 
-const notifications = [
-  {
-    id: 1,
-    title: "Interview Scheduled",
-    message: "Your interview with Fusemachines Nepal is tomorrow at 10:00 AM.",
-    time: "2 hours ago",
-    type: "interview",
-    unread: true,
-  },
-  {
-    id: 2,
-    title: "Application Reviewed",
-    message: "Your application has moved to the Interview stage.",
-    time: "Yesterday",
-    type: "application",
-    unread: false,
-  },
-  {
-    id: 3,
-    title: "New Job Recommendation",
-    message: "A new Frontend Developer job matches your profile.",
-    time: "2 days ago",
-    type: "job",
-    unread: true,
-  },
-  {
-    id: 4,
-    title: "Resume Viewed",
-    message: "ABC Technologies viewed your resume.",
-    time: "3 days ago",
-    type: "resume",
-    unread: false,
-  },
-];
+import { useEffect, useState } from "react";
+import { fetchNotifications } from "../../../lib/notificationApi";
 
 export default function NotificationList() {
+  const [notifications, setNotifications] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const loadNotifications = async () => {
+    setLoading(true);
+    try {
+      const data = await fetchNotifications();
+      const mapped = data.map((n) => {
+        const dateObj = new Date(n.created_at);
+        return {
+          id: n.id,
+          title: n.title,
+          message: n.message,
+          time: dateObj.toLocaleDateString() + " " + dateObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          type: n.notification_type,
+          unread: !n.is_read,
+        };
+      });
+      setNotifications(mapped);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    loadNotifications();
+  }, []);
       return (
     <div className="space-y-6">
 

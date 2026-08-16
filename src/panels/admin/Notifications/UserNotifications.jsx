@@ -1,26 +1,55 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Download, RefreshCcw } from "lucide-react";
 
 import NotificationTable from "./components/NotificationTable";
-
 import { notificationColumns } from "./data/notificationColumns";
-import { notificationData } from "./data/notificationData";
+import { fetchNotifications } from "../../../lib/notificationApi";
 
 export default function UserNotifications() {
   const [search, setSearch] = useState("");
+  const [notifications, setNotifications] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const loadNotifications = async () => {
+    setLoading(true);
+    try {
+      const data = await fetchNotifications();
+      const mapped = data.map((n) => {
+        const dateObj = new Date(n.created_at);
+        return {
+          id: n.id,
+          title: n.title,
+          message: n.message,
+          type: n.notification_type,
+          user: "System",
+          status: n.is_read ? "Read" : "Unread",
+          date: dateObj.toISOString().split("T")[0],
+          time: dateObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        };
+      });
+      setNotifications(mapped);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    loadNotifications();
+  }, []);
 
   const userNotifications = useMemo(() => {
-    return notificationData.filter((item) => {
-      const isUser = item.type === "User";
+    return notifications.filter((item) => {
+      const isUser = item.type.toLowerCase() === "user";
 
       const matchesSearch =
         item.title.toLowerCase().includes(search.toLowerCase()) ||
-        item.message.toLowerCase().includes(search.toLowerCase()) ||
-        item.user.toLowerCase().includes(search.toLowerCase());
+        item.message.toLowerCase().includes(search.toLowerCase());
 
       return isUser && matchesSearch;
     });
-  }, [search]);
+  }, [search, notifications]);
 
   return (
     <div className="space-y-6">
@@ -43,8 +72,8 @@ export default function UserNotifications() {
             Export
           </button>
 
-          <button className="flex items-center gap-2 rounded-xl bg-slate-900 px-4 py-2.5 text-white hover:bg-slate-700 dark:bg-slate-700">
-            <RefreshCcw size={18} />
+          <button onClick={loadNotifications} className="flex items-center gap-2 rounded-xl bg-slate-900 px-4 py-2.5 text-white hover:bg-slate-700 dark:bg-slate-700">
+            <RefreshCcw size={18} className={loading ? "animate-spin" : ""} />
             Refresh
           </button>
         </div>
