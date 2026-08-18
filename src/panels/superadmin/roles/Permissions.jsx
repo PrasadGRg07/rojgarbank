@@ -1,19 +1,19 @@
 import React, { useState } from "react";
 
 const modules = [
-  "Dashboard",
-  "Admins",
-  "Employees",
-  "Employers",
-  "Job Seekers",
-  "Jobs",
-  "Applications",
-  "Blogs",
-  "Events",
-  "Trainings",
-  "Analytics",
-  "Audit Logs",
-  "Settings",
+  { name: "Dashboard", create: true, read: true, update: true, delete: false },
+  { name: "Admins", create: false, read: true, update: false, delete: false },
+  { name: "Employees", create: false, read: true, update: true, delete: false },
+  { name: "Employers", create: false, read: true, update: true, delete: false },
+  { name: "Job Seekers", create: false, read: true, update: true, delete: false },
+  { name: "Jobs", create: true, read: true, update: true, delete: true },
+  { name: "Applications", create: true, read: true, update: true, delete: false },
+  { name: "Blogs", create: true, read: true, update: true, delete: true },
+  { name: "Events", create: true, read: true, update: true, delete: true },
+  { name: "Trainings", create: true, read: true, update: true, delete: true },
+  { name: "Analytics", create: false, read: true, update: false, delete: false },
+  { name: "Audit Logs", create: false, read: false, update: false, delete: false },
+  { name: "Settings", create: false, read: true, update: false, delete: false },
 ];
 
 const Permissions = () => {
@@ -70,44 +70,42 @@ const Permissions = () => {
 
           <tbody>
 
-            {modules.map((module) => (
-
-              <tr key={module} className="border-t">
-
-                <td className="p-4 font-medium">
-                  {module}
-                </td>
-
-                <td className="text-center">
-                  <input type="checkbox" />
-                </td>
-
-                <td className="text-center">
-                  <input type="checkbox" defaultChecked />
-                </td>
-
-                <td className="text-center">
-                  <input type="checkbox" />
-                </td>
-
-                <td className="text-center">
-                  <input type="checkbox" />
-                </td>
-
-              </tr>
-
-            ))}
+            {modules.map((module) => {
+              // Mock logic to show different permissions based on selected role
+              const isSuperAdmin = selectedRole === "Super Admin";
+              const isAdmin = selectedRole === "Admin";
+              
+              const canCreate = isSuperAdmin || (isAdmin && module.create);
+              const canRead = isSuperAdmin || module.read;
+              const canUpdate = isSuperAdmin || (isAdmin && module.update);
+              const canDelete = isSuperAdmin || (isAdmin && module.delete);
+              
+              return (
+                <tr key={module.name} className="border-t">
+                  <td className="p-4 font-medium text-gray-700">
+                    {module.name}
+                  </td>
+                  <td className="text-center">
+                    <input type="checkbox" checked={canCreate} disabled className="opacity-60 cursor-not-allowed" />
+                  </td>
+                  <td className="text-center">
+                    <input type="checkbox" checked={canRead} disabled className="opacity-60 cursor-not-allowed" />
+                  </td>
+                  <td className="text-center">
+                    <input type="checkbox" checked={canUpdate} disabled className="opacity-60 cursor-not-allowed" />
+                  </td>
+                  <td className="text-center">
+                    <input type="checkbox" checked={canDelete} disabled className="opacity-60 cursor-not-allowed" />
+                  </td>
+                </tr>
+              )
+            })}
 
           </tbody>
 
         </table>
-
-        <button className="mt-6 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700">
-          Save Permissions
-        </button>
-
+        <p className="mt-6 text-sm text-gray-500 italic">Permissions are read-only and strictly tied to hardcoded user roles.</p>
       </div>
-
     </div>
   );
 };

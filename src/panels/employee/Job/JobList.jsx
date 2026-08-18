@@ -6,8 +6,9 @@ import {
   Clock,
   CheckCircle,
   XCircle,
+  Trash2,
 } from "lucide-react";
-import { getMyJobs } from "../../../lib/employeeJobApi";
+import { getMyJobs, deleteJob } from "../../../lib/employeeJobApi";
 
 const STATUS_CONFIG = {
   draft: {
@@ -67,6 +68,18 @@ if (loading) {
     </div>
   );
 }
+
+const handleDeleteJob = async (id) => {
+  if (window.confirm("Are you sure you want to delete this job?")) {
+    try {
+      await deleteJob(id);
+      setJobs(jobs.filter((job) => job.id !== id));
+    } catch (error) {
+      console.error("Delete Job Error:", error);
+      alert("Failed to delete job.");
+    }
+  }
+};
 
 
   return (
@@ -196,6 +209,14 @@ if (loading) {
   >
     <Pencil size={18} />
     Edit
+  </button>
+
+  <button
+    onClick={() => handleDeleteJob(job.id)}
+    className="flex items-center gap-2 rounded-lg border border-red-600 px-4 py-2 text-red-600 hover:bg-red-50"
+  >
+    <Trash2 size={18} />
+    Delete
   </button>
 
 </div>

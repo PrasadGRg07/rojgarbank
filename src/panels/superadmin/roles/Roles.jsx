@@ -1,38 +1,25 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
 import SecurityIcon from "@mui/icons-material/Security";
-import AddIcon from "@mui/icons-material/Add";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
-
-const roles = [
-  {
-    id: 1,
-    role: "Super Admin",
-    users: 1,
-    description: "Full access to the entire system",
-  },
-  {
-    id: 2,
-    role: "Admin",
-    users: 5,
-    description: "Manage employees, jobs and reports",
-  },
-  {
-    id: 3,
-    role: "Employee",
-    users: 18,
-    description: "Manage company jobs",
-  },
-  {
-    id: 4,
-    role: "Job Seeker",
-    users: 245,
-    description: "Apply for jobs",
-  },
-];
+import { getRoleStats } from "../../../lib/superadminApi";
 
 const Roles = () => {
+  const [roles, setRoles] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchRoles = async () => {
+      try {
+        const data = await getRoleStats();
+        setRoles(data);
+      } catch (err) {
+        console.error("Failed to fetch roles:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchRoles();
+  }, []);
+
   return (
     <div className="p-6 bg-gray-100 min-h-screen">
 
@@ -45,15 +32,10 @@ const Roles = () => {
           </h1>
 
           <p className="text-gray-500 mt-2">
-            Manage system roles.
+            System roles and user counts.
           </p>
         </div>
-
-        <button className="flex items-center gap-2 bg-blue-600 text-white px-5 py-3 rounded-lg hover:bg-blue-700">
-          <AddIcon />
-          Create Role
-        </button>
-
+        {/* Create Role button hidden because roles are hardcoded enums */}
       </div>
 
       <div className="bg-white rounded-xl shadow overflow-hidden">
@@ -94,28 +76,19 @@ const Roles = () => {
                   {role.description}
                 </td>
 
-                <td className="p-4">
-
-                  <div className="flex justify-center gap-3">
-
-                    <Link
-                      to={`/superadmin/roles/edit/${role.id}`}
-                      className="bg-yellow-500 text-white p-2 rounded"
-                    >
-                      <EditIcon />
-                    </Link>
-
-                    <button className="bg-red-600 text-white p-2 rounded">
-                      <DeleteIcon />
-                    </button>
-
-                  </div>
-
+                <td className="p-4 text-center text-gray-400 italic">
+                  Roles are hardcoded
                 </td>
 
               </tr>
 
             ))}
+
+            {loading && (
+              <tr>
+                <td colSpan="4" className="p-4 text-center">Loading...</td>
+              </tr>
+            )}
 
           </tbody>
 

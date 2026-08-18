@@ -232,6 +232,7 @@ import Permissions from "./panels/superadmin/roles/Permissions";
 import SystemSettings from "./panels/superadmin/settings/SystemSettings";
 import SuperAdminLogin from "./panels/superadmin/SuperAdminLogin";
 import SubscriptionApproval from "./panels/superadmin/subscriptions/SubscriptionApproval";
+import SpecialAccounts from "./panels/superadmin/specialAccounts/SpecialAccounts";
 
 const appRouter = createBrowserRouter([
   // ================= PUBLIC =================
@@ -342,6 +343,11 @@ const appRouter = createBrowserRouter([
       {
         path: "permissions",
         element: <Permissions />,
+      },
+      
+      {
+        path: "special-accounts",
+        element: <SpecialAccounts />,
       },
 
       {

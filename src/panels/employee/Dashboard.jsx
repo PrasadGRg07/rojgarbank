@@ -54,6 +54,11 @@ export default function Dashboard() {
     }
 
     async function fetchSubscription() {
+      // Special accounts have unlimited access — skip subscription check entirely
+      if (user?.is_special_account) {
+        setHasActiveSubscription(true);
+        return;
+      }
       try {
         const { data } = await api.get("/employee/subscriptions/");
         const active = data.some((s) => s.status === "active");
@@ -72,6 +77,8 @@ export default function Dashboard() {
 
   // Repeating popup interval for non-subscribed users
   useEffect(() => {
+    // Never show popup to special account holders
+    if (user?.is_special_account) return;
     if (hasActiveSubscription) return; // do nothing if subscribed
 
     // Show immediately on first render

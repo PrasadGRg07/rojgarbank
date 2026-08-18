@@ -25,6 +25,11 @@ export const updateJob = async (id, data) => {
     return response.data;
 };
 
+export const deleteJob = async (id) => {
+    const response = await api.delete(`/employee/jobs/${id}/`);
+    return response.data;
+};
+
 export const saveDraft = async (id, data) => {
     const response = await api.patch(`/employee/jobs/${id}/`, data);
     return response.data;
