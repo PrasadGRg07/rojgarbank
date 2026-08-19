@@ -12,6 +12,8 @@ import {
   EyeOff,
 } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
+import { GoogleLogin } from '@react-oauth/google';
+import api from "../../lib/api";
 
 const JobSeekerLogin = () => {
   const navigate = useNavigate();
@@ -48,7 +50,27 @@ const JobSeekerLogin = () => {
         setError("You are not registered as a Job Seeker.");
       }
     } catch (err) {
-      setError("Invalid email or password.");
+      if (err?.response?.data?.code === 'email_unverified' || err?.response?.data?.detail?.includes('verify your email')) {
+        setError("Please verify your email before logging in.");
+      } else {
+        setError("Invalid email or password.");
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleResendVerification = async () => {
+    if (!input.email) {
+      setError("Please enter your email address first.");
+      return;
+    }
+    try {
+      setLoading(true);
+      await api.post("/auth/resend-otp/", { email: input.email });
+      navigate(`/verify-otp?email=${encodeURIComponent(input.email)}`);
+    } catch (err) {
+      setError(err?.response?.data?.detail || "Failed to resend OTP.");
     } finally {
       setLoading(false);
     }
@@ -83,8 +105,44 @@ const JobSeekerLogin = () => {
             {error && (
               <div className="mb-4 text-sm text-red-600 bg-red-50 border border-red-200 rounded-xl px-4 py-3">
                 {error}
+                {error.includes("verify your email") && (
+                  <button 
+                    onClick={handleResendVerification}
+                    className="ml-2 underline font-semibold text-red-700 hover:text-red-900"
+                    type="button"
+                  >
+                    Resend Email
+                  </button>
+                )}
               </div>
             )}
+            
+            <div className="mb-6 flex flex-col gap-4 items-center">
+               <GoogleLogin
+                 onSuccess={async (credentialResponse) => {
+                   try {
+                     setLoading(true);
+                     const res = await api.post('/auth/google-login/', { credential: credentialResponse.credential });
+                     if (res.status >= 200 && res.status < 300) {
+                        localStorage.setItem("accessToken", res.data.access);
+                        localStorage.setItem("refreshToken", res.data.refresh);
+                        localStorage.setItem("userRole", res.data.user.role);
+                        navigate(`/${res.data.user.role}/dashboard`);
+                     }
+                   } catch (err) {
+                     setError('Google login failed.');
+                   } finally {
+                     setLoading(false);
+                   }
+                 }}
+                 onError={() => setError('Google login failed.')}
+               />
+               <div className="relative flex items-center py-2 w-full">
+                 <div className="flex-grow border-t border-gray-200"></div>
+                 <span className="flex-shrink-0 mx-4 text-gray-400 text-sm">OR</span>
+                 <div className="flex-grow border-t border-gray-200"></div>
+               </div>
+            </div>
 
             {/* Form */}
             <form

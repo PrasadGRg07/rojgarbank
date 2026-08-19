@@ -5,6 +5,7 @@ import { Label } from "../../components/ui/label";
 import { Button } from "../../components/ui/button";
 import { Link, useNavigate } from 'react-router-dom'
 import { Mail, Lock, User, Phone, ImagePlus, UserPlus, Eye, EyeOff } from 'lucide-react'
+import { GoogleLogin } from '@react-oauth/google'
 import api from '../../lib/api'
 
 const Register = () => {
@@ -62,10 +63,7 @@ const Register = () => {
       const res = await api.post('/auth/register/', payload);
       const data = res.data;
       if (res.status >= 200 && res.status < 300) {
-        setSuccess("🎉 Account created successfully! Redirecting to login...");
-        setTimeout(() => {
-          navigate("/employee/login");
-        }, 2000);
+        navigate(`/verify-otp?email=${encodeURIComponent(res.data.email || input.email)}&role=employee`);
       } else {
         const firstError = Object.values(data || {})[0];
         setError(Array.isArray(firstError) ? firstError[0] : JSON.stringify(data));
@@ -112,6 +110,34 @@ const Register = () => {
                 {error}
               </div>
             )}
+
+            <div className="mb-6 flex flex-col gap-4 items-center">
+               <GoogleLogin
+                 onSuccess={async (credentialResponse) => {
+                   try {
+                     setLoading(true);
+                     const res = await api.post('/auth/google-login/', { credential: credentialResponse.credential });
+                     if (res.status >= 200 && res.status < 300) {
+                        localStorage.setItem("accessToken", res.data.access);
+                        localStorage.setItem("refreshToken", res.data.refresh);
+                        localStorage.setItem("userRole", res.data.user.role);
+                        setSuccess("🎉 Google login successful!");
+                        setTimeout(() => navigate(`/${res.data.user.role}/dashboard`), 2000);
+                     }
+                   } catch (err) {
+                     setError('Google login failed.');
+                   } finally {
+                     setLoading(false);
+                   }
+                 }}
+                 onError={() => setError('Google login failed.')}
+               />
+               <div className="relative flex items-center py-2 w-full">
+                 <div className="flex-grow border-t border-gray-200"></div>
+                 <span className="flex-shrink-0 mx-4 text-gray-400 text-sm">OR</span>
+                 <div className="flex-grow border-t border-gray-200"></div>
+               </div>
+            </div>
 
             <form onSubmit={submitHandler} className="flex flex-col gap-4">
 

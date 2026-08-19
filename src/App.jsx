@@ -16,6 +16,8 @@ import Blogsdetails from "./components/Blogsdetails";
 import Training from "./components/Training";
 import Events from "./components/Events";
 import PublicJobDetails from "./components/PublicJobDetails";
+import OTPVerify from "./panels/OTPVerify";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 // Employee
 import Dashboard from "./panels/employee/Dashboard";
 import DashboardContent from "./panels/employee/DashboardContent";
@@ -269,6 +271,10 @@ const appRouter = createBrowserRouter([
   {
     path: "/jobs/:id",
     element: <PublicJobDetails />,
+  },
+  {
+    path: "/verify-otp",
+    element: <OTPVerify />,
   },
 
   // ================= SUPER ADMIN =================
@@ -1069,13 +1075,17 @@ const appRouter = createBrowserRouter([
 ]);
 
 function App() {
+  const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID || "YOUR_GOOGLE_CLIENT_ID";
+
   return (
-    <AuthProvider>
-      <RouterProvider
-        router={appRouter}
-        future={{ v7_startTransition: true }}
-      />
-    </AuthProvider>
+    <GoogleOAuthProvider clientId={googleClientId}>
+      <AuthProvider>
+        <RouterProvider
+          router={appRouter}
+          future={{ v7_startTransition: true }}
+        />
+      </AuthProvider>
+    </GoogleOAuthProvider>
   );
 }
 
