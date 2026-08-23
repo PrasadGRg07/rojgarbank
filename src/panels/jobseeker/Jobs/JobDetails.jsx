@@ -180,7 +180,7 @@ export default function JobDetails() {
                     </div>
                     <button
                         onClick={handleMessage}
-                        className="flex items-center gap-2 rounded-lg border-2 border-cyan-600 px-4 py-2 text-cyan-600 hover:bg-cyan-50 transition font-semibold whitespace-nowrap"
+                        className="w-full sm:w-auto flex items-center justify-center sm:justify-start gap-2 rounded-lg border-2 border-cyan-600 px-4 py-2 text-cyan-600 hover:bg-cyan-50 transition font-semibold whitespace-nowrap"
                     >
                         <MessageCircle size={18} />
                         Message Employer
@@ -189,7 +189,7 @@ export default function JobDetails() {
             </div>
 
             {/* Quick Stats */}
-            <div className="grid gap-4 md:grid-cols-4">
+            <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
                 <div className="rounded-xl bg-white p-5 shadow text-center">
                     <Wallet className="mx-auto mb-2 text-green-600" size={22} />
                     <p className="text-xs text-gray-500 mb-1">Salary</p>

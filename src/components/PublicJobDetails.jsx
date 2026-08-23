@@ -137,7 +137,7 @@ export default function PublicJobDetails() {
                         </div>
                         <button
                             onClick={() => navigate("/jobseeker/login")}
-                            className="rounded-xl bg-cyan-600 px-8 py-3 text-white hover:bg-cyan-700 font-semibold transition whitespace-nowrap shadow-lg shadow-cyan-200"
+                            className="w-full sm:w-auto rounded-xl bg-cyan-600 px-8 py-3 text-white hover:bg-cyan-700 font-semibold transition whitespace-nowrap shadow-lg shadow-cyan-200"
                         >
                             Login to Apply
                         </button>
@@ -145,7 +145,7 @@ export default function PublicJobDetails() {
                 </div>
 
                 {/* Quick Stats */}
-                <div className="grid gap-4 md:grid-cols-4">
+                <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
                     <div className="rounded-xl bg-white p-5 shadow text-center">
                         <Wallet className="mx-auto mb-2 text-green-600" size={22} />
                         <p className="text-xs text-gray-500 mb-1">Salary</p>
@@ -252,7 +252,7 @@ export default function PublicJobDetails() {
                     <p className="text-gray-500 mb-6">Create a jobseeker account to apply for this and many other opportunities.</p>
                     <button
                         onClick={() => navigate("/jobseeker/login")}
-                        className="rounded-xl bg-cyan-600 px-10 py-3.5 text-lg text-white hover:bg-cyan-700 font-bold transition shadow-xl shadow-cyan-200"
+                        className="w-full sm:w-auto rounded-xl bg-cyan-600 px-10 py-3.5 text-lg text-white hover:bg-cyan-700 font-bold transition shadow-xl shadow-cyan-200"
                     >
                         Login as Jobseeker to Apply
                     </button>
