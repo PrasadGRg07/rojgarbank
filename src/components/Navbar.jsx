@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import logo from '../assets/logoo.jpeg';
-import { LogOut, User, ChevronDown, Menu, X,Briefcase, Settings, BookOpen, Building2, Code, Megaphone } from 'lucide-react';
+import { LogOut, User, ChevronDown, Menu, X, Briefcase, Settings, BookOpen, Building2, Code, Megaphone } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Popover, PopoverContent, PopoverTrigger } from './ui/popover';
 import { Avatar, AvatarImage } from './ui/avatar';
@@ -213,7 +213,7 @@ const Navbar = () => {
 
                     <div className="border-t border-gray-100 mt-3 pt-3 flex flex-col gap-2">
                         <Link to="/jobseeker/login" className="text-sm font-medium text-gray-700">JobSeeker Login</Link>
-                        <Link to="/jonseeker/register" className="text-sm font-medium text-gray-700">JobSeeker Register</Link>
+                        <Link to="/jobseeker/register" className="text-sm font-medium text-gray-700">JobSeeker Register</Link>
                         <Link to="/employee/login" className="text-sm font-medium text-cyan-600">Employer Login</Link>
                         <Link to="/employee/register" className="text-sm font-medium text-cyan-600">Employer Register</Link>
                     </div>
