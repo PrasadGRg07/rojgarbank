@@ -2,20 +2,28 @@ import React from "react";
 import SearchIcon from "@mui/icons-material/Search";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import MenuIcon from "@mui/icons-material/Menu";
 
-const Navbar = () => {
+const Navbar = ({ onMenuClick }) => {
   return (
-    <div className="bg-white shadow-sm h-20 px-8 flex justify-between items-center">
+    <div className="bg-white shadow-sm h-20 px-4 md:px-8 flex justify-between items-center">
 
-      <div>
-        <h2 className="text-2xl font-bold text-gray-800">
-          Dashboard
-        </h2>
+      <div className="flex items-center gap-3">
+        {/* Hamburger — mobile only */}
+        <button
+          onClick={onMenuClick}
+          className="lg:hidden text-gray-700 hover:text-gray-900"
+          aria-label="Open sidebar"
+        >
+          <MenuIcon fontSize="medium" />
+        </button>
 
-        <p className="text-gray-500 text-sm">
-          Welcome back, Super Admin 👋
-        </p>
+        <div>
+          <h2 className="text-2xl font-bold text-gray-800">Dashboard</h2>
+          <p className="text-gray-500 text-sm">Welcome back, Super Admin 👋</p>
+        </div>
       </div>
+
 
       <div className="flex items-center gap-5">
 
