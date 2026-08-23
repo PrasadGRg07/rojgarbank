@@ -152,7 +152,10 @@ const JobSeekerRegister = () => {
                  onSuccess={async (credentialResponse) => {
                    try {
                      setLoading(true);
-                     const res = await api.post('/auth/google-login/', { credential: credentialResponse.credential });
+                     const res = await api.post('/auth/google-login/', { 
+                        credential: credentialResponse.credential,
+                        role: 'jobseeker'
+                     });
                      if (res.status >= 200 && res.status < 300) {
                         setAuthSession(res.data.user, res.data.access, res.data.refresh);
                         setSuccess("🎉 Google login successful!");
