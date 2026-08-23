@@ -17,7 +17,7 @@ import api from "../../lib/api";
 
 const EmployerLogin = () => {
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { login, setAuthSession } = useAuth();
 
   const [input, setInput] = useState({
     email: "",
@@ -116,16 +116,14 @@ const EmployerLogin = () => {
               </div>
             )}
             
-            <div className="mb-6 flex flex-col gap-4 items-center">
+             <div className="mb-6 flex flex-col gap-4 items-center">
                <GoogleLogin
                  onSuccess={async (credentialResponse) => {
                    try {
                      setLoading(true);
                      const res = await api.post('/auth/google-login/', { credential: credentialResponse.credential });
                      if (res.status >= 200 && res.status < 300) {
-                        localStorage.setItem("accessToken", res.data.access);
-                        localStorage.setItem("refreshToken", res.data.refresh);
-                        localStorage.setItem("userRole", res.data.user.role);
+                        setAuthSession(res.data.user, res.data.access, res.data.refresh);
                         navigate(`/${res.data.user.role}/dashboard`);
                      }
                    } catch (err) {

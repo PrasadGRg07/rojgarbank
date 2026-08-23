@@ -17,9 +17,11 @@ import {
 } from "lucide-react";
 import { GoogleLogin } from '@react-oauth/google';
 import api from "../../lib/api";
+import { useAuth } from "../../context/AuthContext";
 
 const JobSeekerRegister = () => {
   const navigate = useNavigate();
+  const { setAuthSession } = useAuth();
 
   const [input, setInput] = useState({
     firstname: "",
@@ -152,9 +154,7 @@ const JobSeekerRegister = () => {
                      setLoading(true);
                      const res = await api.post('/auth/google-login/', { credential: credentialResponse.credential });
                      if (res.status >= 200 && res.status < 300) {
-                        localStorage.setItem("access", res.data.access);
-                        localStorage.setItem("refresh", res.data.refresh);
-                        localStorage.setItem("userRole", res.data.user.role);
+                        setAuthSession(res.data.user, res.data.access, res.data.refresh);
                         setSuccess("🎉 Google login successful!");
                         setTimeout(() => navigate(`/${res.data.user.role}/dashboard`), 2000);
                      }

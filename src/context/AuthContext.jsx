@@ -181,6 +181,15 @@ export function AuthProvider({ children }) {
     }
   };
 
+  // ================= SET AUTH (Google Login) =================
+  const setAuthSession = (userData, access, refresh) => {
+    const normalizedUser = normalizeUser(userData);
+    localStorage.setItem("access", access);
+    localStorage.setItem("refresh", refresh);
+    localStorage.setItem("user", JSON.stringify(normalizedUser));
+    setUser(normalizedUser);
+  };
+
   // ================= LOGOUT =================
 
   const logout = () => {
@@ -210,6 +219,7 @@ export function AuthProvider({ children }) {
         adminLogin,
         superAdminLogin,
         jobseekerLogin,
+        setAuthSession,
         logout,
         updateUser,
       }}
