@@ -1,14 +1,24 @@
-import { Bell, Search, UserCircle, ChevronDown } from "lucide-react";
+import { Bell, Search, UserCircle, ChevronDown, Menu } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
-export default function Header() {
+export default function Header({ onMenuClick }) {
   const navigate = useNavigate();
   return (
-    <header className="h-16 bg-white border-b border-gray-200 px-6 flex items-center justify-between">
+    <header className="h-16 bg-white border-b border-gray-200 px-4 md:px-6 flex items-center justify-between">
       {/* Left Section */}
-      <div>
-        <h1 className="text-2xl font-bold text-gray-800">Admin Dashboard</h1>
-        <p className="text-sm text-gray-500">Welcome back, Admin</p>
+      <div className="flex items-center gap-3 min-w-0">
+        {/* Hamburger — mobile only */}
+        <button
+          onClick={onMenuClick}
+          className="lg:hidden shrink-0 text-gray-700 hover:text-gray-900"
+          aria-label="Open sidebar"
+        >
+          <Menu size={24} />
+        </button>
+        <div className="min-w-0">
+          <h1 className="text-lg md:text-2xl font-bold text-gray-800 truncate">Admin Dashboard</h1>
+          <p className="text-sm text-gray-500 hidden sm:block">Welcome back, Admin</p>
+        </div>
       </div>
 
       {/* Right Section */}
