@@ -148,6 +148,7 @@ const Footer = () => {
             <span className="text-white font-medium">Rojgar Bank</span>. All
             Rights Reserved.
           </p>
+          <span className="text-white font-medium">Developed by softvistacreations</span>
           {/* <span className="text-white font-medium">Developed by Prasad Gurung</span> */}
         </div>
       </div>
