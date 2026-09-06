@@ -2,7 +2,40 @@ import React, { useEffect, useState } from "react";
 import Jobcards from "./Jobcards";
 import { getPublicJobs } from "../lib/jobseekerApi";
 
-const LatestJobs = () => {
+// Map the header pill labels → what to look for in job.mainCategory
+const CATEGORY_MAP = {
+  'IT & Tech': ['IT', 'Tech', 'Software', 'Information Technology', 'Technology'],
+  'Banking': ['Banking', 'Finance', 'Financial'],
+  'Marketing': ['Marketing', 'Sales', 'Advertising'],
+  'Engineering': ['Engineering', 'Civil', 'Mechanical', 'Electrical'],
+  'Education': ['Education', 'Teaching', 'Training'],
+};
+
+function matchesCategory(job, selectedCategory) {
+  if (!selectedCategory) return true;
+  const keywords = CATEGORY_MAP[selectedCategory] || [selectedCategory];
+  const cat = (job.mainCategory || job.main_category || '').toLowerCase();
+  const sub = (job.subCategory || job.sub_category || '').toLowerCase();
+  const title = (job.title || '').toLowerCase();
+  return keywords.some(kw =>
+    cat.includes(kw.toLowerCase()) ||
+    sub.includes(kw.toLowerCase()) ||
+    title.includes(kw.toLowerCase())
+  );
+}
+
+function matchesSearch(job, query) {
+  if (!query) return true;
+  const q = query.toLowerCase();
+  return (
+    (job.title || '').toLowerCase().includes(q) ||
+    (job.company || job.employer_company_name || job.employee_name || '').toLowerCase().includes(q) ||
+    (job.district || '').toLowerCase().includes(q) ||
+    (job.mainCategory || '').toLowerCase().includes(q)
+  );
+}
+
+const LatestJobs = ({ selectedCategory = '', searchQuery = '' }) => {
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -25,11 +58,25 @@ const LatestJobs = () => {
     fetchJobs();
   }, []);
 
+  // Apply category + search filters
+  const filteredJobs = jobs.filter(job =>
+    matchesCategory(job, selectedCategory) && matchesSearch(job, searchQuery)
+  );
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 my-10 sm:my-20">
-      <h2 className="text-2xl sm:text-3xl font-bold text-left">
-        <span className="text-[#6A38C2]">Latest &amp; Trending </span>Job Openings
-      </h2>
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-2">
+        <h2 className="text-2xl sm:text-3xl font-bold text-left">
+          <span className="text-[#6A38C2]">Latest &amp; Trending </span>Job Openings
+        </h2>
+        {(selectedCategory || searchQuery) && (
+          <p className="text-sm text-gray-500">
+            {filteredJobs.length} job{filteredJobs.length !== 1 ? 's' : ''} found
+            {selectedCategory ? ` in "${selectedCategory}"` : ''}
+            {searchQuery ? ` for "${searchQuery}"` : ''}
+          </p>
+        )}
+      </div>
 
       {loading && (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 my-5">
@@ -60,15 +107,17 @@ const LatestJobs = () => {
         <div className="text-center text-gray-500 py-10">{error}</div>
       )}
 
-      {!loading && !error && jobs.length === 0 && (
+      {!loading && !error && filteredJobs.length === 0 && (
         <div className="text-center text-gray-500 py-10">
-          No job openings available at the moment. Check back soon!
+          {selectedCategory || searchQuery
+            ? `No jobs found${selectedCategory ? ` in "${selectedCategory}"` : ''}${searchQuery ? ` matching "${searchQuery}"` : ''}. Try a different filter.`
+            : 'No job openings available at the moment. Check back soon!'}
         </div>
       )}
 
-      {!loading && !error && jobs.length > 0 && (
+      {!loading && !error && filteredJobs.length > 0 && (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 my-5">
-          {jobs.map((job) => (
+          {filteredJobs.map((job) => (
             <Jobcards key={job.id} job={job} />
           ))}
         </div>

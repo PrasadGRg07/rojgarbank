@@ -96,8 +96,9 @@ export default function PublicJobDetails() {
         );
     }
 
-    const company = job.company || job.employee_name || "Company";
+    const company = job.employer_company_name || job.company || job.employee_name || "Company";
     const location = job.district ? `${job.district}, Nepal` : "Nepal";
+    const profilePic = job.employer_profile_picture || null;
 
     return (
         <div className="flex flex-col min-h-screen bg-gray-50">
@@ -108,31 +109,49 @@ export default function PublicJobDetails() {
                 {/* Header Card */}
                 <div className="rounded-xl bg-white p-8 shadow">
                     <div className="flex flex-col sm:flex-row items-start justify-between gap-4">
-                        <div>
-                            <h1 className="text-3xl font-bold text-gray-900">{job.title}</h1>
-                            <div className="mt-3 flex flex-wrap gap-4 text-gray-600">
-                                <div className="flex items-center gap-2">
-                                    <Building2 size={16} className="text-cyan-500" />
-                                    <span className="font-medium">{company}</span>
-                                </div>
-                                <div className="flex items-center gap-2">
-                                    <MapPin size={16} className="text-red-500" />
-                                    <span>{location}</span>
-                                </div>
-                                <div className="flex items-center gap-2">
-                                    <Briefcase size={16} className="text-green-500" />
-                                    <span>{job.employmentType || "Full Time"}</span>
-                                </div>
-                                {job.workMode && (
-                                    <div className="flex items-center gap-2">
-                                        <Globe size={16} className="text-purple-500" />
-                                        <span>{job.workMode}</span>
-                                    </div>
+                        <div className="flex items-start gap-4">
+                            {/* Employer profile picture */}
+                            <div className="w-16 h-16 rounded-xl overflow-hidden shrink-0 bg-cyan-100 flex items-center justify-center shadow">
+                                {profilePic ? (
+                                    <img
+                                        src={profilePic}
+                                        alt={company}
+                                        className="w-full h-full object-cover"
+                                        onError={(e) => {
+                                            e.target.style.display = 'none';
+                                            e.target.parentNode.innerHTML = `<span class="text-cyan-700 font-bold text-2xl">${company.charAt(0).toUpperCase()}</span>`;
+                                        }}
+                                    />
+                                ) : (
+                                    <span className="text-cyan-700 font-bold text-2xl">{company.charAt(0).toUpperCase()}</span>
                                 )}
                             </div>
-                            <div className="flex flex-wrap gap-2 mt-4">
-                                {job.jobLevel && <span className="rounded-full bg-cyan-100 px-3 py-1 text-xs font-medium text-cyan-700">{job.jobLevel}</span>}
-                                {job.mainCategory && <span className="rounded-full bg-green-100 px-3 py-1 text-xs font-medium text-green-700">{job.mainCategory}</span>}
+                            <div>
+                                <h1 className="text-3xl font-bold text-gray-900">{job.title}</h1>
+                                <div className="mt-3 flex flex-wrap gap-4 text-gray-600">
+                                    <div className="flex items-center gap-2">
+                                        <Building2 size={16} className="text-cyan-500" />
+                                        <span className="font-medium">{company}</span>
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                        <MapPin size={16} className="text-red-500" />
+                                        <span>{location}</span>
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                        <Briefcase size={16} className="text-green-500" />
+                                        <span>{job.employmentType || "Full Time"}</span>
+                                    </div>
+                                    {job.workMode && (
+                                        <div className="flex items-center gap-2">
+                                            <Globe size={16} className="text-purple-500" />
+                                            <span>{job.workMode}</span>
+                                        </div>
+                                    )}
+                                </div>
+                                <div className="flex flex-wrap gap-2 mt-4">
+                                    {job.jobLevel && <span className="rounded-full bg-cyan-100 px-3 py-1 text-xs font-medium text-cyan-700">{job.jobLevel}</span>}
+                                    {job.mainCategory && <span className="rounded-full bg-green-100 px-3 py-1 text-xs font-medium text-green-700">{job.mainCategory}</span>}
+                                </div>
                             </div>
                         </div>
                         <button

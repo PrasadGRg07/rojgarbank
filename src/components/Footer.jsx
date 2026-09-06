@@ -101,16 +101,6 @@ const Footer = () => {
                   Events
                 </Link>
               </li>
-
-              <li>
-                <Link
-                  to="/services"
-                  className="flex items-center gap-2 text-white hover:text-cyan-400 transition"
-                >
-                  <ArrowRight className="w-4 h-4" />
-                  Services
-                </Link>
-              </li>
             </ul>
           </div>
 
@@ -123,15 +113,20 @@ const Footer = () => {
                 <Mail className="w-5 h-5 text-white mt-1" />
                 <div>
                   <p className="text-white text-xs">Email</p>
-                  <p className="text-white text-sm">info@rojgarbank.com</p>
+                  <p className="text-white text-sm">prabesh@hamrojobs.com.np</p>
                 </div>
               </div>
 
               <div className="flex items-start gap-3">
-                <Phone className="w-5 h-5 text-white mt-1" />
+                <Phone className="w-5 h-5 text-white mt-1 shrink-0" />
                 <div>
                   <p className="text-white text-xs">Phone</p>
-                  <p className="text-white text-sm">+977-9800000000</p>
+                  <p className="text-white text-sm">
+                    +977-9813040854
+                  </p>
+                  <p className="text-white text-sm">
+                    01-5913732 / 01-5912732
+                  </p>
                 </div>
               </div>
 
@@ -139,7 +134,7 @@ const Footer = () => {
                 <MapPin className="w-5 h-5 text-white mt-1" />
                 <div>
                   <p className="text-white text-xs">Address</p>
-                  <p className="text-white text-sm">Kathmandu, Nepal</p>
+                  <p className="text-white text-sm">Rojgar Bank, Mitra Park, 07,kathmandu, Nepal</p>
                 </div>
               </div>
             </div>
@@ -153,6 +148,7 @@ const Footer = () => {
             <span className="text-white font-medium">Rojgar Bank</span>. All
             Rights Reserved.
           </p>
+          {/* <span className="text-white font-medium">Developed by Prasad Gurung</span> */}
         </div>
       </div>
     </footer>

@@ -135,7 +135,11 @@ export const EXPERIENCE_LEVELS = [
   "1-2 Years",
   "2-3 Years",
   "3-5 Years",
-  "5+ Years",
+  "5-7 Years",
+  "7-10 Years",
+  "10-15 Years",
+  "15-20 Years",
+  "20+ Years",
 ];
 
 
@@ -182,7 +186,7 @@ export const CURRENCIES = [
 // ===============================
 
 export const GENDER_OPTIONS = [
-  "Both",
+  "Any",
   "Male",
   "Female",
 ];

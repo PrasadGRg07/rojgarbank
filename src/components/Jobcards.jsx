@@ -2,12 +2,12 @@ import React from "react";
 import { Badge } from "./ui/badge";
 import {
   MapPin,
-  Building2,
   Clock3,
   Briefcase,
   Banknote,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+
 
 const Jobcards = ({ job }) => {
   const navigate = useNavigate();
@@ -39,8 +39,9 @@ const Jobcards = ({ job }) => {
     return `${Math.floor(days / 30)} month${days >= 60 ? "s" : ""} ago`;
   };
 
-  // Real field names from the API response
-  const company     = job.company || job.employee_name || "Company";
+  // Company display name – prefer employer_company_name (from EmployeeProfile), fall back to others
+  const company     = job.employer_company_name || job.company || job.employee_name || "Company";
+  const profilePic  = job.employer_profile_picture || null;
   const location    = job.district ? `${job.district}, Nepal` : "Nepal";
   const title       = job.title || "Job Opening";
   const empType     = job.employmentType || "";
@@ -55,8 +56,17 @@ const Jobcards = ({ job }) => {
       {/* Company header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div className="flex items-center gap-3 sm:gap-4">
-          <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-cyan-100 flex items-center justify-center shrink-0">
-            <Building2 className="w-6 h-6 sm:w-7 sm:h-7 text-cyan-600" />
+          <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl overflow-hidden shrink-0 bg-cyan-100 flex items-center justify-center">
+            {profilePic ? (
+              <img
+                src={profilePic}
+                alt={company}
+                className="w-full h-full object-cover"
+                onError={(e) => { e.target.style.display = 'none'; e.target.parentNode.innerHTML = `<span class="text-cyan-700 font-bold text-lg">${company.charAt(0).toUpperCase()}</span>`; }}
+              />
+            ) : (
+              <span className="text-cyan-700 font-bold text-lg">{company.charAt(0).toUpperCase()}</span>
+            )}
           </div>
 
           <div>

@@ -1,10 +1,11 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Button } from './ui/button'
-import { Search, MapPin, Briefcase } from 'lucide-react'
+import { Search, MapPin } from 'lucide-react'
 import image from '../assets/homee.png'
 
-const Header = () => {
-    const [query, setQuery] = useState('')
+const CATEGORIES = ['IT & Tech', 'Banking', 'Marketing', 'Engineering', 'Education'];
+
+const Header = ({ selectedCategory = '', onCategorySelect, searchQuery = '', onSearchChange }) => {
 
     return (
         <div className="relative w-full overflow-hidden">
@@ -47,8 +48,8 @@ const Header = () => {
                             <Search className="w-4 h-4 text-gray-400 shrink-0" />
                             <input
                                 type="text"
-                                value={query}
-                                onChange={e => setQuery(e.target.value)}
+                                value={searchQuery}
+                                onChange={e => onSearchChange && onSearchChange(e.target.value)}
                                 placeholder="Job title, keyword..."
                                 className="outline-none text-sm text-gray-700 w-full placeholder-gray-400 bg-transparent"
                             />
@@ -74,12 +75,22 @@ const Header = () => {
                     {/* Quick category pills */}
                     <div className="flex flex-wrap items-center justify-center gap-2 mt-5">
                         <span className="text-white/50 text-xs">Popular:</span>
-                        {['IT & Tech', 'Banking', 'Marketing', 'Engineering', 'Education'].map(tag => (
-                            <button key={tag}
-                                className="text-xs text-white/80 hover:text-white bg-white/10 hover:bg-white/20 border border-white/15 px-3 py-1 rounded-full transition-all duration-150">
-                                {tag}
-                            </button>
-                        ))}
+                        {CATEGORIES.map(tag => {
+                            const isActive = selectedCategory === tag;
+                            return (
+                                <button
+                                    key={tag}
+                                    onClick={() => onCategorySelect && onCategorySelect(isActive ? '' : tag)}
+                                    className={`text-xs border px-3 py-1 rounded-full transition-all duration-150 ${
+                                        isActive
+                                            ? 'bg-cyan-500 text-white border-cyan-400 shadow-lg shadow-cyan-500/40'
+                                            : 'text-white/80 hover:text-white bg-white/10 hover:bg-white/20 border-white/15'
+                                    }`}
+                                >
+                                    {tag}
+                                </button>
+                            );
+                        })}
                     </div>
                 </div>
             </div>

@@ -15,6 +15,10 @@ import Blogs from "./components/Blogs";
 import Blogsdetails from "./components/Blogsdetails";
 import Training from "./components/Training";
 import Events from "./components/Events";
+import ResumeBuilder from "./components/ResumeBuilder";
+import JobPlacement from "./components/JobPlacement";
+import CareerCounseling from "./components/CareerCounseling";
+import SkillAssessment from "./components/SkillAssessment";
 import PublicJobDetails from "./components/PublicJobDetails";
 import OTPVerify from "./panels/OTPVerify";
 import { GoogleOAuthProvider } from "@react-oauth/google";
@@ -265,6 +269,22 @@ const appRouter = createBrowserRouter([
     element: <Training />,
   },
   {
+    path: "/services/resume",
+    element: <ResumeBuilder />,
+  },
+  {
+    path: "/services/placement",
+    element: <JobPlacement />,
+  },
+  {
+    path: "/services/counseling",
+    element: <CareerCounseling />,
+  },
+  {
+    path: "/services/assessment",
+    element: <SkillAssessment />,
+  },
+  {
     path: "/events",
     element: <Events />,
   },
@@ -350,7 +370,7 @@ const appRouter = createBrowserRouter([
         path: "permissions",
         element: <Permissions />,
       },
-      
+
       {
         path: "special-accounts",
         element: <SpecialAccounts />,

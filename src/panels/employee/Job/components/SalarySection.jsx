@@ -1,5 +1,13 @@
 import { CURRENCIES, SALARY_TYPES } from "../utils/constants";
 
+// Format a number as NPR Nepali style (e.g. 100000 → "1,00,000")
+function formatNPR(value) {
+  if (!value && value !== 0) return "";
+  const num = Number(value);
+  if (isNaN(num)) return "";
+  return num.toLocaleString("en-IN"); // en-IN gives lakh/crore grouping
+}
+
 export default function SalarySection({
   data,
   onChange,
@@ -19,7 +27,7 @@ export default function SalarySection({
       {/* Header */}
       <div className="mb-6">
         <h2 className="text-xl font-semibold text-slate-800">
-          Salary & Compensation
+          Salary &amp; Compensation
         </h2>
 
         <p className="mt-1 text-sm text-slate-500">
@@ -96,9 +104,18 @@ export default function SalarySection({
             name="salaryMin"
             value={data.salaryMin}
             onChange={handleChange}
-            placeholder="50000"
+            placeholder="e.g. 100000"
+            min="0"
+            max="99999999"
+            step="1000"
             className="w-full rounded-lg border border-slate-300 p-3 focus:border-blue-500 focus:outline-none"
           />
+
+          {data.salaryMin && (
+            <p className="mt-1 text-xs text-slate-500 font-medium">
+              {data.currency || "NPR"} {formatNPR(data.salaryMin)}
+            </p>
+          )}
 
           {errors.salaryMin && (
             <p className="mt-1 text-sm text-red-500">
@@ -118,9 +135,18 @@ export default function SalarySection({
             name="salaryMax"
             value={data.salaryMax}
             onChange={handleChange}
-            placeholder="80000"
+            placeholder="e.g. 150000"
+            min="0"
+            max="99999999"
+            step="1000"
             className="w-full rounded-lg border border-slate-300 p-3 focus:border-blue-500 focus:outline-none"
           />
+
+          {data.salaryMax && (
+            <p className="mt-1 text-xs text-slate-500 font-medium">
+              {data.currency || "NPR"} {formatNPR(data.salaryMax)}
+            </p>
+          )}
 
           {errors.salaryMax && (
             <p className="mt-1 text-sm text-red-500">

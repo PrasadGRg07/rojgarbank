@@ -53,7 +53,7 @@ export default function SuperAdminLogin() {
 
         <div className="text-center mb-8">
 
-          <h1 className="text-3xl font-bold text-purple-700">
+          <h1 className="text-3xl font-bold text-blue-700">
             Super Admin Login
           </h1>
 
@@ -89,7 +89,7 @@ export default function SuperAdminLogin() {
                 placeholder="Enter username"
                 value={formData.username}
                 onChange={handleChange}
-                className="w-full border rounded-lg pl-10 pr-4 py-3 outline-none focus:ring-2 focus:ring-purple-500"
+                className="w-full border rounded-lg pl-10 pr-4 py-3 outline-none focus:ring-2 focus:ring-blue-500"
                 required
               />
 
@@ -115,7 +115,7 @@ export default function SuperAdminLogin() {
                 placeholder="Enter password"
                 value={formData.password}
                 onChange={handleChange}
-                className="w-full border rounded-lg pl-10 pr-12 py-3 outline-none focus:ring-2 focus:ring-purple-500"
+                className="w-full border rounded-lg pl-10 pr-12 py-3 outline-none focus:ring-2 focus:ring-blue-500"
                 required
               />
 
@@ -140,7 +140,7 @@ export default function SuperAdminLogin() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-purple-700 hover:bg-purple-800 text-white py-3 rounded-lg font-semibold transition"
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-semibold transition"
           >
             {loading ? "Signing In..." : "Login"}
           </button>

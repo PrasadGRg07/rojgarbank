@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Navbar from './Navbar'
 import Header from './Header'
 import LatestJobs from './LatestJobs'
@@ -11,18 +11,25 @@ import CTABanner from './Ctabanner'
 
 
 const Home = () => {
+  const [selectedCategory, setSelectedCategory] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
+
   return (
     <div>
-      <Navbar> </Navbar>
-      <Header />
+      <Navbar />
+      <Header
+        selectedCategory={selectedCategory}
+        onCategorySelect={setSelectedCategory}
+        searchQuery={searchQuery}
+        onSearchChange={setSearchQuery}
+      />
       <Topemployers/>
-      <LatestJobs/>
+      <LatestJobs selectedCategory={selectedCategory} searchQuery={searchQuery} />
       <Whyus/>
       <FeaturesSection/>
       <CTABanner/>
       <Faq/>
       <Footer/>
-    
     </div>
   )
 }

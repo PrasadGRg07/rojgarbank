@@ -150,32 +150,53 @@ export default function JobDetails() {
             {/* Header Card */}
             <div className="rounded-xl bg-white p-8 shadow">
                 <div className="flex flex-col sm:flex-row items-start justify-between gap-4">
-                    <div>
-                        <h1 className="text-3xl font-bold text-gray-900">{job.title}</h1>
-                        <div className="mt-3 flex flex-wrap gap-4 text-gray-600">
-                            <div className="flex items-center gap-2">
-                                <Building2 size={16} className="text-blue-500" />
-                                <span className="font-medium">{job.company}</span>
-                            </div>
-                            <div className="flex items-center gap-2">
-                                <MapPin size={16} className="text-red-500" />
-                                <span>{[job.municipality, job.district, job.province].filter(Boolean).join(", ")}</span>
-                            </div>
-                            <div className="flex items-center gap-2">
-                                <Briefcase size={16} className="text-green-500" />
-                                <span>{job.employmentType}</span>
-                            </div>
-                            {job.workMode && (
-                                <div className="flex items-center gap-2">
-                                    <Globe size={16} className="text-purple-500" />
-                                    <span>{job.workMode}</span>
-                                </div>
+                    <div className="flex items-start gap-4">
+                        {/* Employer profile picture */}
+                        <div className="w-16 h-16 rounded-xl overflow-hidden shrink-0 bg-blue-100 flex items-center justify-center shadow">
+                            {job.employer_profile_picture ? (
+                                <img
+                                    src={job.employer_profile_picture}
+                                    alt={job.employer_company_name || job.company || 'Company'}
+                                    className="w-full h-full object-cover"
+                                    onError={(e) => {
+                                        e.target.style.display = 'none';
+                                        const name = job.employer_company_name || job.company || 'C';
+                                        e.target.parentNode.innerHTML = `<span class="text-blue-700 font-bold text-2xl">${name.charAt(0).toUpperCase()}</span>`;
+                                    }}
+                                />
+                            ) : (
+                                <span className="text-blue-700 font-bold text-2xl">
+                                    {(job.employer_company_name || job.company || 'C').charAt(0).toUpperCase()}
+                                </span>
                             )}
                         </div>
-                        <div className="mt-3 flex flex-wrap gap-2">
-                            {job.jobLevel && <span className="rounded-full bg-blue-100 px-3 py-1 text-xs font-medium text-blue-700">{job.jobLevel}</span>}
-                            {job.mainCategory && <span className="rounded-full bg-green-100 px-3 py-1 text-xs font-medium text-green-700">{job.mainCategory}</span>}
-                            {job.department && <span className="rounded-full bg-purple-100 px-3 py-1 text-xs font-medium text-purple-700">{job.department}</span>}
+                        <div>
+                            <h1 className="text-3xl font-bold text-gray-900">{job.title}</h1>
+                            <div className="mt-3 flex flex-wrap gap-4 text-gray-600">
+                                <div className="flex items-center gap-2">
+                                    <Building2 size={16} className="text-blue-500" />
+                                    <span className="font-medium">{job.employer_company_name || job.company}</span>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                    <MapPin size={16} className="text-red-500" />
+                                    <span>{[job.municipality, job.district, job.province].filter(Boolean).join(", ")}</span>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                    <Briefcase size={16} className="text-green-500" />
+                                    <span>{job.employmentType}</span>
+                                </div>
+                                {job.workMode && (
+                                    <div className="flex items-center gap-2">
+                                        <Globe size={16} className="text-purple-500" />
+                                        <span>{job.workMode}</span>
+                                    </div>
+                                )}
+                            </div>
+                            <div className="mt-3 flex flex-wrap gap-2">
+                                {job.jobLevel && <span className="rounded-full bg-blue-100 px-3 py-1 text-xs font-medium text-blue-700">{job.jobLevel}</span>}
+                                {job.mainCategory && <span className="rounded-full bg-green-100 px-3 py-1 text-xs font-medium text-green-700">{job.mainCategory}</span>}
+                                {job.department && <span className="rounded-full bg-purple-100 px-3 py-1 text-xs font-medium text-purple-700">{job.department}</span>}
+                            </div>
                         </div>
                     </div>
                     <button
