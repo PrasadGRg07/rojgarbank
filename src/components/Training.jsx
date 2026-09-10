@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect } from "react";
 import { getTrainings, createEnrollment } from "../lib/trainingApi";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
+import PageLoader from "./PageLoader";
 import {
   User,
   Clock,
@@ -184,8 +185,8 @@ const Training = () => {
 
         <div className="max-w-3xl mx-auto grid grid-cols-1 sm:grid-cols-2 gap-6">
           {loading ? (
-            <div className="col-span-2 text-center py-10 text-slate-500">
-              Loading training programs...
+            <div className="col-span-2 text-center py-10">
+              <PageLoader message="Loading training programs..." />
             </div>
           ) : trainings.length === 0 ? (
             <div className="col-span-2 text-center py-10 text-slate-500">

@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Navbar from './Navbar'
+import PageLoader from './PageLoader'
 import ceo from '../assets/ceo.png'
 import cfo from '../assets/cfo.png'
 import manager from '../assets/manager.png'
@@ -117,6 +118,24 @@ function TeamCard({ member }) {
 }
 
 const Aboutus = () => {
+    const [loading, setLoading] = useState(true)
+
+    useEffect(() => {
+        const timer = setTimeout(() => setLoading(false), 1200)
+        return () => clearTimeout(timer)
+    }, [])
+
+    if (loading) {
+        return (
+            <div className="min-h-screen bg-[#F8F7F4]">
+                <Navbar />
+                <div className="flex items-center justify-center py-40">
+                    <PageLoader message="Please wait..." />
+                </div>
+            </div>
+        )
+    }
+
     return (
       <div className="bg-[#F8F7F4] min-h-screen">
         <div className="sticky top-0 z-50">

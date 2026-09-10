@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { getEvents } from "../lib/eventApi";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
+import PageLoader from "./PageLoader";
 
 import {
   CalendarDays,
@@ -170,8 +171,8 @@ const Events = () => {
         </div>{" "}
         <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {loading ? (
-            <div className="col-span-3 text-center py-16 text-slate-500">
-              Loading events...
+            <div className="col-span-3 text-center py-16">
+              <PageLoader message="Loading events..." />
             </div>
           ) : events.length === 0 ? (
             <div className="col-span-3 text-center py-16 text-slate-500">
