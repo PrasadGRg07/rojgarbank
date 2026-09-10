@@ -98,7 +98,7 @@ export default function MyProfile() {
               <img
                 src={profile.profile_picture}
                 alt={displayName}
-                className="w-24 h-24 rounded-2xl object-cover ring-4 ring-white/30"
+                className="w-24 h-24 rounded-2xl object-contain bg-white p-1 ring-4 ring-white/30"
                 onError={(e) => {
                   e.target.style.display = "none";
                   e.target.nextSibling.style.display = "flex";

@@ -56,12 +56,12 @@ const Jobcards = ({ job }) => {
       {/* Company header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div className="flex items-center gap-3 sm:gap-4">
-          <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl overflow-hidden shrink-0 bg-cyan-100 flex items-center justify-center">
+          <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl overflow-hidden shrink-0 bg-white border border-gray-200 flex items-center justify-center">
             {profilePic ? (
               <img
                 src={profilePic}
                 alt={company}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-contain p-1"
                 onError={(e) => { e.target.style.display = 'none'; e.target.parentNode.innerHTML = `<span class="text-cyan-700 font-bold text-lg">${company.charAt(0).toUpperCase()}</span>`; }}
               />
             ) : (

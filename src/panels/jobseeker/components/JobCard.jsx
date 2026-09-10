@@ -25,7 +25,7 @@ export default function JobCard({
           <img
             src={logo}
             alt={company}
-            className="h-14 w-14 rounded-lg border object-cover"
+            className="h-14 w-14 rounded-lg border bg-white object-contain p-1"
           />
 
           <div>

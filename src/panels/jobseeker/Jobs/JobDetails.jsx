@@ -152,12 +152,12 @@ export default function JobDetails() {
                 <div className="flex flex-col sm:flex-row items-start justify-between gap-4">
                     <div className="flex items-start gap-4">
                         {/* Employer profile picture */}
-                        <div className="w-16 h-16 rounded-xl overflow-hidden shrink-0 bg-blue-100 flex items-center justify-center shadow">
+                        <div className="w-16 h-16 rounded-xl overflow-hidden shrink-0 bg-white border border-gray-200 flex items-center justify-center shadow">
                             {job.employer_profile_picture ? (
                                 <img
                                     src={job.employer_profile_picture}
                                     alt={job.employer_company_name || job.company || 'Company'}
-                                    className="w-full h-full object-cover"
+                                    className="w-full h-full object-contain p-1"
                                     onError={(e) => {
                                         e.target.style.display = 'none';
                                         const name = job.employer_company_name || job.company || 'C';

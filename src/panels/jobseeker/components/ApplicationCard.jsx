@@ -48,7 +48,7 @@ export default function ApplicationCard({
               "https://via.placeholder.com/70x70?text=Logo"
             }
             alt={company}
-            className="h-16 w-16 rounded-xl border object-cover"
+            className="h-16 w-16 rounded-xl border bg-white object-contain p-1"
           />
 
           <div>
