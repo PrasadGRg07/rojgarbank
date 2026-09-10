@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Loader2 } from "lucide-react";
 
 import Navbar from "./Navbar";
 import Footer from "./Footer";
@@ -41,8 +41,9 @@ const Blogs = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        Loading blogs...
+      <div className="min-h-screen flex flex-col items-center justify-center gap-3">
+        <Loader2 className="h-10 w-10 animate-spin text-cyan-600" />
+        <p className="text-gray-500 text-lg">Please wait...</p>
       </div>
     );
   }

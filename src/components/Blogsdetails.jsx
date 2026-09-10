@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { Loader2 } from "lucide-react";
 
 import Navbar from "./Navbar";
 import Footer from "./Footer";
@@ -41,8 +42,9 @@ export default function BlogDetails() {
     return (
       <>
         <Navbar />
-        <div className="max-w-4xl mx-auto py-20 text-center">
-          Loading...
+        <div className="max-w-4xl mx-auto py-20 flex flex-col items-center justify-center gap-3">
+          <Loader2 className="h-10 w-10 animate-spin text-cyan-600" />
+          <p className="text-gray-500 text-lg">Please wait...</p>
         </div>
         <Footer />
       </>

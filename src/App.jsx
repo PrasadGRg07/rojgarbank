@@ -21,6 +21,7 @@ import CareerCounseling from "./components/CareerCounseling";
 import SkillAssessment from "./components/SkillAssessment";
 import PublicJobDetails from "./components/PublicJobDetails";
 import OTPVerify from "./panels/OTPVerify";
+import WelcomePopup from "./components/WelcomePopup";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 // Employee
 import Dashboard from "./panels/employee/Dashboard";
@@ -1100,6 +1101,7 @@ function App() {
   return (
     <GoogleOAuthProvider clientId={googleClientId}>
       <AuthProvider>
+        <WelcomePopup />
         <RouterProvider
           router={appRouter}
           future={{ v7_startTransition: true }}

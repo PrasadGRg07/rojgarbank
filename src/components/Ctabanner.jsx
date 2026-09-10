@@ -13,11 +13,11 @@ const stats = [
 const Ctabanner = () => {
     return (
         <section className="px-4 md:px-8 py-16">
-            <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-cyan-400 via-sky-400 to-blue-300 px-6 py-14 md:px-12 md:py-16 text-white shadow-2xl">
+            <div className="relative overflow-hidden rounded-3xl bg-[#0891b2] px-6 py-14 md:px-12 md:py-16 text-white shadow-2xl">
 
                 {/* Background Decorations */}
                 <div className="absolute -top-24 -left-20 h-64 w-64 rounded-full bg-white/10 blur-3xl"></div>
-                <div className="absolute -bottom-24 -right-20 h-72 w-72 rounded-full bg-cyan-200/20 blur-3xl"></div>
+                <div className="absolute -bottom-24 -right-20 h-72 w-72 rounded-full bg-white/5 blur-3xl"></div>
 
                 {/* Content */}
                 <div className="relative z-10 max-w-4xl mx-auto text-center">
