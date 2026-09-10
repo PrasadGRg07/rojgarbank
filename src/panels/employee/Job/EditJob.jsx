@@ -54,9 +54,10 @@ const updateJobState = (patch) => {
     try {
       setSaving(true);
 
-      await updateJob(id, job);
+      // Reset status to draft so the job can be re-submitted for admin review
+      await updateJob(id, { ...job, status: "draft" });
 
-      alert("Job updated successfully.");
+      alert("Job updated successfully. Please preview and re-submit for review.");
 
       navigate("/employee/dashboard/jobs");
     } catch (err) {
@@ -87,7 +88,7 @@ const updateJobState = (patch) => {
   const handlePreview = () => {
   navigate("/employee/dashboard/jobs/preview", {
     state: {
-      job,
+      job: { ...job, status: job.status === "approved" || job.status === "pending" ? "draft" : job.status },
     },
   });
 };

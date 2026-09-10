@@ -50,10 +50,15 @@ const handleSubmitReview = async () => {
     navigate("/employee/dashboard/jobs");
   } catch (error) {
     console.error(error);
-
-    alert("Failed to submit the job for review.");
+    const message = error?.response?.data?.message || "Failed to submit the job for review.";
+    if (message.includes("draft or rejected")) {
+      alert("This job has already been submitted or approved. To re-submit, please edit the job first — this will reset it to draft status so you can submit again.");
+    } else {
+      alert(message);
+    }
   }
 };
+
   return (
     <div className="min-h-screen bg-slate-100">
 
