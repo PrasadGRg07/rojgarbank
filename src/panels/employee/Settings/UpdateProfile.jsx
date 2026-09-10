@@ -117,7 +117,7 @@ export default function UpdateProfile() {
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
             {/* Preview */}
             <div
-              className="relative h-20 w-20 shrink-0 cursor-pointer rounded-xl overflow-hidden bg-slate-100 border-2 border-dashed border-slate-300 flex items-center justify-center hover:border-blue-400 transition"
+              className="relative h-28 w-36 shrink-0 cursor-pointer rounded-xl overflow-hidden bg-white border-2 border-dashed border-slate-300 flex items-center justify-center hover:border-blue-400 transition"
               onClick={() => fileInputRef.current?.click()}
             >
               {logoPreview ? (
@@ -125,7 +125,7 @@ export default function UpdateProfile() {
                   <img
                     src={logoPreview}
                     alt="Logo"
-                    className="h-full w-full object-cover"
+                    className="h-full w-full object-contain p-2"
                   />
                   <div className="absolute inset-0 bg-black/30 opacity-0 hover:opacity-100 flex items-center justify-center transition">
                     <Camera className="text-white h-6 w-6" />
