@@ -49,6 +49,26 @@ export const deleteUser = async (id) => {
 };
 
 // ==============================
+// All Jobs (single list)
+// ==============================
+export const getAllAdminJobs = async () => {
+  const [pending, approved, rejected] = await Promise.all([
+    api.get("/admin/jobs/pending/"),
+    api.get("/admin/jobs/approved/"),
+    api.get("/admin/jobs/rejected/"),
+  ]);
+  return [...pending.data, ...approved.data, ...rejected.data];
+};
+
+// ==============================
+// Single Job
+// ==============================
+export const getAdminJob = async (id) => {
+  const response = await api.get(`/admin/jobs/${id}/`);
+  return response.data;
+};
+
+// ==============================
 // Pending Jobs
 // ==============================
 export const getPendingJobs = async () => {
@@ -69,6 +89,22 @@ export const getApprovedJobs = async () => {
 // ==============================
 export const getRejectedJobs = async () => {
   const response = await api.get("/admin/jobs/rejected/");
+  return response.data;
+};
+
+// ==============================
+// Update Job (admin)
+// ==============================
+export const updateAdminJob = async (id, data) => {
+  const response = await api.patch(`/admin/jobs/${id}/`, data);
+  return response.data;
+};
+
+// ==============================
+// Delete Job
+// ==============================
+export const deleteAdminJob = async (id) => {
+  const response = await api.delete(`/admin/jobs/${id}/`);
   return response.data;
 };
 

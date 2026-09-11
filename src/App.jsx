@@ -3,7 +3,101 @@ import {
   createBrowserRouter,
   RouterProvider,
   Navigate,
+  useRouteError,
+  isRouteErrorResponse,
 } from "react-router-dom";
+
+// ─── Global Error / Not-Found page ────────────────────────────────────────────
+function RouteErrorBoundary() {
+  const error = useRouteError();
+
+  const is404 =
+    isRouteErrorResponse(error) && error.status === 404;
+
+  return (
+    <div
+      style={{
+        minHeight: "100vh",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        flexDirection: "column",
+        gap: "1rem",
+        fontFamily: "system-ui, sans-serif",
+        background: "#f8fafc",
+        color: "#1e293b",
+        padding: "2rem",
+        textAlign: "center",
+      }}
+    >
+      <div
+        style={{
+          fontSize: "5rem",
+          fontWeight: 800,
+          lineHeight: 1,
+          color: "#3b82f6",
+        }}
+      >
+        {is404 ? "404" : "Oops"}
+      </div>
+      <h1 style={{ fontSize: "1.5rem", fontWeight: 700, margin: 0 }}>
+        {is404 ? "Page not found" : "Something went wrong"}
+      </h1>
+      <p style={{ color: "#64748b", maxWidth: 420, margin: 0 }}>
+        {is404
+          ? "The page you were looking for doesn't exist or has been moved."
+          : "An unexpected error occurred. Please try again or go back home."}
+      </p>
+      {!is404 && error?.message && (
+        <pre
+          style={{
+            background: "#fee2e2",
+            color: "#991b1b",
+            borderRadius: "0.5rem",
+            padding: "1rem",
+            fontSize: "0.8rem",
+            maxWidth: 480,
+            textAlign: "left",
+            whiteSpace: "pre-wrap",
+            wordBreak: "break-word",
+          }}
+        >
+          {error.message}
+        </pre>
+      )}
+      <div style={{ display: "flex", gap: "0.75rem", marginTop: "0.5rem" }}>
+        <button
+          onClick={() => window.history.back()}
+          style={{
+            padding: "0.6rem 1.25rem",
+            borderRadius: "0.5rem",
+            border: "1px solid #cbd5e1",
+            background: "white",
+            cursor: "pointer",
+            fontWeight: 600,
+          }}
+        >
+          ← Go Back
+        </button>
+        <button
+          onClick={() => (window.location.href = "/")}
+          style={{
+            padding: "0.6rem 1.25rem",
+            borderRadius: "0.5rem",
+            border: "none",
+            background: "#3b82f6",
+            color: "white",
+            cursor: "pointer",
+            fontWeight: 600,
+          }}
+        >
+          Go Home
+        </button>
+      </div>
+    </div>
+  );
+}
+// ──────────────────────────────────────────────────────────────────────────────
 
 // Public Pages
 import Home from "./components/Home";
@@ -97,6 +191,9 @@ import TrainingEnrollment from "./panels/admin/Training/TrainingEnrollment";
 // admin job=---
 import AdminJobList from "./panels/admin/Jobs/JobList";
 import AdminJobReview from "./panels/admin/Jobs/JobReview";
+import AdminJobCreate from "./panels/admin/Jobs/JobCreate";
+import AdminJobPreview from "./panels/admin/Jobs/JobPreview";
+import AdminJobEdit from "./panels/admin/Jobs/JobEdit";
 
 import AdminAnalytics from "./panels/admin/Analytics/Analytics";
 import DashboardAnalytics from "./panels/admin/Analytics/DashboardAnalytics";
@@ -247,6 +344,7 @@ const appRouter = createBrowserRouter([
   {
     path: "/",
     element: <Home />,
+    errorElement: <RouteErrorBoundary />,
   },
 
   {
@@ -303,6 +401,7 @@ const appRouter = createBrowserRouter([
   {
     path: "/superadmin/login",
     element: <SuperAdminLogin />,
+    errorElement: <RouteErrorBoundary />,
   },
 
   {
@@ -312,6 +411,7 @@ const appRouter = createBrowserRouter([
         <SuperAdminDashboard />
       </ProtectedRoute>
     ),
+    errorElement: <RouteErrorBoundary />,
 
     children: [
       {
@@ -393,6 +493,7 @@ const appRouter = createBrowserRouter([
         <Dashboard />
       </ProtectedRoute>
     ),
+    errorElement: <RouteErrorBoundary />,
 
     children: [
       {
@@ -508,11 +609,13 @@ const appRouter = createBrowserRouter([
   {
     path: "/employee/login",
     element: <EmployeeLogin />,
+    errorElement: <RouteErrorBoundary />,
   },
 
   {
     path: "/employee/register",
     element: <EmployeeRegister />,
+    errorElement: <RouteErrorBoundary />,
   },
 
   {
@@ -529,6 +632,7 @@ const appRouter = createBrowserRouter([
   {
     path: "/admin/login",
     element: <AdminLogin />,
+    errorElement: <RouteErrorBoundary />,
   },
 
   {
@@ -538,6 +642,7 @@ const appRouter = createBrowserRouter([
         <AdminDashboard />
       </ProtectedRoute>
     ),
+    errorElement: <RouteErrorBoundary />,
     children: [
       {
         index: true,
@@ -771,7 +876,18 @@ const appRouter = createBrowserRouter([
         path: "jobs",
         element: <AdminJobList />,
       },
-
+      {
+        path: "jobs/create",
+        element: <AdminJobCreate />,
+      },
+      {
+        path: "jobs/preview",
+        element: <AdminJobPreview />,
+      },
+      {
+        path: "jobs/edit/:id",
+        element: <AdminJobEdit />,
+      },
       {
         path: "jobs/review/:id",
         element: <AdminJobReview />,
@@ -949,11 +1065,13 @@ const appRouter = createBrowserRouter([
   {
     path: "/jobseeker/login",
     element: <JobSeekerLogin />,
+    errorElement: <RouteErrorBoundary />,
   },
 
   {
     path: "/jobseeker/register",
     element: <JobSeekerRegister />,
+    errorElement: <RouteErrorBoundary />,
   },
   {
     path: "/jobseeker/dashboard",
@@ -962,6 +1080,7 @@ const appRouter = createBrowserRouter([
         <JobSeekerDashboard />
       </ProtectedRoute>
     ),
+    errorElement: <RouteErrorBoundary />,
 
     children: [
       {
