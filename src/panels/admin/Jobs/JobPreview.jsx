@@ -3,8 +3,10 @@ import {
   Building2,
   Briefcase,
   MapPin,
+  Calendar,
   Wallet,
   Users,
+  Clock,
   GraduationCap,
   BadgeCheck,
   Eye,
@@ -12,36 +14,6 @@ import {
 } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
 import api from "../../../lib/api";
-
-/**
- * Converts empty strings to null for fields that the Django backend
- * expects as integers, decimals, or dates. Sending "" for those
- * types causes a 400 validation error.
- */
-function cleanJobPayload(job) {
-  const nullableFields = [
-    "openings",
-    "salaryMin",
-    "salaryMax",
-    "minAge",
-    "maxAge",
-    "applicationDeadline",
-    "joiningDate",
-    "postingDate",
-  ];
-
-  const cleaned = { ...job };
-  nullableFields.forEach((field) => {
-    if (cleaned[field] === "" || cleaned[field] === undefined) {
-      cleaned[field] = null;
-    }
-  });
-
-  // Also ensure mapLink is removed when empty (URLField rejects "")
-  if (!cleaned.mapLink) delete cleaned.mapLink;
-
-  return cleaned;
-}
 
 export default function AdminJobPreview() {
   const navigate = useNavigate();
@@ -56,9 +28,7 @@ export default function AdminJobPreview() {
           <h2 className="text-2xl font-bold text-slate-700">
             No Preview Available
           </h2>
-          <p className="mt-2 text-slate-500">
-            Please go back and fill in the job details first.
-          </p>
+
           <button
             onClick={() => navigate(-1)}
             className="mt-6 rounded-lg bg-blue-600 px-5 py-3 text-white"
@@ -72,18 +42,15 @@ export default function AdminJobPreview() {
 
   const handlePublish = async () => {
     try {
-      const payload = cleanJobPayload({ ...job, status: "approved" });
-      await api.post("/admin/jobs/", payload);
+      // For Admin, directly post the job to the admin endpoint
+      // Ensure the status is set to approved directly if we're publishing from preview
+      await api.post("/adminpanel/jobs/", { ...job, status: "approved" });
+
       alert("Job published successfully.");
-      navigate("/admin/dashboard/jobs");
+      navigate("/admin/dashboard/jobs"); // or wherever the job list is
     } catch (error) {
-      console.error("Publish error:", error?.response?.data || error);
-      const detail =
-        error?.response?.data &&
-        typeof error.response.data === "object"
-          ? JSON.stringify(error.response.data, null, 2)
-          : error?.message || "Unknown error";
-      alert(`Failed to publish the job.\n\nDetails:\n${detail}`);
+      console.error(error);
+      alert("Failed to publish the job.");
     }
   };
 
