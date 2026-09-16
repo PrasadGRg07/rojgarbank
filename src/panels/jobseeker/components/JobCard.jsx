@@ -22,11 +22,23 @@ export default function JobCard({
       {/* Header */}
       <div className="flex items-start justify-between">
         <div className="flex items-center gap-4">
-          <img
-            src={logo}
-            alt={company}
-            className="h-14 w-14 rounded-lg border bg-white object-contain p-1"
-          />
+          {logo && logo !== "/logo.png" ? (
+            <img
+              src={logo}
+              alt={company}
+              className="h-14 w-14 rounded-lg border bg-white object-contain p-1"
+              onError={(e) => {
+                e.target.style.display = 'none';
+                e.target.nextSibling.style.display = 'flex';
+              }}
+            />
+          ) : null}
+          <div 
+            className="flex h-14 w-14 items-center justify-center rounded-lg border bg-gray-50 text-gray-400"
+            style={{ display: (!logo || logo === "/logo.png") ? 'flex' : 'none' }}
+          >
+            <Briefcase size={24} />
+          </div>
 
           <div>
             <h3 className="text-lg font-semibold text-gray-800">

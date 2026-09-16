@@ -7,6 +7,7 @@ import React, {
 } from "react";
 
 import { useNavigate } from "react-router-dom";
+import api from "../../../lib/api";
 
 import {
   ChevronDown,
@@ -20,6 +21,17 @@ import {
 
 function AccountMenu({ user, onLogout }) {
   const [open, setOpen] = useState(false);
+  const [profilePicture, setProfilePicture] = useState(null);
+
+  useEffect(() => {
+    api.get("/auth/update-profile/")
+      .then((res) => {
+        if (res.data?.profile_picture) {
+          setProfilePicture(res.data.profile_picture);
+        }
+      })
+      .catch(() => {});
+  }, [user]);
 
   const menuRef = useRef(null);
 
@@ -121,11 +133,11 @@ function AccountMenu({ user, onLogout }) {
             overflow-hidden
           "
         >
-          {user?.profile_picture || user?.profile ? (
+          {profilePicture || user?.profile_picture || user?.profile ? (
             <img
-              src={user.profile_picture || user.profile}
+              src={profilePicture || user?.profile_picture || user?.profile}
               alt="Company Logo"
-              className="h-full w-full object-cover"
+              className="h-full w-full object-cover bg-white"
             />
           ) : (
             <Building2
@@ -176,11 +188,11 @@ function AccountMenu({ user, onLogout }) {
           <div className="bg-gradient-to-r from-blue-600 to-indigo-600 p-5 text-white">
             <div className="flex items-center gap-4">
               <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-white/20 overflow-hidden">
-                {user?.profile_picture || user?.profile ? (
+                {profilePicture || user?.profile_picture || user?.profile ? (
                   <img
-                    src={user.profile_picture || user.profile}
+                    src={profilePicture || user?.profile_picture || user?.profile}
                     alt="Company Logo"
-                    className="h-full w-full object-cover"
+                    className="h-full w-full object-cover bg-white"
                   />
                 ) : (
                   <Building2 size={26} />

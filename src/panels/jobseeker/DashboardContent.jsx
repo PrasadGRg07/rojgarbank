@@ -5,21 +5,32 @@ import {
   Bookmark,
   CalendarDays,
   Award,
+
+  TrendingUp,
+  Activity,
+  ChevronRight,
+  Search,
+  Rocket
 } from "lucide-react";
 
 import StatCard from "./components/StatCard";
-import ProfileCompletion from "./components/ProfileCompletion";
-import JobCard from "./components/JobCard";
-import ApplicationCard from "./components/ApplicationCard";
-import NotificationCard from "./components/NotificationCard";
 import { getMyApplications } from "../../lib/jobseekerApi";
 
 export default function DashboardContent() {
   const [applications, setApplications] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
+    // Try to get user from local storage for the welcome banner
+    try {
+      const storedUser = JSON.parse(localStorage.getItem("user"));
+      setUser(storedUser);
+    } catch (e) {
+      console.error(e);
+    }
+
     async function loadApplications() {
       try {
         const data = await getMyApplications();
@@ -33,21 +44,47 @@ export default function DashboardContent() {
     loadApplications();
   }, []);
 
-  // Filter out any other custom states for count if needed, or count shortlisted/interview status
   const interviewCount = applications.filter(
     (x) => x.status?.toLowerCase() === "interview" || x.status?.toLowerCase() === "shortlisted"
   ).length;
 
   if (loading) {
     return (
-      <div className="p-6">
-        <h2 className="text-lg font-semibold">Loading dashboard...</h2>
+      <div className="flex h-[60vh] items-center justify-center">
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-blue-600 border-t-transparent"></div>
       </div>
     );
   }
 
+  const firstName = user?.first_name || "Jobseeker";
+
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+
+      {/* Welcome Hero Banner */}
+      <div className="relative overflow-hidden rounded-3xl bg-blue-600 p-8 text-white shadow-lg">
+        <div className="relative z-10 md:w-2/3">
+          <div className="mb-2 flex items-center gap-2">
+            <span className="rounded-full bg-white/20 px-3 py-1 text-xs font-semibold backdrop-blur-sm">
+              Dashboard Overview
+            </span>
+          </div>
+          <h1 className="mb-2 text-3xl font-bold tracking-tight">
+            Welcome back, {firstName}! 👋
+          </h1>
+          <p className="mb-6 text-blue-100">
+            Here's what is happening with your job applications and career progress today. Keep up the great work!
+          </p>
+          <button
+            onClick={() => navigate("/jobseeker/dashboard/jobs/search")}
+            className="group flex items-center gap-2 rounded-xl bg-white px-5 py-2.5 text-sm font-semibold text-blue-700 transition-all hover:bg-blue-50 hover:shadow-md"
+          >
+            <Search className="h-4 w-4" />
+            Explore New Jobs
+            <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+          </button>
+        </div>
+      </div>
 
       {/* Statistics */}
       <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
@@ -55,150 +92,137 @@ export default function DashboardContent() {
           title="Applied Jobs"
           value={String(applications.length)}
           icon={Briefcase}
-          color="bg-blue-100"
+          color="bg-blue-50"
           iconColor="text-blue-600"
         />
-
         <StatCard
           title="Saved Jobs"
           value="0"
           icon={Bookmark}
-          color="bg-green-100"
-          iconColor="text-green-600"
+          color="bg-indigo-50"
+          iconColor="text-indigo-600"
         />
-
         <StatCard
-          title="Interviews / Shortlisted"
+          title="Interviews"
           value={String(interviewCount)}
           icon={CalendarDays}
-          color="bg-orange-100"
-          iconColor="text-orange-600"
-        />
-
-        <StatCard
-          title="Profile Score"
-          value="100%"
-          icon={Award}
-          color="bg-purple-100"
+          color="bg-purple-50"
           iconColor="text-purple-600"
         />
+        <StatCard
+          title="Profile Views"
+          value="12"
+          icon={Activity}
+          color="bg-pink-50"
+          iconColor="text-pink-600"
+        />
       </div>
 
-      {/* Profile + Recommended Jobs */}
-      <div className="grid gap-6 lg:grid-cols-3">
-
-        {/* Left */}
-        <div>
-          <ProfileCompletion />
-        </div>
-
-        {/* Right */}
-        <div className="lg:col-span-2 space-y-5">
-
+      <div className="grid gap-8 lg:grid-cols-3">
+        {/* Activity & Applications (Takes up 2 cols) */}
+        <div className="lg:col-span-2 space-y-6">
           <div className="flex items-center justify-between">
-            <h2 className="text-xl font-semibold">
-              Recommended Jobs
+            <h2 className="text-xl font-bold text-gray-800 flex items-center gap-2">
+              <TrendingUp className="h-5 w-5 text-blue-600" />
+              Recent Activity
             </h2>
-
-            <button className="text-blue-600 hover:underline">
-              View All
-            </button>
-          </div>
-
-          <JobCard
-            title="Frontend Developer"
-            company="Rojgar Bank Pvt. Ltd."
-            location="Kathmandu"
-            salary="NPR 60,000/month"
-            type="Full-Time"
-            posted="2 days ago"
-            logo="https://via.placeholder.com/80"
-          />
-
-          <JobCard
-            title="Backend Developer"
-            company="ABC Technologies"
-            location="Lalitpur"
-            salary="NPR 75,000/month"
-            type="Remote"
-            posted="Today"
-            logo="https://via.placeholder.com/80"
-          />
-
-        </div>
-      </div>
-
-      {/* Applications + Notifications */}
-      <div className="grid gap-6 lg:grid-cols-2">
-
-        {/* Applications */}
-        <div className="space-y-5">
-
-          <div className="flex items-center justify-between">
-            <h2 className="text-xl font-semibold">
-              Recent Applications
-            </h2>
-
-            <button 
+            <button
               onClick={() => navigate("/jobseeker/dashboard/applications")}
-              className="text-blue-600 hover:underline"
+              className="text-sm font-medium text-blue-600 hover:text-blue-700 hover:underline"
             >
-              View All
+              View all applications
             </button>
           </div>
 
-          {applications.length === 0 ? (
-            <div className="rounded-2xl border border-gray-200 bg-white p-8 text-center text-gray-500 shadow-sm">
-              No applications yet.
+          <div className="rounded-2xl border border-gray-100 bg-white shadow-sm overflow-hidden">
+            {applications.length === 0 ? (
+              <div className="flex flex-col items-center justify-center p-12 text-center">
+                <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-blue-50 text-blue-600">
+                  <Rocket className="h-8 w-8" />
+                </div>
+                <h3 className="mb-2 text-lg font-bold text-gray-800">No applications yet</h3>
+                <p className="mb-6 max-w-sm text-sm text-gray-500">
+                  You haven't applied to any jobs yet. Start exploring opportunities that match your skills.
+                </p>
+                <button
+                  onClick={() => navigate("/jobseeker/dashboard/jobs/search")}
+                  className="rounded-xl bg-blue-600 px-6 py-2.5 text-sm font-medium text-white transition-colors hover:bg-blue-700 shadow-sm"
+                >
+                  Browse Jobs
+                </button>
+              </div>
+            ) : (
+              <div className="divide-y divide-gray-100">
+                {applications.slice(0, 4).map((app) => (
+                  <div key={app.id} className="group flex items-center justify-between p-5 transition-colors hover:bg-gray-50 cursor-pointer" onClick={() => navigate(`/jobseeker/dashboard/applications/${app.id}`)}>
+                    <div className="flex items-center gap-4">
+                      <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-gray-100 bg-white shadow-sm overflow-hidden">
+                        {app.logo ? (
+                          <img src={app.logo} alt={app.company} className="h-full w-full object-cover" />
+                        ) : (
+                          <Briefcase className="h-5 w-5 text-gray-400" />
+                        )}
+                      </div>
+                      <div>
+                        <h4 className="font-semibold text-gray-800 group-hover:text-blue-600 transition-colors">{app.job_title}</h4>
+                        <p className="text-sm text-gray-500">{app.company}</p>
+                      </div>
+                    </div>
+                    <div className="flex flex-col items-end gap-1.5">
+                      <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium
+                        ${app.status?.toLowerCase() === 'interview' ? 'bg-purple-100 text-purple-700' :
+                          app.status?.toLowerCase() === 'shortlisted' ? 'bg-green-100 text-green-700' :
+                            app.status?.toLowerCase() === 'rejected' ? 'bg-red-100 text-red-700' :
+                              'bg-blue-100 text-blue-700'}`}
+                      >
+                        {app.status ? app.status.charAt(0).toUpperCase() + app.status.slice(1) : "Pending"}
+                      </span>
+                      <span className="text-xs text-gray-400">
+                        {new Date(app.applied_at).toLocaleDateString()}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Insights (Takes up 1 col) */}
+        <div className="space-y-6">
+          <h2 className="text-xl font-bold text-gray-800 flex items-center gap-2">
+
+            Market Insights
+          </h2>
+
+          <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
+            <h3 className="mb-4 text-sm font-bold text-gray-800 uppercase tracking-wider">Top Skills in Demand</h3>
+            <div className="flex flex-wrap gap-2">
+              {['React.js', 'Python', 'Node.js', 'AWS', 'UI/UX Design', 'SQL'].map(skill => (
+                <span key={skill} className="rounded-lg bg-gray-50 px-3 py-1.5 text-sm font-medium text-gray-600 border border-gray-200 hover:bg-gray-100 cursor-default transition-colors">
+                  {skill}
+                </span>
+              ))}
             </div>
-          ) : (
-            applications.slice(0, 3).map((app) => (
-              <ApplicationCard
-                key={app.id}
-                title={app.job_title}
-                company={app.company}
-                logo={app.logo}
-                appliedDate={new Date(app.applied_at).toLocaleDateString()}
-                status={app.status ? app.status.charAt(0).toUpperCase() + app.status.slice(1) : "Pending"}
-                onView={() => navigate(`/jobseeker/dashboard/applications/${app.id}`)}
-              />
-            ))
-          )}
 
-        </div>
+            <div className="my-6 h-px w-full bg-gray-100"></div>
 
-        {/* Notifications */}
-        <div className="space-y-5">
-
-          <div className="flex items-center justify-between">
-            <h2 className="text-xl font-semibold">
-              Recent Notifications
-            </h2>
-
-            <button className="text-blue-600 hover:underline">
-              View All
-            </button>
+            <h3 className="mb-4 text-sm font-bold text-gray-800 uppercase tracking-wider">Suggested For You</h3>
+            <div className="space-y-4">
+              {[
+                { title: "Senior React Developer", company: "TechNova", salary: "NPR 120k+" },
+                { title: "Frontend Engineer", company: "NextGen Solutions", salary: "NPR 80k+" }
+              ].map((job, i) => (
+                <div key={i} className="group cursor-pointer rounded-xl border border-gray-100 p-4 transition-all hover:border-blue-200 hover:shadow-md bg-gradient-to-br from-white to-gray-50/50">
+                  <h4 className="font-semibold text-gray-800 group-hover:text-blue-600 transition-colors">{job.title}</h4>
+                  <p className="text-sm text-gray-500">{job.company}</p>
+                  <p className="mt-2 text-xs font-medium text-green-600">{job.salary}</p>
+                </div>
+              ))}
+            </div>
           </div>
-
-          <NotificationCard
-            title="Application Updated"
-            message="Check the applied jobs tab to see your current application status updates."
-            time="Just now"
-            type="application"
-            unread
-          />
-
-          <NotificationCard
-            title="Welcome to Rojgar Bank"
-            message="Your account setup is complete. Start applying for jobs today!"
-            time="Recently"
-            type="info"
-          />
-
         </div>
-
       </div>
-
     </div>
   );
 }

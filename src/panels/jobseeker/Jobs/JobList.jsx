@@ -69,16 +69,16 @@ export default function JobList() {
                 <JobCard
                     key={job.id}
                     title={job.title}
-                    company={job.company}
-                    location={`${job.district}, ${job.municipality}`}
+                    company={job.employer_company_name || job.company}
+                    location={`${job.district || ""}, ${job.municipality || ""}`.replace(/^, | , $/g, '')}
                     salary={
                         job.hideSalary
                             ? "Negotiable"
-                            : `${job.currency} ${job.salaryMin ?? ""} - ${job.salaryMax ?? ""}`
+                            : `${job.currency || "Rs."} ${job.salaryMin ?? ""} - ${job.salaryMax ?? ""}`
                     }
                     type={job.employmentType}
                     posted={new Date(job.created_at).toLocaleDateString()}
-                    logo="/logo.png"
+                    logo={job.employer_profile_picture || job.logo || "/logo.png"}
                     onViewDetails={() =>
                         navigate(`/jobseeker/dashboard/jobs/${job.id}`)
                     }

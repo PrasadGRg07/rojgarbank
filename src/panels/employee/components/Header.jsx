@@ -1,11 +1,12 @@
 import React, { memo, useEffect, useRef, useState } from "react";
-import { Menu, Bell, X, CheckCheck } from "lucide-react";
-
-import logo from "../../../assets/logoo.jpeg";
+import { Menu, Bell, X, CheckCheck, Search, MessageSquare } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import AccountMenu from "./AccountMenu";
 import { fetchNotifications, markNotificationAsRead } from "../../../lib/notificationApi";
 
 function Header({ user, onMenuClick, onLogout }) {
+  const navigate = useNavigate();
+  const [search, setSearch] = useState("");
   const [notifications, setNotifications] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
@@ -55,119 +56,133 @@ function Header({ user, onMenuClick, onLogout }) {
     setNotifications((prev) => prev.map((n) => ({ ...n, is_read: true })));
   };
 
+  const handleSearch = (e) => {
+    if (e.key === "Enter" && search.trim()) {
+      navigate(`/employee/dashboard/search-candidates?search=${search}`);
+    }
+  };
+
   return (
-    <header className="sticky top-0 z-40 rounded-2xl border border-slate-200 bg-white/90 backdrop-blur-md shadow-sm">
-      <div className="flex h-20 items-center justify-between px-4 sm:px-6">
-        {/* Left */}
-        <div className="flex items-center gap-4">
-          {/* Mobile Menu */}
+    <header className="sticky top-0 z-20 flex items-center justify-between border-b bg-white px-8 py-4">
+      {/* Left */}
+      <div className="flex items-center gap-4">
+        {/* Mobile Menu */}
+        <button
+          onClick={onMenuClick}
+          className="rounded-xl p-2 transition hover:bg-slate-100 lg:hidden"
+        >
+          <Menu size={22} />
+        </button>
+
+        <div className="hidden sm:block">
+          <h1 className="text-2xl font-bold text-gray-800">
+            Welcome back,
+            <span className="ml-1 font-semibold">
+              {user?.company_name || user?.company || user?.name || user?.username || "Employer"}
+            </span>
+          </h1>
+          <p className="text-sm text-gray-500">
+            Find your next great hire today.
+          </p>
+        </div>
+      </div>
+
+      {/* Right */}
+      <div className="flex items-center gap-5">
+        {/* Search */}
+        <div className="relative hidden lg:block">
+          <Search className="absolute left-3 top-3 text-gray-400" size={18} />
+          <input
+            type="text"
+            placeholder="Search candidates..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            onKeyDown={handleSearch}
+            className="w-72 rounded-lg border py-2 pl-10 pr-4 outline-none focus:border-blue-500"
+          />
+        </div>
+
+        {/* Messages */}
+        <button
+          onClick={() => navigate("/employee/dashboard/messages/inbox")}
+          className="rounded-full bg-gray-100 p-3 hover:bg-gray-200"
+        >
+          <MessageSquare size={20} />
+        </button>
+
+        {/* Notification Bell */}
+        <div className="relative" ref={dropdownRef}>
           <button
-            onClick={onMenuClick}
-            className="rounded-xl p-2 transition hover:bg-slate-100 lg:hidden"
+            onClick={() => setIsOpen((prev) => !prev)}
+            className="relative rounded-full bg-gray-100 p-3 hover:bg-gray-200"
           >
-            <Menu size={22} />
+            <Bell size={20} />
+            {unreadCount > 0 && (
+              <span className="absolute right-2 top-2 h-2.5 w-2.5 rounded-full border-2 border-white bg-red-500"></span>
+            )}
           </button>
 
-          {/* Logo */}
-          <img
-            src={logo}
-            alt="Rojgar Bank"
-            className="h-12 w-auto object-contain"
-            loading="eager"
-          />
-
-          {/* Title */}
-          <div className="hidden sm:block">
-            <h1 className="text-lg font-bold text-slate-800">
-              Employer Dashboard
-            </h1>
-            <p className="text-sm text-slate-500">
-              Welcome back,
-              <span className="ml-1 font-semibold">
-                {user?.company_name || user?.company || user?.name || user?.username || "Employer"}
-              </span>
-            </p>
-          </div>
-        </div>
-
-        {/* Right */}
-        <div className="flex items-center gap-3">
-          {/* Notification Bell */}
-          <div className="relative" ref={dropdownRef}>
-            <button
-              onClick={() => setIsOpen((prev) => !prev)}
-              className="relative rounded-xl border border-slate-200 p-2.5 transition hover:bg-slate-100"
-            >
-              <Bell size={20} />
-              {unreadCount > 0 && (
-                <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs font-bold text-white">
-                  {unreadCount > 9 ? "9+" : unreadCount}
-                </span>
-              )}
-            </button>
-
-            {/* Dropdown */}
-            {isOpen && (
-              <div className="absolute right-0 top-14 z-50 w-80 sm:w-96 rounded-2xl border border-slate-200 bg-white shadow-2xl overflow-hidden">
-                {/* Header */}
-                <div className="flex items-center justify-between px-4 py-3 border-b bg-slate-50">
-                  <span className="font-semibold text-slate-800">Notifications</span>
-                  <div className="flex items-center gap-2">
-                    {unreadCount > 0 && (
-                      <button
-                        onClick={handleMarkAllRead}
-                        className="text-xs text-blue-600 hover:underline flex items-center gap-1"
-                      >
-                        <CheckCheck size={14} /> Mark all read
-                      </button>
-                    )}
-                    <button onClick={() => setIsOpen(false)} className="text-slate-400 hover:text-slate-600">
-                      <X size={16} />
+          {/* Dropdown */}
+          {isOpen && (
+            <div className="absolute right-0 top-14 z-50 w-80 sm:w-96 rounded-2xl border border-slate-200 bg-white shadow-2xl overflow-hidden">
+              {/* Header */}
+              <div className="flex items-center justify-between px-4 py-3 border-b bg-slate-50">
+                <span className="font-semibold text-slate-800">Notifications</span>
+                <div className="flex items-center gap-2">
+                  {unreadCount > 0 && (
+                    <button
+                      onClick={handleMarkAllRead}
+                      className="text-xs text-blue-600 hover:underline flex items-center gap-1"
+                    >
+                      <CheckCheck size={14} /> Mark all read
                     </button>
-                  </div>
-                </div>
-
-                {/* Notification List */}
-                <div className="max-h-96 overflow-y-auto divide-y divide-slate-100">
-                  {notifications.length === 0 ? (
-                    <div className="flex flex-col items-center justify-center py-10 text-slate-400">
-                      <Bell size={32} className="mb-2 opacity-40" />
-                      <p className="text-sm">No notifications</p>
-                    </div>
-                  ) : (
-                    notifications.map((n) => (
-                      <div
-                        key={n.id}
-                        onClick={() => !n.is_read && handleMarkRead(n.id)}
-                        className={`px-4 py-3 cursor-pointer transition hover:bg-slate-50 ${
-                          !n.is_read ? "bg-blue-50/60" : ""
-                        }`}
-                      >
-                        <div className="flex items-start justify-between gap-2">
-                          <div className="flex-1">
-                            <p className={`text-sm font-medium ${!n.is_read ? "text-slate-900" : "text-slate-600"}`}>
-                              {n.title}
-                            </p>
-                            <p className="text-xs text-slate-500 mt-0.5 line-clamp-2">{n.message}</p>
-                          </div>
-                          {!n.is_read && (
-                            <span className="mt-1 h-2 w-2 flex-shrink-0 rounded-full bg-blue-500" />
-                          )}
-                        </div>
-                        <p className="text-xs text-slate-400 mt-1">
-                          {new Date(n.created_at).toLocaleDateString()}
-                        </p>
-                      </div>
-                    ))
                   )}
+                  <button onClick={() => setIsOpen(false)} className="text-slate-400 hover:text-slate-600">
+                    <X size={16} />
+                  </button>
                 </div>
               </div>
-            )}
-          </div>
 
-          {/* Account Menu */}
-          <AccountMenu user={user} onLogout={onLogout} />
+              {/* Notification List */}
+              <div className="max-h-96 overflow-y-auto divide-y divide-slate-100">
+                {notifications.length === 0 ? (
+                  <div className="flex flex-col items-center justify-center py-10 text-slate-400">
+                    <Bell size={32} className="mb-2 opacity-40" />
+                    <p className="text-sm">No notifications</p>
+                  </div>
+                ) : (
+                  notifications.map((n) => (
+                    <div
+                      key={n.id}
+                      onClick={() => !n.is_read && handleMarkRead(n.id)}
+                      className={`px-4 py-3 cursor-pointer transition hover:bg-slate-50 ${
+                        !n.is_read ? "bg-blue-50/60" : ""
+                      }`}
+                    >
+                      <div className="flex items-start justify-between gap-2">
+                        <div className="flex-1">
+                          <p className={`text-sm font-medium ${!n.is_read ? "text-slate-900" : "text-slate-600"}`}>
+                            {n.title}
+                          </p>
+                          <p className="text-xs text-slate-500 mt-0.5 line-clamp-2">{n.message}</p>
+                        </div>
+                        {!n.is_read && (
+                          <span className="mt-1 h-2 w-2 flex-shrink-0 rounded-full bg-blue-500" />
+                        )}
+                      </div>
+                      <p className="text-xs text-slate-400 mt-1">
+                        {new Date(n.created_at).toLocaleDateString()}
+                      </p>
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+          )}
         </div>
+
+        {/* Account Menu */}
+        <AccountMenu user={user} onLogout={onLogout} />
       </div>
     </header>
   );

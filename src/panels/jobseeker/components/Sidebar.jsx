@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../../../context/AuthContext";
+import { getProfile } from "../../../lib/jobseekerApi";
 import {
   LayoutDashboard,
   Search,
@@ -147,6 +148,7 @@ const menuItems = [
 
 export default function Sidebar({ user }) {
   const navigate = useNavigate();
+  const [profilePicture, setProfilePicture] = useState(null);
 
   const [openMenus, setOpenMenus] = useState({
     Jobs: true,
@@ -154,6 +156,15 @@ export default function Sidebar({ user }) {
     Profile: false,
     Settings: false,
   });
+
+  useEffect(() => {
+    getProfile()
+      .then((res) => {
+        const pic = res?.data?.profile_picture || res?.data?.profile?.profile_picture;
+        if (pic) setProfilePicture(pic);
+      })
+      .catch(() => {}); // silently ignore if fails
+  }, [user]);
 
   const toggleMenu = (menu) => {
     setOpenMenus((prev) => ({
@@ -207,6 +218,7 @@ export default function Sidebar({ user }) {
           <div className="relative">
             <img
               src={
+                profilePicture ||
                 user?.profile_picture ||
                 user?.profile ||
                 `https://ui-avatars.com/api/?background=0891b2&color=fff&name=${user?.first_name || user?.name || "U"}+${user?.last_name || ""}`

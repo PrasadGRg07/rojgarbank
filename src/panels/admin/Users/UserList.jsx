@@ -22,20 +22,20 @@ export default function UserList() {
   return (
 
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-  <PageHeader
-    title="Users"
-    subtitle="Manage all users in the system."
-  />
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <PageHeader
+          title="Users"
+          subtitle="Manage all users in the system."
+        />
 
-  <button
-    onClick={() => navigate("/admin/dashboard/users/create")}
-    className="flex items-center gap-2 bg-blue-800 hover:bg-dablue-1000 text-white px-4 py-2 rounded-lg transition"
-  >
-    <Plus size={18} />
-    Add User
-  </button>
-</div>
+        <button
+          onClick={() => navigate("/admin/dashboard/users/create")}
+          className="flex items-center justify-center gap-2 bg-blue-800 hover:bg-dablue-1000 text-white px-4 py-2 rounded-lg transition sm:w-auto w-full"
+        >
+          <Plus size={18} />
+          Add User
+        </button>
+      </div>
       
 
 

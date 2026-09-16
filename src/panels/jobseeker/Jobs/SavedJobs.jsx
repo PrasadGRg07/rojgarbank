@@ -59,12 +59,16 @@ export default function SavedJobs() {
                             <JobCard
                                 key={savedJob.id}
                                 title={job.title}
-                                company={job.company_name || job.company}
-                                location={job.location}
-                                salary={`Rs. ${job.salary_min || 0} - ${job.salary_max || 0}`}
-                                type={job.employment_type || job.type}
-                                posted={new Date(job.created_at).toLocaleDateString() || "Recently"}
-                                logo={job.logo || "/logo.png"}
+                                company={job.employer_company_name || job.company}
+                                location={`${job.district || ""}, ${job.municipality || ""}`.replace(/^, | , $/g, '')}
+                                salary={
+                                    job.hideSalary
+                                        ? "Negotiable"
+                                        : `${job.currency || "Rs."} ${job.salaryMin ?? ""} - ${job.salaryMax ?? ""}`
+                                }
+                                type={job.employmentType}
+                                posted={new Date(job.created_at).toLocaleDateString()}
+                                logo={job.employer_profile_picture || job.logo || "/logo.png"}
                                 onViewDetails={() =>
                                     navigate(`/jobseeker/dashboard/jobs/${job.id}`)
                                 }
