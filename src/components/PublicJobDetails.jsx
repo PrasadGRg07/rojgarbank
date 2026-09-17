@@ -20,6 +20,7 @@ import {
 import { getPublicJobDetails } from "../lib/jobseekerApi";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
+import { Link } from "react-router-dom";
 
 function toArray(val) {
     if (!val) return [];
@@ -111,7 +112,7 @@ export default function PublicJobDetails() {
                     <div className="flex flex-col sm:flex-row items-start justify-between gap-4">
                         <div className="flex items-start gap-4">
                             {/* Employer profile picture */}
-                            <div className="w-16 h-16 rounded-xl overflow-hidden shrink-0 bg-white border border-gray-200 flex items-center justify-center shadow">
+                            <Link to={`/employer/${job.employer_id || job.employer || job.company_id || ''}`} className="w-16 h-16 rounded-xl overflow-hidden shrink-0 bg-white border border-gray-200 flex items-center justify-center shadow hover:opacity-80 transition-opacity">
                                 {profilePic ? (
                                     <img
                                         src={profilePic}
@@ -125,7 +126,7 @@ export default function PublicJobDetails() {
                                 ) : (
                                     <span className="text-cyan-700 font-bold text-2xl">{company.charAt(0).toUpperCase()}</span>
                                 )}
-                            </div>
+                            </Link>
                             <div>
                                 <h1 className="text-3xl font-bold text-gray-900">{job.title}</h1>
                                 <div className="mt-3 flex flex-wrap gap-4 text-gray-600">

@@ -115,6 +115,7 @@ import CareerCounseling from "./components/CareerCounseling";
 import SkillAssessment from "./components/SkillAssessment";
 import ServicesPage from "./components/Services";
 import PublicJobDetails from "./components/PublicJobDetails";
+import PublicCompanyProfile from "./components/PublicCompanyProfile";
 import CategoryJobsPage from "./components/CategoryJobsPage";
 import OTPVerify from "./panels/OTPVerify";
 import WelcomePopup from "./components/WelcomePopup";
@@ -400,6 +401,10 @@ const appRouter = createBrowserRouter([
   {
     path: "/jobs/:id",
     element: <PublicJobDetails />,
+  },
+  {
+    path: "/employer/:id",
+    element: <PublicCompanyProfile />,
   },
   {
     path: "/verify-otp",
