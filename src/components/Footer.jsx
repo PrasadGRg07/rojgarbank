@@ -1,36 +1,30 @@
-import React from "react"
-import { Link } from "react-router-dom"
-import logo from "../assets/logoo.jpeg"
+import React from "react";
+import { Link } from "react-router-dom";
+import logo from "../assets/logoo.jpeg";
 import {
   Mail,
   Phone,
   MapPin,
-  ArrowRight,
-} from "lucide-react"
+} from "lucide-react";
 
 const Footer = () => {
   return (
-    <footer className="bg-[#0891b2] text-white mt-16">
-      <div className="max-w-7xl mx-auto px-6 py-14">
-        {/* Footer Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
-          {/* Company */}
-          <div>
-            <div className="flex items-center gap-3 mb-5">
-              <div>
-                <img
-                  src={logo}
-                  alt="logo"
-                  className="w-20 h-20 rounded-full bg-white p-1 object-contain"
-                />
-              </div>
+    <footer className="bg-[#1C75BC] pt-16 pb-8 text-white">
+      <div className="mx-auto max-w-7xl px-6 lg:px-8">
+        <div className="grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-5">
+          {/* Company Info */}
+          <div className="lg:col-span-2">
+            <div className="mb-6 flex items-center gap-3">
+              <img
+                src={logo}
+                alt="Rojgar Bank Logo"
+                className="h-16 w-16 rounded-full bg-white object-contain p-1"
+              />
               <h2 className="text-2xl font-bold">
-                Rojgar
-                <span className="text-cyan-400">Bank</span>
+                Rojgar<span className="text-cyan-300">Bank</span>
               </h2>
             </div>
-
-            <p className="text-white leading-7 text-sm">
+            <p className="mb-6 text-sm leading-relaxed text-blue-100">
               Rojgar Bank is Nepal's trusted recruitment platform, connecting
               talented job seekers with reputable employers through professional
               HR and staffing solutions. We simplify hiring with reliable,
@@ -38,67 +32,50 @@ const Footer = () => {
             </p>
           </div>
 
-          {/* Quick Links */}
+          {/* Jobseekers */}
           <div>
-            <h3 className="text-lg font-semibold mb-5">Quick Links</h3>
-
-            <ul className="space-y-3">
+            <h3 className="mb-6 text-lg font-semibold">Jobseekers</h3>
+            <ul className="space-y-4 text-sm text-blue-100">
               <li>
-                <Link
-                  to="/"
-                  className="flex items-center gap-2 text-white hover:text-cyan-400 transition"
-                >
-                  <ArrowRight className="w-4 h-4" />
-                  Home
+                <Link to="/jobseeker/login" className="transition hover:text-white">
+                  Find Jobs
                 </Link>
               </li>
-
               <li>
-                <Link
-                  to="/about"
-                  className="flex items-center gap-2 text-white hover:text-cyan-400 transition"
-                >
-                  <ArrowRight className="w-4 h-4" />
+                <Link to="/jobs/it" className="transition hover:text-white">
+                  Jobs
+                </Link>
+              </li>
+              <li>
+                <Link to="/services/counseling" className="transition hover:text-white">
+                  Career Resources
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Company */}
+          <div>
+            <h3 className="mb-6 text-lg font-semibold">Company</h3>
+            <ul className="space-y-4 text-sm text-blue-100">
+              <li>
+                <Link to="/about" className="transition hover:text-white">
                   About
                 </Link>
               </li>
-
               <li>
-                <Link
-                  to="/blogs"
-                  className="flex items-center gap-2 text-white hover:text-cyan-400 transition"
-                >
-                  <ArrowRight className="w-4 h-4" />
+                <Link to="/services" className="transition hover:text-white">
+                  Services
+                </Link>
+              </li>
+              <li>
+                <Link to="/blogs" className="transition hover:text-white">
                   Blogs
                 </Link>
               </li>
-
               <li>
-                <Link
-                  to="/contact"
-                  className="flex items-center gap-2 text-white hover:text-cyan-400 transition"
-                >
-                  <ArrowRight className="w-4 h-4" />
+                <Link to="/contact" className="transition hover:text-white">
                   Contact
-                </Link>
-              </li>
-
-              <li>
-                <Link
-                  to="/training"
-                  className="flex items-center gap-2 text-white hover:text-cyan-400 transition"
-                >
-                  <ArrowRight className="w-4 h-4" />
-                  Training
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/events"
-                  className="flex items-center gap-2 text-white hover:text-cyan-400 transition"
-                >
-                  <ArrowRight className="w-4 h-4" />
-                  Events
                 </Link>
               </li>
             </ul>
@@ -106,50 +83,35 @@ const Footer = () => {
 
           {/* Contact */}
           <div>
-            <h3 className="text-lg font-semibold mb-5">Contact Us</h3>
-
-            <div className="space-y-5">
-              <div className="flex items-start gap-3">
-                <Mail className="w-5 h-5 text-white mt-1" />
-                <div>
-                  <p className="text-white text-xs">Email</p>
-                  <p className="text-white text-sm">prabesh@hamrojobs.com.np</p>
+            <h3 className="mb-6 text-lg font-semibold">Contact</h3>
+            <ul className="space-y-5 text-sm text-blue-100">
+              <li className="flex items-start gap-3">
+                <MapPin className="mt-0.5 shrink-0" size={18} />
+                <span>Kathmandu, Nepal</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <Phone className="mt-0.5 shrink-0" size={18} />
+                <div className="flex flex-col">
+                  <span>+977-9813040854</span>
+                  <span>01-5913732 / 01-5912732</span>
                 </div>
-              </div>
-
-              <div className="flex items-start gap-3">
-                <Phone className="w-5 h-5 text-white mt-1 shrink-0" />
-                <div>
-                  <p className="text-white text-xs">Phone</p>
-                  <p className="text-white text-sm">
-                    +977-9813040854
-                  </p>
-                  <p className="text-white text-sm">
-                    01-5913732 / 01-5912732
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-3">
-                <MapPin className="w-5 h-5 text-white mt-1" />
-                <div>
-                  <p className="text-white text-xs">Address</p>
-                  <p className="text-white text-sm">Rojgar Bank, Mitra Park, 07,kathmandu, Nepal</p>
-                </div>
-              </div>
-            </div>
+              </li>
+              <li className="flex items-start gap-3">
+                <Mail className="mt-0.5 shrink-0" size={18} />
+                <span>prabesh@hamrojobs.com.np</span>
+              </li>
+            </ul>
           </div>
         </div>
 
-        {/* Bottom Footer */}
-        <div className="border-t border-gray-800 mt-12 pt-6 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-white text-sm text-center md:text-left">
-            © {new Date().getFullYear()}{" "}
-            <span className="text-white font-medium">Rojgar Bank</span>. All
-            Rights Reserved.
+        {/* Bottom Copyright */}
+        <div className="mt-16 flex flex-col items-center justify-between border-t border-blue-800 pt-8 md:flex-row">
+          <p className="text-sm text-blue-200">
+            © {new Date().getFullYear()} Rojgar Bank. All Rights Reserved.
           </p>
-          <span className="text-white font-medium">Developed by softvistacreations</span>
-          {/* <span className="text-white font-medium">Developed by Prasad Gurung</span> */}
+          <p className="mt-4 text-sm text-blue-200 md:mt-0">
+            Developed by softvistacreations
+          </p>
         </div>
       </div>
     </footer>

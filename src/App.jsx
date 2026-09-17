@@ -113,7 +113,9 @@ import ResumeBuilder from "./components/ResumeBuilder";
 import JobPlacement from "./components/JobPlacement";
 import CareerCounseling from "./components/CareerCounseling";
 import SkillAssessment from "./components/SkillAssessment";
+import ServicesPage from "./components/Services";
 import PublicJobDetails from "./components/PublicJobDetails";
+import CategoryJobsPage from "./components/CategoryJobsPage";
 import OTPVerify from "./panels/OTPVerify";
 import WelcomePopup from "./components/WelcomePopup";
 import { GoogleOAuthProvider } from "@react-oauth/google";
@@ -368,6 +370,10 @@ const appRouter = createBrowserRouter([
     element: <Training />,
   },
   {
+    path: "/services",
+    element: <ServicesPage />,
+  },
+  {
     path: "/services/resume",
     element: <ResumeBuilder />,
   },
@@ -386,6 +392,10 @@ const appRouter = createBrowserRouter([
   {
     path: "/events",
     element: <Events />,
+  },
+  {
+    path: "/jobs/category/:category",
+    element: <CategoryJobsPage />,
   },
   {
     path: "/jobs/:id",

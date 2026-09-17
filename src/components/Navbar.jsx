@@ -7,15 +7,16 @@ import { Avatar, AvatarImage } from './ui/avatar';
 
 
 const jobCategories = [
-    { label: 'IT & Technology', to: '/jobs/it', icon: Code },
-    { label: 'Banking & Finance', to: '/jobs/banking', icon: Building2 },
-    { label: 'Marketing', to: '/jobs/marketing', icon: Megaphone },
-    { label: 'Engineering', to: '/jobs/engineering', icon: Settings },
-    { label: 'Education', to: '/jobs/education', icon: BookOpen },
-    { label: 'Business & Management', to: '/jobs/business', icon: Briefcase },
+    { label: 'IT & Technology', to: '/jobs/category/IT', icon: Code },
+    { label: 'Banking & Finance', to: '/jobs/category/Banking', icon: Building2 },
+    { label: 'Marketing', to: '/jobs/category/Marketing', icon: Megaphone },
+    { label: 'Engineering', to: '/jobs/category/Engineering', icon: Settings },
+    { label: 'Education', to: '/jobs/category/Education', icon: BookOpen },
+    { label: 'Business & Management', to: '/jobs/category/Business', icon: Briefcase },
 ];
 
 const services = [
+    { label: 'All Services', to: '/services', icon: Briefcase },
     { label: 'Resume Builder', to: '/services/resume', icon: BookOpen },
     { label: 'Career Counseling', to: '/services/counseling', icon: User },
     { label: 'Job Placement', to: '/services/placement', icon: Briefcase },
@@ -59,19 +60,21 @@ const HoverDropdown = ({ triggerLabel, triggerClassName, items, align = 'left' }
 
             {open && (
                 <div
-                    className={`absolute top-full mt-2 ${align === 'right' ? 'right-0' : 'left-0'} w-56 rounded-xl shadow-lg bg-white border border-gray-100 p-1 z-50`}
+                    className={`absolute top-full pt-2 ${align === 'right' ? 'right-0' : 'left-0'} w-56 z-50`}
                 >
-                    {items.map(({ label, to, icon: Icon }) => (
-                        <Link
-                            key={label}
-                            to={to}
-                            style={{ cursor: 'pointer' }}
-                            className="flex items-center gap-2.5 text-sm text-black hover:text-cyan-600 hover:bg-gray-50 px-3 py-2 rounded-lg"
-                        >
-                            {Icon && <Icon className="w-4 h-4 text-cyan-500" />}
-                            {label}
-                        </Link>
-                    ))}
+                    <div className="rounded-xl shadow-lg bg-white border border-gray-100 p-1">
+                        {items.map(({ label, to, icon: Icon }) => (
+                            <Link
+                                key={label}
+                                to={to}
+                                style={{ cursor: 'pointer' }}
+                                className="flex items-center gap-2.5 text-sm text-black hover:text-cyan-600 hover:bg-gray-50 px-3 py-2 rounded-lg"
+                            >
+                                {Icon && <Icon className="w-4 h-4 text-cyan-500" />}
+                                {label}
+                            </Link>
+                        ))}
+                    </div>
                 </div>
             )}
         </div>
