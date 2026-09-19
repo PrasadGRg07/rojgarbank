@@ -75,7 +75,7 @@ export default function TrustedCompanies() {
             ))}
           </div>
         ) : (
-          <p className="text-center text-gray-500">No customers have uploaded a logo yet.</p>
+          <p className="text-center text-gray-500">Please wait loading...</p>
         )}
       </div>
     </section>

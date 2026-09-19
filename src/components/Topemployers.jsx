@@ -58,7 +58,7 @@ const Topemployers = () => {
             ))}
           </div>
         ) : (
-          <p className="text-center text-gray-500">No employers have uploaded a logo yet.</p>
+          <p className="text-center text-gray-500">Please wait loading...</p>
         )}
       </div>
     </div>

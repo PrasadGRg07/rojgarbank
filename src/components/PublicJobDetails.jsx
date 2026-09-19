@@ -117,7 +117,7 @@ export default function PublicJobDetails() {
                                     <img
                                         src={profilePic}
                                         alt={company}
-                                        className="w-full h-full object-contain p-1"
+                                        className="max-w-full max-h-full object-contain p-1"
                                         onError={(e) => {
                                             e.target.style.display = 'none';
                                             e.target.parentNode.innerHTML = `<span class="text-cyan-700 font-bold text-2xl">${company.charAt(0).toUpperCase()}</span>`;
