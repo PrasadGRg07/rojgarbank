@@ -10,6 +10,7 @@ import img4 from "../../assets/hr-consulting.png";
 const servicesData = [
   {
     title: "Vacancy Announcement & Management Tools",
+    slug: "vacancy-management",
     description:
       "Our hiring and management tools simplify recruitment and employee tracking, helping businesses post jobs, manage candidates, and monitor workforce efficiently.",
     features: [
@@ -23,6 +24,7 @@ const servicesData = [
   },
   {
     title: "Outsourcing Services",
+    slug: "outsourcing",
     description:
       "Flexible outsourcing solutions that help businesses manage staffing and HR operations while focusing on their core business.",
     features: [
@@ -36,6 +38,7 @@ const servicesData = [
   },
   {
     title: "Recruitment Tools & Services",
+    slug: "recruitment",
     description:
       "Our recruitment services help companies connect with qualified candidates through efficient sourcing, screening, and candidate matching.",
     features: [
@@ -49,6 +52,7 @@ const servicesData = [
   },
   {
     title: "HR Consulting",
+    slug: "hr-consulting",
     description:
       "Our HR consulting services help businesses improve policies, employee development, workplace engagement, and workforce management.",
     features: [
@@ -117,7 +121,7 @@ export default function ServicesAlternating() {
                 </ul>
 
                 <button
-                  onClick={() => navigate("/contact")}
+                  onClick={() => navigate(`/services/${service.slug}`)}
                   className="inline-flex items-center gap-2 rounded-lg bg-[#2563EB] px-6 py-3 font-semibold text-white transition hover:bg-blue-700"
                 >
                   {service.buttonText} <ArrowRight size={18} />

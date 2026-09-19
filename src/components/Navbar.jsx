@@ -7,7 +7,7 @@ import { Avatar, AvatarImage } from './ui/avatar';
 
 
 const jobCategories = [
-    { label: 'IT & Technology', to: '/jobs/category/IT', icon: Code },
+    { label: 'IT & Technology', to: '/jobs/category/iT', icon: Code },
     { label: 'Banking & Finance', to: '/jobs/category/Banking', icon: Building2 },
     { label: 'Marketing', to: '/jobs/category/Marketing', icon: Megaphone },
     { label: 'Engineering', to: '/jobs/category/Engineering', icon: Settings },
