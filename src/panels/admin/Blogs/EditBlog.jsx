@@ -1,5 +1,16 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import ReactQuill from 'react-quill-new';
+import 'react-quill-new/dist/quill.snow.css';
+
+const quillModules = {
+  toolbar: [
+    [{ header: [1, 2, false] }],
+    ['bold', 'italic', 'underline', 'strike'],
+    [{ list: 'ordered' }, { list: 'bullet' }],
+    ['clean']
+  ]
+};
 
 import PageHeader from "../components/PageHeader";
 import { getBlog, updateBlog } from "../../../lib/blogApi";
@@ -116,14 +127,15 @@ export default function BlogEdit() {
           <label className="block mb-2 font-medium">
             Content
           </label>
-
-          <textarea
-            rows={8}
-            name="content"
-            value={formData.content}
-            onChange={handleChange}
-            className="w-full border rounded-lg p-3"
-          />
+          <div className="border rounded-lg overflow-hidden">
+            <ReactQuill
+              theme="snow"
+              value={formData.content}
+              onChange={(val) => setFormData(prev => ({ ...prev, content: val }))}
+              modules={quillModules}
+              placeholder="Write your blog content here..."
+            />
+          </div>
         </div>
 
         <div>

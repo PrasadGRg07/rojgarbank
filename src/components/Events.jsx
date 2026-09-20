@@ -259,8 +259,9 @@ const Events = () => {
                     </div>
 
                     <p className="mt-5 text-sm text-slate-500 line-clamp-3">
-                      {event.description ||
-                        "Join this exciting event and connect with professionals, recruiters and industry experts."}
+                      {event.description
+                        ? event.description.replace(/<[^>]+>/g, "")
+                        : "Join this exciting event and connect with professionals, recruiters and industry experts."}
                     </p>
 
                     <div className="mt-auto pt-6 flex flex-col gap-3">
@@ -461,10 +462,9 @@ const Events = () => {
                   Description
                 </h3>
 
-                <p className="text-slate-600 leading-relaxed">
-                  {selectedEvent.description ||
-                    "Join this professional event to connect with employers, recruiters and industry leaders while exploring exciting career opportunities."}
-                </p>
+                {selectedEvent.description
+                  ? <div className="prose prose-sm max-w-none text-slate-600 leading-relaxed" dangerouslySetInnerHTML={{ __html: selectedEvent.description }} />
+                  : <p className="text-slate-600 leading-relaxed">{"Join this professional event to connect with employers, recruiters and industry leaders while exploring exciting career opportunities."}</p>}
               </div>
 
               <button

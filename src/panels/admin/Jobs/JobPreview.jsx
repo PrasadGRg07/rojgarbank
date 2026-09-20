@@ -156,9 +156,10 @@ export default function AdminJobPreview() {
         {/* Job Description */}
         <div className="mt-8 rounded-2xl bg-white p-8 shadow-sm">
           <h2 className="mb-6 text-2xl font-bold">Job Description</h2>
-          <p className="leading-8 text-slate-600 whitespace-pre-line">
-            {job.description || "No description provided."}
-          </p>
+          <div 
+            className="leading-8 text-slate-600 prose prose-sm max-w-none"
+            dangerouslySetInnerHTML={{ __html: job.description || "No description provided." }}
+          />
         </div>
 
         {/* Main Content */}
@@ -171,9 +172,10 @@ export default function AdminJobPreview() {
                 <BadgeCheck className="text-blue-600" />
                 Responsibilities
               </h2>
-              <p className="whitespace-pre-line leading-8 text-slate-600">
-                {job.responsibilities || "No responsibilities provided."}
-              </p>
+              <div 
+                className="leading-8 text-slate-600 prose prose-sm max-w-none"
+                dangerouslySetInnerHTML={{ __html: job.responsibilities || "No responsibilities provided." }}
+              />
             </div>
 
             {/* Qualifications */}
@@ -182,9 +184,10 @@ export default function AdminJobPreview() {
                 <GraduationCap className="text-green-600" />
                 Qualifications
               </h2>
-              <p className="whitespace-pre-line leading-8 text-slate-600">
-                {job.qualifications || "No qualifications provided."}
-              </p>
+              <div 
+                className="leading-8 text-slate-600 prose prose-sm max-w-none"
+                dangerouslySetInnerHTML={{ __html: job.qualifications || "No qualifications provided." }}
+              />
             </div>
 
             {/* Skills */}

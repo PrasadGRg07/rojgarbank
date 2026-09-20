@@ -64,7 +64,9 @@ export default function TrainingDetail() {
           <h3 className="font-semibold text-gray-700">
             Description
           </h3>
-          <p>{training.description || "-"}</p>
+          {training.description
+            ? <div className="prose prose-sm max-w-none text-gray-700 mt-1" dangerouslySetInnerHTML={{ __html: training.description }} />
+            : <p>-</p>}
         </div>
 
         <div className="grid md:grid-cols-2 gap-5">

@@ -1,8 +1,19 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import ReactQuill from 'react-quill-new';
+import 'react-quill-new/dist/quill.snow.css';
 
 import PageHeader from "../components/PageHeader";
 import { createEvent } from "../../../lib/eventApi";
+
+const quillModules = {
+  toolbar: [
+    [{ header: [1, 2, false] }],
+    ['bold', 'italic', 'underline', 'strike'],
+    [{ list: 'ordered' }, { list: 'bullet' }],
+    ['clean']
+  ]
+};
 
 export default function CreateEvent() {
   const navigate = useNavigate();
@@ -115,26 +126,15 @@ export default function CreateEvent() {
           <label className="block mb-2 font-medium text-sm sm:text-base">
             Description
           </label>
-
-          <textarea
-            rows={5}
-            name="description"
-            value={formData.description}
-            onChange={handleChange}
-            placeholder="Enter event description"
-            className="
-              w-full 
-              border 
-              rounded-lg 
-              p-3 
-              text-sm 
-              sm:text-base
-              resize-none
-              focus:outline-none 
-              focus:ring-2 
-              focus:ring-blue-500
-            "
-          />
+          <div className="border rounded-lg overflow-hidden">
+            <ReactQuill
+              theme="snow"
+              value={formData.description}
+              onChange={(val) => setFormData(prev => ({ ...prev, description: val }))}
+              modules={quillModules}
+              placeholder="Enter event description"
+            />
+          </div>
         </div>
 
 

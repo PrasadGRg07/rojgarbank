@@ -1,5 +1,16 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import ReactQuill from 'react-quill-new';
+import 'react-quill-new/dist/quill.snow.css';
+
+const quillModules = {
+  toolbar: [
+    [{ header: [1, 2, false] }],
+    ['bold', 'italic', 'underline', 'strike'],
+    [{ list: 'ordered' }, { list: 'bullet' }],
+    ['clean']
+  ]
+};
 
 import PageHeader from "../components/PageHeader";
 import { getEvent, updateEvent } from "../../../lib/eventApi";
@@ -131,14 +142,15 @@ export default function EditEvent() {
           <label className="block mb-2 font-medium">
             Description
           </label>
-
-          <textarea
-            rows={5}
-            name="description"
-            value={formData.description}
-            onChange={handleChange}
-            className="w-full border rounded-lg p-3"
-          />
+          <div className="border rounded-lg overflow-hidden">
+            <ReactQuill
+              theme="snow"
+              value={formData.description}
+              onChange={(val) => setFormData(prev => ({ ...prev, description: val }))}
+              modules={quillModules}
+              placeholder="Enter event description"
+            />
+          </div>
         </div>
 
         <div className="grid md:grid-cols-2 gap-5">

@@ -69,7 +69,9 @@ export default function EventDetail() {
 
           <div>
             <h3 className="text-sm text-gray-500">Description</h3>
-            <p>{event.description || "-"}</p>
+            {event.description
+              ? <div className="prose prose-sm max-w-none text-gray-700 mt-1" dangerouslySetInnerHTML={{ __html: event.description }} />
+              : <p>-</p>}
           </div>
 
           <div className="grid md:grid-cols-2 gap-6">

@@ -39,9 +39,10 @@ export default function JobDetail() {
           {job.title}
         </h1>
 
-        <p className="mt-3 text-slate-600">
-          {job.description}
-        </p>
+        <div 
+          className="mt-3 prose prose-sm max-w-none text-slate-600"
+          dangerouslySetInnerHTML={{ __html: job.description }} 
+        />
 
         <div className="mt-4 flex gap-3">
           <span className="rounded-full bg-gray-100 px-3 py-1">

@@ -448,9 +448,9 @@ const Training = () => {
                 </div>
               </div>
 
-              <p className="text-sm text-slate-600 leading-relaxed">
-                {selectedCourse.description}
-              </p>
+              {selectedCourse.description
+                ? <div className="prose prose-sm max-w-none text-slate-600 leading-relaxed" dangerouslySetInnerHTML={{ __html: selectedCourse.description }} />
+                : null}
 
               {selectedCourse.topics && (
                 <div>

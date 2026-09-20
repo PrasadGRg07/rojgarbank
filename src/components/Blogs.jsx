@@ -120,7 +120,7 @@ const Blogs = () => {
                   </h3>
 
                   <p className="text-gray-600 mb-4 line-clamp-3">
-                    {blog.content.slice(0, 120)}...
+                    {(blog.content || "").replace(/<[^>]+>/g, "").slice(0, 120)}...
                   </p>
 
                         <Link

@@ -39,6 +39,12 @@ const Jobcards = ({ job }) => {
     return `${Math.floor(days / 30)} month${days >= 60 ? "s" : ""} ago`;
   };
 
+  const isNewJob = (dateStr) => {
+    if (!dateStr) return false;
+    const diffHours = (Date.now() - new Date(dateStr).getTime()) / (1000 * 60 * 60);
+    return diffHours <= 48;
+  };
+
   // Company display name – prefer employer_company_name (from EmployeeProfile), fall back to others
   const company     = job.employer_company_name || job.company || job.employee_name || "Company";
   const profilePic  = job.employer_profile_picture || null;
@@ -84,9 +90,11 @@ const Jobcards = ({ job }) => {
           </div>
         </div>
 
-        <Badge className="bg-green-100 text-green-700 rounded-full px-3 py-1 self-start sm:self-auto">
-          New
-        </Badge>
+        {isNewJob(job.created_at) && (
+          <Badge className="bg-green-100 text-green-700 rounded-full px-3 py-1 self-start sm:self-auto">
+            New
+          </Badge>
+        )}
       </div>
 
       {/* Job title */}

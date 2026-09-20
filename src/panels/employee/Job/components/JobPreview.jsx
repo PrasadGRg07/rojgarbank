@@ -250,11 +250,10 @@ const handleSubmitReview = async () => {
 
           </h2>
 
-          <p className="leading-8 text-slate-600 whitespace-pre-line">
-
-            {job.description || "No description provided."}
-
-          </p>
+          <div 
+            className="leading-8 text-slate-600 prose prose-sm max-w-none"
+            dangerouslySetInnerHTML={{ __html: job.description || "No description provided." }}
+          />
 
         </div>      {/* Main Content */}
 
@@ -273,9 +272,10 @@ const handleSubmitReview = async () => {
               Responsibilities
             </h2>
 
-            <p className="whitespace-pre-line leading-8 text-slate-600">
-              {job.responsibilities || "No responsibilities provided."}
-            </p>
+            <div 
+              className="leading-8 text-slate-600 prose prose-sm max-w-none"
+              dangerouslySetInnerHTML={{ __html: job.responsibilities || "No responsibilities provided." }}
+            />
 
           </div>
 
@@ -288,9 +288,10 @@ const handleSubmitReview = async () => {
               Qualifications
             </h2>
 
-            <p className="whitespace-pre-line leading-8 text-slate-600">
-              {job.qualifications || "No qualifications provided."}
-            </p>
+            <div 
+              className="leading-8 text-slate-600 prose prose-sm max-w-none"
+              dangerouslySetInnerHTML={{ __html: job.qualifications || "No qualifications provided." }}
+            />
 
           </div>
 

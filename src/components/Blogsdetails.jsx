@@ -93,9 +93,7 @@ export default function BlogDetails() {
           </p>
         </div>
 
-        <div className="prose max-w-none whitespace-pre-line">
-          {blog.content}
-        </div>
+        <div className="prose max-w-none" dangerouslySetInnerHTML={{ __html: blog.content || "" }} />
       </div>
 
       <Footer />

@@ -97,8 +97,8 @@ export default function BlogDetail() {
 
         </div>
 
-        <div className="border-t pt-6 whitespace-pre-wrap leading-7">
-          {blog.content}
+        <div className="border-t pt-6">
+          <div className="prose prose-sm max-w-none text-gray-700" dangerouslySetInnerHTML={{ __html: blog.content || "" }} />
         </div>
 
         <div className="flex gap-3 pt-4">

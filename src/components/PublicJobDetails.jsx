@@ -205,19 +205,19 @@ export default function PublicJobDetails() {
 
                     {job.description && (
                         <Section title="Job Description">
-                            <p className="whitespace-pre-line text-gray-700 leading-relaxed">{job.description}</p>
+                            <div className="prose prose-sm max-w-none text-gray-700 leading-relaxed" dangerouslySetInnerHTML={{ __html: job.description }} />
                         </Section>
                     )}
 
                     {job.responsibilities && (
                         <Section title="Responsibilities">
-                            <p className="whitespace-pre-line text-gray-700 leading-relaxed">{job.responsibilities}</p>
+                            <div className="prose prose-sm max-w-none text-gray-700 leading-relaxed" dangerouslySetInnerHTML={{ __html: job.responsibilities }} />
                         </Section>
                     )}
 
                     {job.qualifications && (
                         <Section title="Qualifications">
-                            <p className="whitespace-pre-line text-gray-700 leading-relaxed">{job.qualifications}</p>
+                            <div className="prose prose-sm max-w-none text-gray-700 leading-relaxed" dangerouslySetInnerHTML={{ __html: job.qualifications }} />
                         </Section>
                     )}
 
@@ -261,7 +261,7 @@ export default function PublicJobDetails() {
                     {/* Why Join Us */}
                     {job.whyJoinUs && (
                         <Section title="Why Join Us">
-                            <p className="whitespace-pre-line text-gray-700 leading-relaxed">{job.whyJoinUs}</p>
+                            <div className="prose prose-sm max-w-none text-gray-700 leading-relaxed" dangerouslySetInnerHTML={{ __html: job.whyJoinUs }} />
                         </Section>
                     )}
                 </div>
