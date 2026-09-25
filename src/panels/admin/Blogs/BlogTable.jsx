@@ -77,6 +77,8 @@ export default function BlogTable({ search }) {
 
           <NavLink
             to={`/admin/dashboard/blogs/${blog.id}`}
+            title="View blog"
+            aria-label={`View ${blog.title}`}
             className="text-blue-600"
           >
             <Eye size={18} />
@@ -84,12 +86,19 @@ export default function BlogTable({ search }) {
 
           <NavLink
             to={`/admin/dashboard/blogs/edit/${blog.id}`}
+            title="Edit blog"
+            aria-label={`Edit ${blog.title}`}
             className="text-green-600"
           >
             <Pencil size={18} />
           </NavLink>
 
-          <button className="text-red-600">
+          <button
+            type="button"
+            title="Delete blog"
+            aria-label={`Delete ${blog.title}`}
+            className="text-red-600"
+          >
             <Trash2 size={18} />
           </button>
 

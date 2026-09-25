@@ -8,14 +8,14 @@ export default function PageHeader({
   buttonLink,
 }) {
   return (
-    <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
-      <div>
-        <h1 className="text-3xl font-bold text-slate-800">
+    <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+      <div className="min-w-0">
+        <h1 className="text-2xl font-bold text-slate-800 sm:text-3xl">
           {title}
         </h1>
 
         {subtitle && (
-          <p className="text-gray-500 mt-1">
+          <p className="mt-1 text-sm text-gray-500 sm:text-base">
             {subtitle}
           </p>
         )}
@@ -24,7 +24,7 @@ export default function PageHeader({
       {buttonText && buttonLink && (
         <NavLink
           to={buttonLink}
-          className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-xl font-medium transition"
+          className="inline-flex w-full shrink-0 items-center justify-center gap-2 rounded-xl bg-blue-600 px-5 py-3 font-medium text-white transition hover:bg-blue-700 md:w-auto"
         >
           <Plus size={18} />
           {buttonText}

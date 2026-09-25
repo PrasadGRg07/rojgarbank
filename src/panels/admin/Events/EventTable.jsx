@@ -87,6 +87,8 @@ export default function EventTable({ search }) {
         <div className="flex justify-center gap-3">
           <NavLink
             to={`/admin/dashboard/events/${event.id}`}
+            title="View event"
+            aria-label={`View ${event.title}`}
             className="text-blue-600"
           >
             <Eye size={18} />
@@ -94,13 +96,18 @@ export default function EventTable({ search }) {
 
           <NavLink
             to={`/admin/dashboard/events/edit/${event.id}`}
+            title="Edit event"
+            aria-label={`Edit ${event.title}`}
             className="text-green-600"
           >
             <Pencil size={18} />
           </NavLink>
 
           <button
+            type="button"
             onClick={() => handleDelete(event.id)}
+            title="Delete event"
+            aria-label={`Delete ${event.title}`}
             className="text-red-600"
           >
             <Trash2 size={18} />

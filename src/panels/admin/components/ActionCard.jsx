@@ -1,30 +1,36 @@
+import { ArrowUpRight } from "lucide-react";
 import { NavLink } from "react-router-dom";
 
 export default function ActionCard({
   title,
   description,
   icon: Icon,
-  color,
+  tint = "bg-blue-50 text-blue-600",
   path,
 }) {
   return (
     <NavLink
       to={path}
-      className="group bg-white border border-gray-200 rounded-2xl p-5 shadow-sm hover:shadow-md hover:border-blue-500 transition-all duration-300"
+      className="group flex items-center gap-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-md focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:outline-none"
     >
       <div
-        className={`${color} w-14 h-14 rounded-xl flex items-center justify-center text-white mb-4`}
+        className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl ${tint}`}
       >
-        <Icon size={26} />
+        <Icon size={22} />
       </div>
 
-      <h3 className="text-lg font-semibold text-gray-800 group-hover:text-blue-600 transition">
-        {title}
-      </h3>
+      <div className="min-w-0 flex-1">
+        <h3 className="text-sm font-semibold text-slate-800 transition group-hover:text-blue-600">
+          {title}
+        </h3>
 
-      <p className="text-sm text-gray-500 mt-2">
-        {description}
-      </p>
+        <p className="mt-1 text-sm text-slate-500">{description}</p>
+      </div>
+
+      <ArrowUpRight
+        size={18}
+        className="shrink-0 text-slate-300 transition group-hover:text-blue-600"
+      />
     </NavLink>
   );
 }

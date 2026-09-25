@@ -25,7 +25,7 @@ export default function LatestJobs() {
       title="Latest Jobs"
       items={jobs}
       icon={Briefcase}
-      iconBg="bg-blue-100"
+      iconBg="bg-blue-50"
       iconColor="text-blue-600"
       primaryKey="title"
       secondaryKey="company"

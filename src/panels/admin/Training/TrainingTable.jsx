@@ -92,6 +92,8 @@ export default function TrainingTable({ search }) {
 
           <NavLink
             to={`/admin/dashboard/training/${training.id}`}
+            title="View training"
+            aria-label={`View ${training.title}`}
             className="text-blue-600"
           >
             <Eye size={18} />
@@ -99,6 +101,8 @@ export default function TrainingTable({ search }) {
 
           <NavLink
             to={`/admin/dashboard/training/edit/${training.id}`}
+            title="Edit training"
+            aria-label={`Edit ${training.title}`}
             className="text-green-600"
           >
             <Pencil size={18} />
@@ -106,13 +110,18 @@ export default function TrainingTable({ search }) {
 
           <NavLink
             to={`/admin/dashboard/training/${training.id}/enrollments`}
+            title="View enrollments"
+            aria-label={`View enrollments for ${training.title}`}
             className="text-purple-600"
           >
             <Users size={18} />
           </NavLink>
 
           <button
+            type="button"
             onClick={() => handleDelete(training.id)}
+            title="Delete training"
+            aria-label={`Delete ${training.title}`}
             className="text-red-600"
           >
             <Trash2 size={18} />

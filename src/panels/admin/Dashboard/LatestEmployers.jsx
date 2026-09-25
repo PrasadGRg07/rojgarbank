@@ -13,8 +13,8 @@ export default function LatestEmployers() {
       title="Latest Employers"
       items={employers}
       icon={Building2}
-      iconBg="bg-green-100"
-      iconColor="text-green-600"
+      iconBg="bg-emerald-50"
+      iconColor="text-emerald-600"
       primaryKey="name"
     />
   );

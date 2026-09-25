@@ -9,17 +9,18 @@ export default function EventList() {
   const [search, setSearch] = useState("");
 
   return (
-    <div className="space-y-6">
-      <PageHeader 
-        title="Events" 
-        subtitle="Manage all events" 
+    <div className="space-y-6 p-4 sm:p-6 lg:p-8">
+      <PageHeader
+        title="Events"
+        subtitle="Manage all events"
         buttonText="Create Event"
         buttonLink="/admin/dashboard/events/create"
       />
+
       <EventStatistics />
 
-      <div className="bg-white rounded-xl shadow border p-5">
-        <div className="flex justify-between items-center mb-5">
+      <div className="rounded-xl border bg-white p-4 shadow sm:p-5">
+        <div className="mb-5">
           <SearchBar
             value={search}
             onChange={(e) => setSearch(e.target.value)}

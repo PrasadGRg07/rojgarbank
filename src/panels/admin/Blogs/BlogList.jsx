@@ -12,8 +12,7 @@ export default function BlogList() {
   const navigate = useNavigate();
 
   return (
-    <div className="space-y-6">
-
+    <div className="space-y-6 p-4 sm:p-6 lg:p-8">
       <PageHeader
         title="Blogs"
         subtitle="Manage all blog articles."
@@ -21,11 +20,9 @@ export default function BlogList() {
 
       <BlogStatistics />
 
-      <div className="bg-white rounded-xl shadow border p-5">
-
+      <div className="rounded-xl border bg-white p-4 shadow sm:p-5">
         {/* Search + Add Button */}
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-5">
-
+        <div className="mb-5 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div className="w-full md:max-w-md">
             <SearchBar
               value={search}
@@ -36,19 +33,16 @@ export default function BlogList() {
 
           <button
             onClick={() => navigate("/admin/dashboard/blogs/create")}
-            className="inline-flex items-center gap-2 px-5 py-2.5 bg-emerald-600 text-white rounded-lg shadow hover:bg-emerald-700 transition"
+            className="inline-flex w-full shrink-0 items-center justify-center gap-2 rounded-lg bg-emerald-600 px-5 py-2.5 text-white shadow transition hover:bg-emerald-700 md:w-auto"
           >
             <Plus size={18} />
             <BookOpen size={18} />
             Create Blog
           </button>
-
         </div>
 
         <BlogTable search={search} />
-
       </div>
-
     </div>
   );
 }

@@ -1,7 +1,7 @@
 import {
   ResponsiveContainer,
-  LineChart,
-  Line,
+  AreaChart,
+  Area,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -9,7 +9,6 @@ import {
   PieChart,
   Pie,
   Cell,
-  Legend,
 } from "recharts";
 
 const applicationData = [
@@ -37,52 +36,116 @@ const COLORS = [
   "#8B5CF6",
 ];
 
-export default function DashboardCharts() {
+const axisTick = { fontSize: 12, fill: "#94A3B8" };
+
+const tooltipStyle = {
+  borderRadius: 12,
+  border: "1px solid #E2E8F0",
+  boxShadow: "0 4px 12px rgba(15, 23, 42, 0.08)",
+  fontSize: 13,
+};
+
+function Panel({ title, subtitle, children }) {
   return (
-    <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
-      {/* Applications Trend */}
-      <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6">
-        <h2 className="text-lg font-semibold text-gray-800 mb-6">
-          Applications Trend
+    <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
+      <div className="mb-5">
+        <h2 className="text-base font-semibold text-slate-800">
+          {title}
         </h2>
 
-        <div className="h-80">
+        {subtitle && (
+          <p className="mt-1 text-sm text-slate-500">{subtitle}</p>
+        )}
+      </div>
+
+      {children}
+    </div>
+  );
+}
+
+export default function DashboardCharts() {
+  return (
+    <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
+      <Panel
+        title="Applications Trend"
+        subtitle="Monthly applications received"
+      >
+        <div className="h-64 sm:h-80">
           <ResponsiveContainer width="100%" height="100%">
-            <LineChart data={applicationData}>
-              <CartesianGrid strokeDasharray="3 3" />
+            <AreaChart
+              data={applicationData}
+              margin={{ top: 4, right: 8, left: -16, bottom: 0 }}
+            >
+              <defs>
+                <linearGradient id="appFill" x1="0" y1="0" x2="0" y2="1">
+                  <stop
+                    offset="0%"
+                    stopColor="#2563EB"
+                    stopOpacity={0.28}
+                  />
+                  <stop
+                    offset="100%"
+                    stopColor="#2563EB"
+                    stopOpacity={0.02}
+                  />
+                </linearGradient>
+              </defs>
 
-              <XAxis dataKey="month" />
+              <CartesianGrid
+                strokeDasharray="4 4"
+                stroke="#F1F5F9"
+                vertical={false}
+              />
 
-              <YAxis />
+              <XAxis
+                dataKey="month"
+                tickLine={false}
+                axisLine={false}
+                tick={axisTick}
+                dy={8}
+              />
 
-              <Tooltip />
+              <YAxis
+                tickLine={false}
+                axisLine={false}
+                tick={axisTick}
+                width={48}
+              />
 
-              <Line
+              <Tooltip
+                contentStyle={tooltipStyle}
+                cursor={{ stroke: "#CBD5E1", strokeDasharray: "4 4" }}
+              />
+
+              <Area
                 type="monotone"
                 dataKey="applications"
                 stroke="#2563EB"
-                strokeWidth={3}
+                strokeWidth={2.5}
+                fill="url(#appFill)"
+                dot={false}
+                activeDot={{ r: 5, strokeWidth: 2, stroke: "#fff" }}
               />
-            </LineChart>
+            </AreaChart>
           </ResponsiveContainer>
         </div>
-      </div>
+      </Panel>
 
-      {/* Jobs by Category */}
-      <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6">
-        <h2 className="text-lg font-semibold text-gray-800 mb-6">
-          Jobs by Category
-        </h2>
-
-        <div className="h-80">
+      <Panel
+        title="Jobs by Category"
+        subtitle="Share of published jobs"
+      >
+        <div className="h-64 sm:h-80">
           <ResponsiveContainer width="100%" height="100%">
             <PieChart>
               <Pie
                 data={jobCategoryData}
                 dataKey="value"
                 nameKey="name"
-                outerRadius={110}
-                label
+                innerRadius="52%"
+                outerRadius="78%"
+                paddingAngle={3}
+                stroke="none"
               >
                 {jobCategoryData.map((entry, index) => (
                   <Cell
@@ -92,13 +155,31 @@ export default function DashboardCharts() {
                 ))}
               </Pie>
 
-              <Tooltip />
-
-              <Legend />
+              <Tooltip contentStyle={tooltipStyle} />
             </PieChart>
           </ResponsiveContainer>
         </div>
-      </div>
+
+        <ul className="mt-4 grid grid-cols-2 gap-x-4 gap-y-2 sm:grid-cols-3">
+          {jobCategoryData.map((entry, index) => (
+            <li
+              key={entry.name}
+              className="flex items-center gap-2 text-sm"
+            >
+              <span
+                className="h-2.5 w-2.5 shrink-0 rounded-full"
+                style={{
+                  backgroundColor: COLORS[index % COLORS.length],
+                }}
+              />
+              <span className="truncate text-slate-500">{entry.name}</span>
+              <span className="ml-auto font-semibold tabular-nums text-slate-700">
+                {entry.value}%
+              </span>
+            </li>
+          ))}
+        </ul>
+      </Panel>
     </div>
   );
 }

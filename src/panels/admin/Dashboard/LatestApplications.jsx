@@ -13,7 +13,7 @@ export default function LatestApplications() {
       title="Latest Applications"
       items={applications}
       icon={FileText}
-      iconBg="bg-purple-100"
+      iconBg="bg-purple-50"
       iconColor="text-purple-600"
       primaryKey="applicant"
     />

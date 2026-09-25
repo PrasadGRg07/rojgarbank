@@ -152,6 +152,8 @@ const handleDelete = async (id) => {
 
           <NavLink
             to={`/admin/dashboard/users/${user.id}`}
+            title="View user"
+            aria-label={`View ${user.first_name} ${user.last_name}`}
             className="text-blue-600"
           >
             <Eye size={18}/>
@@ -161,6 +163,8 @@ const handleDelete = async (id) => {
 
           <NavLink
             to={`/admin/dashboard/users/edit/${user.id}`}
+            title="Edit user"
+            aria-label={`Edit ${user.first_name} ${user.last_name}`}
             className="text-green-600"
           >
             <Pencil size={18}/>
@@ -169,7 +173,10 @@ const handleDelete = async (id) => {
 
 
           <button
+  type="button"
   onClick={() => handleDelete(user.id)}
+  title="Delete user"
+  aria-label={`Delete ${user.first_name} ${user.last_name}`}
   className="text-red-600 hover:text-red-800"
 >
   <Trash2 size={18} />

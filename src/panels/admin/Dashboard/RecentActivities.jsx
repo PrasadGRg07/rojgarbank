@@ -9,7 +9,7 @@ const activities = [
   {
     id: 1,
     icon: UserPlus,
-    color: "bg-blue-100 text-blue-600",
+    tint: "bg-blue-50 text-blue-600",
     title: "New user registered",
     description: "John Doe created an account",
     time: "5 min ago",
@@ -17,7 +17,7 @@ const activities = [
   {
     id: 2,
     icon: Briefcase,
-    color: "bg-orange-100 text-orange-600",
+    tint: "bg-orange-50 text-orange-600",
     title: "New job posted",
     description: "Frontend Developer at Tech Solutions",
     time: "20 min ago",
@@ -25,7 +25,7 @@ const activities = [
   {
     id: 3,
     icon: FileText,
-    color: "bg-purple-100 text-purple-600",
+    tint: "bg-purple-50 text-purple-600",
     title: "Application submitted",
     description: "Jane Smith applied for UI/UX Designer",
     time: "1 hour ago",
@@ -33,7 +33,7 @@ const activities = [
   {
     id: 4,
     icon: Building2,
-    color: "bg-green-100 text-green-600",
+    tint: "bg-emerald-50 text-emerald-600",
     title: "Employer approved",
     description: "Creative Studio has been verified",
     time: "2 hours ago",
@@ -42,49 +42,48 @@ const activities = [
 
 export default function RecentActivities() {
   return (
-    <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6">
-      <div className="mb-6">
-        <h2 className="text-xl font-semibold text-gray-800">
+    <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
+      <div className="mb-5">
+        <h2 className="text-base font-semibold text-slate-800">
           Recent Activities
         </h2>
 
-        <p className="text-sm text-gray-500 mt-1">
+        <p className="mt-1 text-sm text-slate-500">
           Latest activity across the platform.
         </p>
       </div>
 
-      <div className="space-y-5">
+      <ul className="space-y-4">
         {activities.map((activity) => {
           const Icon = activity.icon;
 
           return (
-            <div
-              key={activity.id}
-              className="flex items-start gap-4"
-            >
+            <li key={activity.id} className="flex items-start gap-3">
               <div
-                className={`w-11 h-11 rounded-full flex items-center justify-center ${activity.color}`}
+                className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full ${activity.tint}`}
               >
-                <Icon size={20} />
+                <Icon size={18} />
               </div>
 
-              <div className="flex-1">
-                <h3 className="font-semibold text-gray-800">
-                  {activity.title}
-                </h3>
+              <div className="min-w-0 flex-1">
+                <div className="flex flex-col gap-0.5 sm:flex-row sm:items-baseline sm:justify-between sm:gap-3">
+                  <h3 className="text-sm font-semibold text-slate-800">
+                    {activity.title}
+                  </h3>
 
-                <p className="text-sm text-gray-500">
+                  <span className="shrink-0 text-xs whitespace-nowrap text-slate-400">
+                    {activity.time}
+                  </span>
+                </div>
+
+                <p className="text-sm break-words text-slate-500">
                   {activity.description}
                 </p>
               </div>
-
-              <span className="text-xs text-gray-400 whitespace-nowrap">
-                {activity.time}
-              </span>
-            </div>
+            </li>
           );
         })}
-      </div>
+      </ul>
     </div>
   );
 }

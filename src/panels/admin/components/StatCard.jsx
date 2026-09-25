@@ -6,12 +6,12 @@ export default function StatCard({
   subtitle,
 }) {
   return (
-    <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 hover:shadow-md transition-all duration-300">
-      <div className="flex items-center justify-between">
-        <div>
-          <p className="text-sm text-gray-500">{title}</p>
+    <div className="rounded-2xl border border-gray-200 bg-white p-4 shadow-sm transition-all duration-300 hover:shadow-md sm:p-6">
+      <div className="flex items-center justify-between gap-3">
+        <div className="min-w-0">
+          <p className="truncate text-sm text-gray-500">{title}</p>
 
-          <h2 className="mt-2 text-3xl font-bold text-gray-800">
+          <h2 className="mt-2 text-2xl font-bold text-gray-800 sm:text-3xl">
             {value}
           </h2>
 
@@ -23,9 +23,10 @@ export default function StatCard({
         </div>
 
         <div
-          className={`h-14 w-14 rounded-xl ${color} flex items-center justify-center text-white`}
+          className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl text-white sm:h-14 sm:w-14 ${color}`}
         >
-          <Icon size={28} />
+          <Icon size={24} className="sm:hidden" />
+          <Icon size={28} className="hidden sm:block" />
         </div>
       </div>
     </div>
