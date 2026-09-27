@@ -1,4 +1,4 @@
-import React, {
+import {
   memo,
   useCallback,
   useEffect,
@@ -15,7 +15,6 @@ import {
   Settings,
   Briefcase,
   LogOut,
-  Building2,
 } from "lucide-react";
 
 function AccountMenu({ user, onLogout }) {
@@ -140,7 +139,7 @@ function AccountMenu({ user, onLogout }) {
 
         <ChevronDown
           size={18}
-          className={`transition-transform ${open ? "rotate-180" : ""}`}
+          className={`hidden transition-transform sm:block ${open ? "rotate-180" : ""}`}
         />
       </button>
 

@@ -1,80 +1,92 @@
-import React, { useState, useEffect } from "react";
-import { Bell, MessageSquare, Search } from "lucide-react";
+import { useState } from "react";
+import { Bell, MessageSquare, Search, Menu } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import JobseekerAccountMenu from "./AccountMenu";
-export default function Header({ user, onMenuClick, onLogout, notificationCount = 0 }) {
+
+export default function Header({ user, onMenuClick, onLogout }) {
   const navigate = useNavigate();
   const [search, setSearch] = useState("");
 
-  // Debug user object
-  useEffect(() => {
-    console.log(user);
-    console.log("First Name:", user?.first_name);
-    console.log("Last Name:", user?.last_name);
-    console.log("Username:", user?.username);
-  }, [user]);
+  const displayName = user?.first_name
+    ? `${user.first_name}${user.last_name ? " " + user.last_name : ""}`
+    : user?.name || user?.username || user?.email || "Guest";
 
   const handleSearch = (e) => {
     if (e.key === "Enter" && search.trim()) {
-      navigate(`/jobseeker/dashboard/jobs?search=${search}`);
+      navigate(
+        `/jobseeker/dashboard/jobs/search?search=${encodeURIComponent(search.trim())}`
+      );
     }
   };
 
+  const searchField = (
+    <>
+      <Search
+        className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+        size={18}
+      />
+      <input
+        type="text"
+        placeholder="Search jobs..."
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+        onKeyDown={handleSearch}
+        className="w-full rounded-lg border border-gray-200 py-2 pl-10 pr-4 outline-none focus:border-blue-500"
+      />
+    </>
+  );
+
   return (
-    <header className="sticky top-0 z-20 flex items-center justify-between border-b bg-white px-8 py-4">
-      {/* Left */}
-      <div>
-        <h1 className="text-2xl font-bold text-gray-800">
-          Welcome back,
-          <span className="ml-1 font-semibold">
-            {user?.first_name
-              ? `${user.first_name}${user.last_name ? " " + user.last_name : ""}`
-              : user?.name || user?.username || user?.email || "Guest"}{" "}
-          </span>
-        </h1>
+    <header className="sticky top-0 z-20 border-b border-gray-200 bg-white">
+      <div className="flex items-center gap-3 px-4 py-3 md:gap-6 md:px-8 md:py-4">
+        <button
+          onClick={onMenuClick}
+          aria-label="Toggle navigation menu"
+          className="-ml-2 rounded-lg p-2 text-gray-500 transition hover:bg-gray-100 lg:hidden"
+        >
+          <Menu size={24} />
+        </button>
 
-        <p className="text-sm text-gray-500">
-          Find your next opportunity today.
-        </p>
-      </div>
+        <div className="min-w-0 flex-1">
+          <h1 className="truncate text-lg font-bold text-gray-800 sm:text-xl md:text-2xl">
+            Welcome back,{" "}
+            <span className="font-semibold">{displayName}</span>
+          </h1>
 
-      {/* Right */}
-      <div className="flex items-center gap-5">
-        {/* Search */}
-        <div className="relative hidden md:block">
-          <Search className="absolute left-3 top-3 text-gray-400" size={18} />
-
-          <input
-            type="text"
-            placeholder="Search jobs..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            onKeyDown={handleSearch}
-            className="w-72 rounded-lg border py-2 pl-10 pr-4 outline-none focus:border-blue-500"
-          />
+          <p className="hidden truncate text-sm text-gray-500 sm:block">
+            Find your next opportunity today.
+          </p>
         </div>
 
-        {/* Messages */}
-        <button
-          onClick={() =>
-            navigate("/jobseeker/dashboard/messages/inbox")
-          }
-          className="rounded-full bg-gray-100 p-3 hover:bg-gray-200"
-        >
-          <MessageSquare size={20} />
-        </button>
-        {/* Notifications */}
-        <button
-          onClick={() => navigate("/jobseeker/dashboard/notifications")}
-          className="relative rounded-full bg-gray-100 p-3 hover:bg-gray-200"
-        >
-          <Bell size={20} />
-          <span className="absolute right-2 top-2 h-2 w-2 rounded-full bg-red-500"></span>
-        </button>
-        {/* Account Menu */}
-        <JobseekerAccountMenu user={user} onLogout={onLogout} />
+        {/* Search (md and up) */}
+        <div className="relative hidden w-72 md:block">{searchField}</div>
 
-       
+        {/* Right actions */}
+        <div className="flex flex-shrink-0 items-center gap-2 sm:gap-3 md:gap-5">
+          <button
+            onClick={() => navigate("/jobseeker/dashboard/messages/inbox")}
+            aria-label="Messages"
+            className="hidden rounded-full bg-gray-100 p-2.5 transition hover:bg-gray-200 sm:block sm:p-3"
+          >
+            <MessageSquare size={20} />
+          </button>
+
+          <button
+            onClick={() => navigate("/jobseeker/dashboard/notifications")}
+            aria-label="Notifications"
+            className="relative rounded-full bg-gray-100 p-2.5 transition hover:bg-gray-200 sm:p-3"
+          >
+            <Bell size={20} />
+            <span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-red-500 sm:right-2 sm:top-2" />
+          </button>
+
+          <JobseekerAccountMenu user={user} onLogout={onLogout} />
+        </div>
+      </div>
+
+      {/* Search (below md) */}
+      <div className="border-t border-gray-100 px-4 py-2.5 md:hidden">
+        <div className="relative">{searchField}</div>
       </div>
     </header>
   );
