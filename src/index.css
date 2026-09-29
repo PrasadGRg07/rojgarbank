@@ -144,3 +144,9 @@ body {
   animation: marquee 25s linear infinite;
 }
 @plugin "@tailwindcss/typography";
+
+/* Alignment classes the Quill editor attaches to rich-text paragraphs.
+   Needed on the public pages, which do not load quill.snow.css. */
+.ql-align-center { text-align: center; }
+.ql-align-right { text-align: right; }
+.ql-align-justify { text-align: justify; }

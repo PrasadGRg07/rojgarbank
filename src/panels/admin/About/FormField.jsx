@@ -5,6 +5,7 @@ const quillModules = {
   toolbar: [
     [{ header: [2, 3, false] }],
     ["bold", "italic", "underline"],
+    [{ align: [] }],
     [{ list: "ordered" }, { list: "bullet" }],
     ["link"],
     ["clean"],
