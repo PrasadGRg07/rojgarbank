@@ -179,6 +179,8 @@ import BlogList from "./panels/admin/Blogs/BlogList";
 import BlogDetail from "./panels/admin/Blogs/BlogDetail";
 import CreateBlog from "./panels/admin/Blogs/CreateBlog";
 import EditBlog from "./panels/admin/Blogs/EditBlog";
+//============admin about page=============
+import AboutContent from "./panels/admin/About/AboutContent";
 //// adminn events =======
 import EventList from "./panels/admin/Events/EventList";
 import CreateEvent from "./panels/admin/Events/CreateEvent";
@@ -840,6 +842,11 @@ const appRouter = createBrowserRouter([
       {
         path: "blogs/edit/:id",
         element: <EditBlog />,
+      },
+      // About page content
+      {
+        path: "about",
+        element: <AboutContent />,
       },
       //events
       {

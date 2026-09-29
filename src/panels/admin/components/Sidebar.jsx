@@ -15,6 +15,7 @@ import {
   MessageSquare,
   Shield,
   Settings,
+  Info,
   
 } from "lucide-react";
 
@@ -31,6 +32,7 @@ export default function Sidebar({ isOpen, setIsOpen }) {
     { title: "Blogs", icon: BookOpen, path: "/admin/dashboard/blogs" },
     { title: "Events", icon: CalendarDays, path: "/admin/dashboard/events" },
     { title: "Training", icon: GraduationCap, path: "/admin/dashboard/training" },
+    { title: "About Page", icon: Info, path: "/admin/dashboard/about" },
     { title: "Reports", icon: BarChart3, path: "/admin/dashboard/reports" },
     { title: "Analytics", icon: PieChart, path: "/admin/dashboard/analytics" },
     { title: "Notifications", icon: Bell, path: "/admin/dashboard/notifications" },
