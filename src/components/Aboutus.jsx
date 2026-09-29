@@ -167,11 +167,11 @@ const Aboutus = () => {
                     <div className="mx-auto max-w-4xl">
                         <RichText
                             html={page.intro_paragraphs}
-                            className={`space-y-7 ${proseClass}`}
+                            className={`space-y-7 text-center ${proseClass}`}
                         />
 
                         {page.show_commitment && (page.commitment_title || page.commitment_text) && (
-                            <div className="mt-12 flex items-center gap-4 border-l-4 border-sky-500 bg-white px-6 py-5 shadow-sm">
+                            <div className="mt-12 flex items-center justify-center gap-4 border-l-4 border-sky-500 bg-white px-6 py-5 text-center shadow-sm">
                                 <div>
                                     {page.commitment_title && (
                                         <p className="text-sm font-bold uppercase tracking-wider text-sky-600">
@@ -216,7 +216,7 @@ const Aboutus = () => {
                             <div className="mt-12 max-w-4xl mx-auto">
                                 <RichText
                                     html={page.achievements_paragraphs}
-                                    className="space-y-6 text-lg leading-relaxed text-black"
+                                    className="space-y-6 text-center text-lg leading-relaxed text-black"
                                 />
                             </div>
                         )}
