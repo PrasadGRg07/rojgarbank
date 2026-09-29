@@ -7,7 +7,8 @@ import Footer from './Footer'
 import { getPublicAbout } from '../lib/aboutApi'
 import aboutFallback from './aboutFallback'
 
-const proseClass = 'text-[16px] leading-[1.9] tracking-[0.005em] text-black md:text-[17px]'
+const proseClass =
+    'text-[16px] leading-[1.9] tracking-[0.005em] text-black [&_p]:break-words [&_p]:overflow-hidden md:text-[17px]'
 
 function RichText({ html, className = '' }) {
     if (!html) return null
@@ -75,7 +76,7 @@ function TeamCard({ member }) {
 
             {member.bio && (
                 <div
-                    className="mt-4 max-w-xs text-justify text-sm leading-relaxed text-black [&_p]:m-0"
+                    className="mt-4 max-w-xs overflow-hidden text-sm leading-relaxed text-black [&_p]:m-0 [&_p]:break-words"
                     dangerouslySetInnerHTML={{ __html: member.bio }}
                 />
             )}
@@ -167,7 +168,7 @@ const Aboutus = () => {
                     <div className="mx-auto max-w-4xl">
                         <RichText
                             html={page.intro_paragraphs}
-                            className={`space-y-7 text-justify ${proseClass}`}
+                            className={`space-y-7 ${proseClass}`}
                         />
 
                         {page.show_commitment && (page.commitment_title || page.commitment_text) && (
@@ -216,7 +217,7 @@ const Aboutus = () => {
                             <div className="mt-12 max-w-4xl mx-auto">
                                 <RichText
                                     html={page.achievements_paragraphs}
-                                    className="space-y-6 text-justify text-lg leading-relaxed text-black"
+                                    className="space-y-6 text-lg leading-relaxed text-black [&_p]:break-words [&_p]:overflow-hidden"
                                 />
                             </div>
                         )}
@@ -262,7 +263,7 @@ const Aboutus = () => {
                                 <div className="w-12 h-[3px] bg-sky-500 mb-6" />
                                 <RichText
                                     html={person.message}
-                                    className="space-y-6 text-justify leading-relaxed text-base md:text-lg text-black"
+                                    className="space-y-6 leading-relaxed text-base md:text-lg text-black [&_p]:break-words [&_p]:overflow-hidden"
                                 />
                             </div>
                         </div>
@@ -298,7 +299,7 @@ const Aboutus = () => {
                                 <div className="w-10 h-[3px] bg-sky-500 mb-4" />
                                 <RichText
                                     html={pillar.description}
-                                    className="space-y-6 text-justify leading-relaxed text-black"
+                                    className="space-y-6 leading-relaxed text-black [&_p]:break-words [&_p]:overflow-hidden"
                                 />
                             </div>
                         </div>
