@@ -13,6 +13,7 @@ import {
   PieChart,
   Bell,
   MessageSquare,
+  Mail,
   Shield,
   Settings,
   Info,
@@ -37,6 +38,7 @@ export default function Sidebar({ isOpen, setIsOpen }) {
     { title: "Analytics", icon: PieChart, path: "/admin/dashboard/analytics" },
     { title: "Notifications", icon: Bell, path: "/admin/dashboard/notifications" },
     { title: "Messages", icon: MessageSquare, path: "/admin/dashboard/messages" },
+    { title: "Contact Messages", icon: Mail, path: "/admin/dashboard/messages/contact" },
     { title: "Audit", icon: Shield, path: "/admin/dashboard/audit" },
     { title: "Settings", icon: Settings, path: "/admin/dashboard/settings" },
   ];

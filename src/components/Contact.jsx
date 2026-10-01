@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import Navbar from './Navbar'
 import Footer from './Footer'
-import { Phone, Mail, MapPin, Send, CheckCircle2 } from 'lucide-react'
+import { Mail, MapPin, Send, CheckCircle2, Loader2, AlertCircle } from 'lucide-react'
+import { createContactMessage } from '../lib/contactApi'
 
 const Contact = () => {
     const [formData, setFormData] = useState({
@@ -10,20 +11,40 @@ const Contact = () => {
         phone: '',
         message: '',
     });
+    const [submitting, setSubmitting] = useState(false);
+    const [submitted, setSubmitted] = useState(false);
+    const [error, setError] = useState('');
 
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData((prev) => ({ ...prev, [name]: value }));
     };
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const subject = encodeURIComponent(`New message from ${formData.name}`);
-        const body = encodeURIComponent(
-            `Name: ${formData.name}\nEmail: ${formData.email}\nPhone: ${formData.phone}\n\nMessage:\n${formData.message}`
-        );
+        setSubmitting(true);
+        setError('');
 
-        window.location.href = `mailto:youremail@example.com?subject=${subject}&body=${body}`;
+        try {
+            await createContactMessage({
+                full_name: formData.name,
+                email: formData.email,
+                phone_number: formData.phone,
+                message: formData.message,
+            });
+
+            setFormData({ name: '', email: '', phone: '', message: '' });
+            setSubmitted(true);
+        } catch (err) {
+            console.error('Failed to send message:', err);
+            setError(
+                err.response?.status === 429
+                    ? 'Too many messages sent. Please try again later.'
+                    : 'Failed to send your message. Please try again.'
+            );
+        } finally {
+            setSubmitting(false);
+        }
     };
 
     return (
@@ -84,6 +105,23 @@ const Contact = () => {
                             </div>
 
                             <form onSubmit={handleSubmit} className="flex flex-col gap-4 p-4 sm:p-6">
+                                {submitted && (
+                                    <div className="flex items-start gap-2 rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2.5 text-sm text-emerald-800">
+                                        <CheckCircle2 className="w-4 h-4 mt-0.5 shrink-0" />
+                                        <p>
+                                            Thanks for reaching out! Your message has been
+                                            received and our team will get back to you soon.
+                                        </p>
+                                    </div>
+                                )}
+
+                                {error && (
+                                    <div className="flex items-start gap-2 rounded-lg border border-red-200 bg-red-50 px-3 py-2.5 text-sm text-red-700">
+                                        <AlertCircle className="w-4 h-4 mt-0.5 shrink-0" />
+                                        <p>{error}</p>
+                                    </div>
+                                )}
+
                                 <div className="flex flex-col gap-1.5">
                                     <label htmlFor="name" className="text-sm font-medium text-slate-700">
                                         Full Name
@@ -149,10 +187,20 @@ const Contact = () => {
 
                                 <button
                                     type="submit"
-                                    className="inline-flex items-center justify-center gap-2 bg-cyan-700 text-white font-medium text-sm py-2.5 rounded-lg hover:bg-cyan-800 active:bg-cyan-900 transition-colors mt-1"
+                                    disabled={submitting}
+                                    className="inline-flex items-center justify-center gap-2 bg-cyan-700 text-white font-medium text-sm py-2.5 rounded-lg hover:bg-cyan-800 active:bg-cyan-900 transition-colors mt-1 disabled:opacity-60 disabled:cursor-not-allowed"
                                 >
-                                    <Send className="w-4 h-4" />
-                                    Send Message
+                                    {submitting ? (
+                                        <>
+                                            <Loader2 className="w-4 h-4 animate-spin" />
+                                            Sending...
+                                        </>
+                                    ) : (
+                                        <>
+                                            <Send className="w-4 h-4" />
+                                            Send Message
+                                        </>
+                                    )}
                                 </button>
 
                                 <p className="flex items-center gap-1.5 text-xs text-slate-400 mt-1">

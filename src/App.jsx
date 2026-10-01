@@ -230,6 +230,7 @@ import AdminComposeMessage from "./panels/admin/Messages/ComposeMessage";
 
 import AdminMessageDetail from "./panels/admin/Messages/MessageDetail";
 import AdminReplyMessage from "./panels/admin/Messages/ReplyMessage";
+import AdminContactMessages from "./panels/admin/Messages/ContactMessages";
 // admin audit
 import ActivityLogs from "./panels/admin/Audit/ActivityLogs";
 import LoginHistory from "./panels/admin/Audit/LoginHistory";
@@ -785,6 +786,11 @@ const appRouter = createBrowserRouter([
           {
             path: "compose",
             element: <AdminComposeMessage />,
+          },
+
+          {
+            path: "contact",
+            element: <AdminContactMessages />,
           },
 
           {
