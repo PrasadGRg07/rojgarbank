@@ -13,11 +13,14 @@ import {
   Pencil,
 } from "lucide-react";
 import { submitJobForReview } from "../../../../lib/employeeJobApi";
+import { isSubscriptionRequired } from "../../../../lib/subscriptionApi";
+import { useSubscriptionGateContext } from "../../subscription/useSubscriptionGate";
 import { useLocation, useNavigate } from "react-router-dom";
 
 export default function JobPreview() {
   const navigate = useNavigate();
   const { state } = useLocation();
+  const gate = useSubscriptionGateContext();
 
   const job = state?.job;
 
@@ -47,11 +50,19 @@ const handleSubmitReview = async () => {
 
     alert("Job submitted for admin review successfully.");
 
+    // This may have consumed the single free job post.
+    await gate?.notifyJobPosted();
+
     navigate("/employee/dashboard/jobs");
   } catch (error) {
     console.error(error);
     const message = error?.response?.data?.message || "Failed to submit the job for review.";
-    if (message.includes("draft or rejected")) {
+
+    if (isSubscriptionRequired(error)) {
+      // Free Plan job already used - re-raise the upgrade prompt.
+      gate?.notifyPostBlocked(error);
+      alert(message);
+    } else if (message.includes("draft or rejected")) {
       alert("This job has already been submitted or approved. To re-submit, please edit the job first — this will reset it to draft status so you can submit again.");
     } else {
       alert(message);

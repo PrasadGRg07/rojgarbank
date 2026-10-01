@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import JobForm from "./components/JobForm";
 import { validateJobForm } from "./utils/validation";
 import api from "../../../lib/api";
+import { isSubscriptionRequired } from "../../../lib/subscriptionApi";
+import { useSubscriptionGateContext } from "../subscription/useSubscriptionGate";
 
 const INITIAL_JOB = {
   // Basic Information
@@ -70,6 +72,10 @@ const INITIAL_JOB = {
 export default function CreateJob() {
   const navigate = useNavigate();
 
+  // Subscription gate from the dashboard layout. Lets a successful post raise
+  // the upgrade prompt, and a blocked post re-raise it immediately.
+  const gate = useSubscriptionGateContext();
+
   const [job, setJob] = useState(INITIAL_JOB);
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
@@ -83,42 +89,62 @@ export default function CreateJob() {
 
   // Publish Job
   const handlePublish = async () => {
-  console.log("Publish button clicked");
+    console.log("Publish button clicked");
 
-  const validationErrors = validateJobForm(job);
-  console.log("Validation Errors:", validationErrors);
+    const validationErrors = validateJobForm(job);
+    console.log("Validation Errors:", validationErrors);
 
-  if (Object.keys(validationErrors).length > 0) {
-    setErrors(validationErrors);
-    alert("Validation failed. Check the console.");
-    return;
-  }
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      alert("Validation failed. Check the console.");
+      return;
+    }
 
-  try {
-    setLoading(true);
+    try {
+      setLoading(true);
 
-    console.log("Publishing:", job);
+      console.log("Publishing:", job);
 
-    const response = await api.post("/employee/jobs/", job);
+      // "pending" is a real job post, so it is subject to the plan quota.
+      const response = await api.post("/employee/jobs/", {
+        ...job,
+        status: "pending",
+      });
 
-    console.log(response.data);
+      console.log(response.data);
 
-    alert("Job created successfully.");
+      alert("Job created successfully.");
 
-    navigate("/employee/dashboard/jobs");
-  } catch (err) {
-    console.error(err);
-    console.log(err.response?.data);
-    alert("Failed to publish job.");
-  } finally {
-    setLoading(false);
-  }
-};
+      // The Free Plan job may now be spent - re-check the backend and let the
+      // gate decide whether the upgrade prompt is due.
+      await gate?.notifyJobPosted();
+
+      navigate("/employee/dashboard/jobs");
+    } catch (err) {
+      console.error(err);
+      console.log(err.response?.data);
+
+      if (isSubscriptionRequired(err)) {
+        // Quota exhausted: re-raise the upgrade prompt.
+        gate?.notifyPostBlocked(err);
+        alert(
+          err.response?.data?.message ||
+            "Your free job post has been used. Upgrade to a subscription plan to continue posting unlimited jobs."
+        );
+        return;
+      }
+
+      alert("Failed to publish job.");
+    } finally {
+      setLoading(false);
+    }
+  };
   // Save Draft
   const handleSaveDraft = async () => {
     try {
       setLoading(true);
 
+      // Drafts are private work-in-progress and do not consume the plan quota.
       await api.post("/employee/jobs/", {
         ...job,
         status: "draft",
@@ -151,7 +177,11 @@ const handlePreview = async () => {
 
     console.log("Sending job:", job);
 
-    const response = await api.post("/employee/jobs/", job);
+    // Saved as a draft so previewing never consumes the job-post quota.
+    const response = await api.post("/employee/jobs/", {
+      ...job,
+      status: "draft",
+    });
 
     console.log("API Response:", response.data);
 

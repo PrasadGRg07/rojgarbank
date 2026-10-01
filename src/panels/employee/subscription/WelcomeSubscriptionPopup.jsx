@@ -7,12 +7,13 @@ import {
   Upload,
   ArrowRight,
   Sparkles,
+  AlertTriangle,
 } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 import api from "../../../lib/api";
 import { PLANS } from "./plans";
 
-const WelcomeSubscriptionPopup = ({ open, onClose }) => {
+const WelcomeSubscriptionPopup = ({ open, onClose, mode = "welcome" }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -23,6 +24,9 @@ const WelcomeSubscriptionPopup = ({ open, onClose }) => {
   const [submitting, setSubmitting]   = useState(false);
   const [msg, setMsg]                 = useState({ text: "", type: "" });
   const fileRef = useRef(null);
+
+  // "quota" means the single free job post has already been used.
+  const quotaUsed = mode === "quota";
 
   // Never render on the subscription page
   const isOnSubPage = location.pathname.includes("/subscription");
@@ -103,14 +107,18 @@ const WelcomeSubscriptionPopup = ({ open, onClose }) => {
             </div>
             <div>
               <h2 className="text-xl font-bold tracking-tight">
-                {step === "plans"
-                  ? "Choose Your Subscription Plan"
-                  : `Subscribe — ${selectedPlan?.label} Plan`}
+                {quotaUsed
+                  ? "Subscription Required"
+                  : step === "plans"
+                    ? "Choose Your Subscription Plan"
+                    : `Subscribe — ${selectedPlan?.label} Plan`}
               </h2>
               <p className="text-blue-100 text-sm mt-0.5">
-                {step === "plans"
-                  ? "Unlock the hiring features that match your needs."
-                  : `${selectedPlan?.price}${selectedPlan?.price !== "Custom" ? " / month" : ""}`}
+                {quotaUsed
+                  ? "Your free job post has been used."
+                  : step === "plans"
+                    ? "Unlock the hiring features that match your needs."
+                    : `${selectedPlan?.price}${selectedPlan?.price !== "Custom" ? " / month" : ""}`}
               </p>
             </div>
           </div>
@@ -119,6 +127,25 @@ const WelcomeSubscriptionPopup = ({ open, onClose }) => {
         {/* ── STEP 1: Plan Selection ── */}
         {step === "plans" && (
           <>
+            {quotaUsed && (
+              <div className="mx-6 mt-6 rounded-2xl border border-amber-200 bg-amber-50 p-4">
+                <div className="flex items-start gap-3">
+                  <AlertTriangle className="mt-0.5 h-5 w-5 shrink-0 text-amber-600" />
+
+                  <div className="text-sm">
+                    <p className="font-semibold text-amber-900">
+                      Your free job post has been used.
+                    </p>
+
+                    <p className="mt-1 text-amber-800">
+                      Upgrade to a subscription plan to continue posting
+                      unlimited jobs.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
+
             <div className="overflow-y-auto p-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
               {PLANS.map((plan) => {
                 const isSelected = selected === plan.name;
@@ -170,20 +197,28 @@ const WelcomeSubscriptionPopup = ({ open, onClose }) => {
 
             <div className="border-t bg-gray-50 px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-3 flex-shrink-0">
               <p className="text-sm text-gray-500">
-                You can manage or upgrade your plan anytime from Settings.
+                {quotaUsed
+                  ? "Your subscription activates as soon as it is approved."
+                  : "You can manage or upgrade your plan anytime from Settings."}
               </p>
+
               <div className="flex gap-3">
                 <button
                   onClick={handleClose}
                   className="px-5 py-2.5 rounded-xl border border-gray-300 text-gray-600 hover:bg-gray-100 transition text-sm font-medium"
                 >
-                  Skip for Now
+                  {quotaUsed ? "Close" : "Skip for Now"}
                 </button>
+
                 <button
                   onClick={handleChoosePlan}
                   className="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white flex items-center gap-2 transition text-sm font-semibold shadow"
                 >
-                  {selected === "enterprise" ? "Contact Sales" : "Choose Plan"}
+                  {selected === "enterprise"
+                    ? "Contact Sales"
+                    : quotaUsed
+                      ? "Upgrade Now"
+                      : "Choose Plan"}
                   <ArrowRight className="w-4 h-4" />
                 </button>
               </div>

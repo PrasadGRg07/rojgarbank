@@ -16,6 +16,10 @@ import Sidebar from "./components/Sidebar";
 import Header from "./components/Header";
 import DashboardSkeleton from "./components/DashboardSkeleton";
 import WelcomeSubscriptionPopup from "./subscription/WelcomeSubscriptionPopup";
+import {
+  SubscriptionGateContext,
+  useSubscriptionGate,
+} from "./subscription/useSubscriptionGate";
 
 // Lazy Components
 const ResumeSearchStats = lazy(() =>
@@ -35,10 +39,12 @@ export default function Dashboard() {
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [dashboardData, setDashboardData] = useState(null);
-  const [showWelcome, setShowWelcome] = useState(false);
-  const [hasActiveSubscription, setHasActiveSubscription] = useState(true); // optimistic default
 
-  // Fetch dashboard data + subscription status on mount
+  // Plan + job-posting entitlement, and the subscription popup it drives.
+  // Lives here so it survives every nested route without re-fetching.
+  const gate = useSubscriptionGate({ user });
+
+  // Fetch dashboard data on mount
   useEffect(() => {
     let mounted = true;
 
@@ -53,70 +59,21 @@ export default function Dashboard() {
       }
     }
 
-    async function fetchSubscription() {
-      // Special accounts have unlimited access — skip subscription check entirely
-      if (user?.is_special_account) {
-        setHasActiveSubscription(true);
-        return;
-      }
-      try {
-        const { data } = await api.get("/employee/subscriptions/");
-        const active = data.some((s) => s.status === "active");
-        if (mounted) setHasActiveSubscription(active);
-      } catch (err) {
-        // If we can't fetch, assume no subscription
-        if (mounted) setHasActiveSubscription(false);
-      }
-    }
-
     fetchDashboard();
-    fetchSubscription();
 
     return () => { mounted = false; };
   }, []);
-
-  // Repeating popup interval for non-subscribed users
-  useEffect(() => {
-    // Never show popup to special account holders
-    if (user?.is_special_account) return;
-    if (hasActiveSubscription) return; // do nothing if subscribed
-
-    // Show immediately on first render
-    setShowWelcome(true);
-
-    const scheduleNext = () => {
-      // Random delay between 5 000 ms and 10 000 ms
-      const delay = Math.floor(Math.random() * 5000) + 5000;
-      return setTimeout(() => {
-        setShowWelcome(true);
-        // schedule the next one after this one is set
-        intervalRef.current = scheduleNext();
-      }, delay);
-    };
-
-    const intervalRef = { current: null };
-    intervalRef.current = scheduleNext();
-
-    return () => {
-      if (intervalRef.current) clearTimeout(intervalRef.current);
-    };
-  }, [hasActiveSubscription]);
-
-
 
   const handleLogout = useCallback(() => {
     logout();
     navigate("/employee/login");
   }, [logout, navigate]);
 
-  const handleCloseWelcome = () => {
-    setShowWelcome(false);
-  };
-
   // Show right widgets only on dashboard home
   const showRightWidgets = useMemo(() => {
     return location.pathname === "/employee/dashboard";
   }, [location.pathname]);
+
 
   if (loading) {
     return (
@@ -127,9 +84,14 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-100">
-      <WelcomeSubscriptionPopup open={showWelcome} onClose={handleCloseWelcome} />
-      <div className="flex h-screen overflow-hidden">
+    <SubscriptionGateContext.Provider value={gate}>
+      <div className="min-h-screen bg-slate-100">
+        <WelcomeSubscriptionPopup
+          open={gate.isOpen}
+          mode={gate.mode}
+          onClose={() => gate.dismiss(gate.mode)}
+        />
+        <div className="flex h-screen overflow-hidden">
         {/* Sidebar */}
         <Sidebar
           mobileOpen={mobileNavOpen}
@@ -202,5 +164,6 @@ export default function Dashboard() {
         </div>
       </div>
     </div>
+    </SubscriptionGateContext.Provider>
   );
 }
