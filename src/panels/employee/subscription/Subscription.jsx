@@ -85,6 +85,10 @@ export default function Subscription() {
 
   const currentPlanName = mySubscription?.status === "active" ? mySubscription.plan : "free";
 
+  // The Free plan is the default: it never needs approval, so it is never
+  // submitted for review. The user is "on" Free until a paid plan is active.
+  const hasActivePaidPlan = currentPlanName !== "free";
+
   return (
     <div className="relative min-h-screen overflow-hidden rounded-3xl bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 p-6 sm:p-8">
       <div className="absolute -top-40 -left-40 h-96 w-96 rounded-full bg-blue-300/20 blur-3xl" />
@@ -156,8 +160,11 @@ export default function Subscription() {
         {/* Plan Cards */}
         <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
           {PLANS.map((plan) => {
-            const isActive = currentPlanName === plan.name && mySubscription?.status === "active";
-            const isPending = mySubscription && mySubscription.plan === plan.name && mySubscription.status !== "active";
+            const isFree = plan.name === "free";
+            const isActive = !isFree && currentPlanName === plan.name && mySubscription?.status === "active";
+            const isPending = !isFree && mySubscription && mySubscription.plan === plan.name && mySubscription.status !== "active";
+            // Free is the user's current plan whenever no paid plan is active.
+            const isCurrentFree = isFree && !hasActivePaidPlan;
             return (
               <div
                 key={plan.name}
@@ -203,21 +210,53 @@ export default function Subscription() {
                     ))}
                   </div>
 
-                  <button
-                    disabled={isActive || isPending}
-                    onClick={() => { setModal(plan); setMsg({ text: "", type: "" }); setSlip(null); setSlipPreview(null); }}
-                    className={`mt-8 w-full rounded-xl py-3 font-semibold transition-all ${
-                      isActive
-                        ? "bg-white/20 text-white cursor-default"
-                        : isPending
-                        ? "bg-white/20 text-white/70 cursor-not-allowed"
-                        : plan.popular
-                        ? "bg-white text-blue-700 hover:bg-blue-50"
-                        : "border border-slate-300 text-slate-700 hover:bg-blue-600 hover:text-white hover:border-blue-600"
-                    }`}
-                  >
-                    {isActive ? "✓ Current Plan" : isPending ? "⏳ Pending Review" : plan.name === "enterprise" ? "Contact Sales" : "Choose Plan"}
-                  </button>
+                  {isFree ? (
+                    /* Free never opens the payment/review modal — it is already
+                       the user's plan, so hover explains instead of clicking. */
+                    <div className="group relative mt-8">
+                      <button
+                        type="button"
+                        disabled
+                        aria-describedby="free-plan-hint"
+                        className={`w-full rounded-xl border py-3 font-semibold ${
+                          isCurrentFree
+                            ? "cursor-default border-slate-300 bg-slate-100 text-slate-600"
+                            : "cursor-not-allowed border-slate-200 bg-white text-slate-400"
+                        }`}
+                      >
+                        {isCurrentFree ? "✓ Current Plan" : "Free"}
+                      </button>
+
+                      <span
+                        role="tooltip"
+                        className="pointer-events-none absolute bottom-full left-1/2 z-20 mb-2 w-56 -translate-x-1/2 rounded-xl bg-slate-900 px-3 py-2 text-center text-xs font-medium leading-relaxed text-white opacity-0 shadow-xl transition-opacity duration-200 group-hover:opacity-100"
+                      >
+                        {isCurrentFree
+                          ? "You're on the Free plan — no approval needed. Upgrade to post more jobs."
+                          : "Free is included by default. Contact us to move back to it."}
+                        <span
+                          className="absolute -bottom-1 left-1/2 h-2 w-2 -translate-x-1/2 rotate-45 bg-slate-900"
+                          aria-hidden="true"
+                        />
+                      </span>
+                    </div>
+                  ) : (
+                    <button
+                      disabled={isActive || isPending}
+                      onClick={() => { setModal(plan); setMsg({ text: "", type: "" }); setSlip(null); setSlipPreview(null); }}
+                      className={`mt-8 w-full rounded-xl py-3 font-semibold transition-all ${
+                        isActive
+                          ? "bg-white/20 text-white cursor-default"
+                          : isPending
+                          ? "bg-white/20 text-white/70 cursor-not-allowed"
+                          : plan.popular
+                          ? "bg-white text-blue-700 hover:bg-blue-50"
+                          : "border border-slate-300 text-slate-700 hover:bg-blue-600 hover:text-white hover:border-blue-600"
+                      }`}
+                    >
+                      {isActive ? "✓ Current Plan" : isPending ? "⏳ Pending Review" : plan.name === "enterprise" ? "Contact Sales" : "Choose Plan"}
+                    </button>
+                  )}
                 </div>
               </div>
             );

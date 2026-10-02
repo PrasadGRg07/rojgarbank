@@ -149,13 +149,23 @@ const WelcomeSubscriptionPopup = ({ open, onClose, mode = "welcome" }) => {
             <div className="overflow-y-auto p-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
               {PLANS.map((plan) => {
                 const isSelected = selected === plan.name;
+                const isFree = plan.name === "free";
                 return (
                   <button
                     key={plan.name}
-                    onClick={() => setSelected(plan.name)}
+                    /* Free is the default plan and needs no approval, so it is
+                       not selectable — nothing to submit for review. */
+                    onClick={isFree ? undefined : () => setSelected(plan.name)}
+                    title={
+                      isFree
+                        ? "You're already on the Free plan — no approval needed."
+                        : undefined
+                    }
                     className={
                       "relative text-left rounded-2xl border-2 p-5 transition-all duration-200 focus:outline-none " +
-                      (isSelected
+                      (isFree
+                        ? "cursor-not-allowed border-gray-200 bg-gray-50"
+                        : isSelected
                         ? "border-indigo-500 shadow-lg shadow-indigo-100 bg-indigo-50"
                         : "border-gray-200 hover:border-indigo-200 hover:bg-gray-50")
                     }
@@ -185,11 +195,15 @@ const WelcomeSubscriptionPopup = ({ open, onClose, mode = "welcome" }) => {
                       ))}
                     </ul>
 
-                    {isSelected && (
+                    {isFree ? (
+                      <div className="mt-4 pt-3 border-t border-gray-200 text-gray-500 text-sm font-medium flex items-center gap-1">
+                        Your current plan
+                      </div>
+                    ) : isSelected ? (
                       <div className="mt-4 pt-3 border-t border-indigo-200 text-indigo-600 text-sm font-semibold flex items-center gap-1">
                         Selected <CheckCircle className="w-4 h-4" />
                       </div>
-                    )}
+                    ) : null}
                   </button>
                 );
               })}
