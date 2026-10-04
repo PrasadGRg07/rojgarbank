@@ -316,7 +316,7 @@ import SentMessages from "./panels/jobseeker/Messages/SentMessages";
 // job seeker notification
 //import NotificationCard from "./panels/jobseeker/components/NotificationCard";
 import NotificationList from "./panels/jobseeker/Notifications/NotificationList";
-import NotificationDetail from "./panels/jobseeker/Notifications/NotificationDetail";
+import JobseekerNotificationDetail from "./panels/jobseeker/Notifications/NotificationDetail";
 
 
 // jobseaker settings
@@ -712,7 +712,7 @@ const appRouter = createBrowserRouter([
 
           {
             path: ":id",
-            element: <NotificationDetail />,
+            element: <JobseekerNotificationDetail />,
           },
         ],
       },
@@ -1215,7 +1215,7 @@ const appRouter = createBrowserRouter([
       },
       {
         path: "notifications/:id",
-        element: <NotificationDetail />,
+        element: <JobseekerNotificationDetail />,
       },
       // setting
       {
