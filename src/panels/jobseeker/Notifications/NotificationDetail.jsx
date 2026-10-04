@@ -99,7 +99,7 @@ export default function NotificationDetail() {
           </div>
         </div>
 
-        <p className="mt-6 text-slate-600 dark:text-slate-300">
+        <p className="mt-6 text-slate-600 dark:text-slate-300 whitespace-pre-line break-words">
           {notification.message}
         </p>
 
