@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { X, Loader2 } from "lucide-react";
 import api from "../../../../lib/api";
 
-const ScheduleInterviewModal = ({ open, onClose, onSuccess }) => {
+const ScheduleInterviewModal = ({ open, onClose, onSuccess, mode = "create", initialData = null }) => {
   const [jobs, setJobs] = useState([]);
   const [candidates, setCandidates] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -19,7 +19,7 @@ const ScheduleInterviewModal = ({ open, onClose, onSuccess }) => {
     notes: "",
   });
 
-  // Fetch jobs list
+  // Fetch jobs list and prefill when editing
   useEffect(() => {
     if (!open) return;
     const load = async () => {
@@ -35,6 +35,33 @@ const ScheduleInterviewModal = ({ open, onClose, onSuccess }) => {
     };
     load();
   }, [open]);
+
+  useEffect(() => {
+    if (open && initialData && mode === "edit") {
+      // Prefill form from initialData
+      const jobId = initialData.job || initialData.job_id || "";
+      const candidateId = initialData.candidate || initialData.candidate_id || initialData.applicant || "";
+      setForm({
+        job: jobId,
+        candidate: candidateId,
+        date: initialData.date || "",
+        time: initialData.time || "",
+        interview_type: initialData.interview_type || initialData.mode || "in-person",
+        meeting_link: initialData.meeting_link || "",
+        notes: initialData.notes || "",
+      });
+    } else if (open && mode === "create") {
+      setForm({
+        job: "",
+        candidate: "",
+        date: "",
+        time: "",
+        interview_type: "in-person",
+        meeting_link: "",
+        notes: "",
+      });
+    }
+  }, [open, initialData, mode]);
 
   // Fetch applicants when job changes
   useEffect(() => {
@@ -65,7 +92,7 @@ const ScheduleInterviewModal = ({ open, onClose, onSuccess }) => {
     }
     setSubmitting(true);
     try {
-      await api.post("/employee/interviews/", {
+      const payload = {
         job: form.job,
         candidate: form.candidate,
         date: form.date,
@@ -73,12 +100,17 @@ const ScheduleInterviewModal = ({ open, onClose, onSuccess }) => {
         interview_type: form.interview_type,
         meeting_link: form.meeting_link,
         notes: form.notes,
-      });
+      };
+      if (mode === "edit" && initialData?.id) {
+        await api.patch(`/employee/interviews/${initialData.id}/`, payload);
+      } else {
+        await api.post("/employee/interviews/", payload);
+      }
       setForm({ job: "", candidate: "", date: "", time: "", interview_type: "in-person", meeting_link: "", notes: "" });
       onSuccess?.();
       onClose();
     } catch (err) {
-      setError(err.response?.data?.detail || "Failed to schedule interview.");
+      setError(err.response?.data?.detail || (mode === "edit" ? "Failed to update interview." : "Failed to schedule interview."));
     } finally {
       setSubmitting(false);
     }
@@ -91,7 +123,7 @@ const ScheduleInterviewModal = ({ open, onClose, onSuccess }) => {
       <div className="bg-white rounded-2xl shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
         {/* Header */}
         <div className="flex items-center justify-between border-b p-6">
-          <h2 className="text-xl font-bold">Schedule Interview</h2>
+          <h2 className="text-xl font-bold">{mode === "edit" ? "Edit Interview" : "Schedule Interview"}</h2>
           <button onClick={onClose} className="p-2 rounded-lg hover:bg-gray-100">
             <X className="w-5 h-5" />
           </button>
@@ -231,7 +263,7 @@ const ScheduleInterviewModal = ({ open, onClose, onSuccess }) => {
               className="flex items-center gap-2 px-5 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-60"
             >
               {submitting && <Loader2 className="w-4 h-4 animate-spin" />}
-              Schedule Interview
+              {mode === "edit" ? "Update Interview" : "Schedule Interview"}
             </button>
           </div>
         </form>

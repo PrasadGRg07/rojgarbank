@@ -12,11 +12,16 @@ import {
 
 const statusColor = {
   Scheduled: "bg-blue-100 text-blue-700",
+  scheduled: "bg-blue-100 text-blue-700",
   Completed: "bg-green-100 text-green-700",
+  completed: "bg-green-100 text-green-700",
   Cancelled: "bg-red-100 text-red-700",
+  cancelled: "bg-red-100 text-red-700",
+  Canceled: "bg-red-100 text-red-700",
+  canceled: "bg-red-100 text-red-700",
 };
 
-const InterviewCard = ({ interview }) => {
+const InterviewCard = ({ interview, onEdit, onCancel }) => {
   return (
     <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5 hover:shadow-md transition">
       <div className="flex justify-between items-start">
@@ -54,22 +59,28 @@ const InterviewCard = ({ interview }) => {
 
         <p className="flex items-center gap-2">
           <Video className="w-4 h-4" />
-          {interview.mode}
+          {interview.interview_type || interview.mode || "N/A"}
         </p>
 
         <p className="flex items-center gap-2">
           <UserCheck className="w-4 h-4" />
-          {interview.interviewer}
+          {interview.interviewer_name || interview.interviewer || "N/A"}
         </p>
       </div>
 
       <div className="flex gap-3 mt-5">
-        <button className="flex-1 flex items-center justify-center gap-2 border rounded-lg py-2 hover:bg-gray-100">
+        <button
+          onClick={onEdit ? () => onEdit(interview) : undefined}
+          className="flex-1 flex items-center justify-center gap-2 border rounded-lg py-2 hover:bg-gray-100"
+        >
           <Pencil className="w-4 h-4" />
           Edit
         </button>
 
-        <button className="flex-1 flex items-center justify-center gap-2 bg-red-500 text-white rounded-lg py-2 hover:bg-red-600">
+        <button
+          onClick={onCancel ? () => onCancel(interview) : undefined}
+          className="flex-1 flex items-center justify-center gap-2 bg-red-500 text-white rounded-lg py-2 hover:bg-red-600"
+        >
           <Trash2 className="w-4 h-4" />
           Cancel
         </button>

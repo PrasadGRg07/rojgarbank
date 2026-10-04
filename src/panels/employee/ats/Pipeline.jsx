@@ -47,10 +47,22 @@ const Pipeline = () => {
     load();
   }, [selectedJob]);
 
+  // Map backend statuses to pipeline columns
+  const mapStatusToColumn = (status) => {
+    const s = (status || "pending").toLowerCase();
+    if (s === "pending" || s === "applied" || s === "reviewing") return "applied";
+    if (s === "shortlisted") return "shortlisted";
+    if (s === "interview") return "interview";
+    if (s === "offered") return "offered";
+    if (s === "hired") return "hired";
+    if (s === "rejected") return "rejected";
+    return "applied";
+  };
+
   // Group applications by status and search filter
   const grouped = STATUS_COLUMNS.reduce((acc, col) => {
     acc[col] = allApplications
-      .filter((a) => (a.status || "applied") === col)
+      .filter((a) => mapStatusToColumn(a.status) === col)
       .filter((a) =>
         (a.applicant_name || "").toLowerCase().includes(search.toLowerCase()) ||
         (a.applicant_email || "").toLowerCase().includes(search.toLowerCase())

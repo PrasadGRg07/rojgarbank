@@ -27,6 +27,32 @@ const Interviews = () => {
     loadInterviews();
   }, [loadInterviews]);
 
+  const [editingInterview, setEditingInterview] = useState(null);
+  const [modalMode, setModalMode] = useState("create"); // "create" | "edit"
+
+  const handleEdit = (interview) => {
+    setEditingInterview(interview);
+    setModalMode("edit");
+    setOpenModal(true);
+  };
+
+  const handleCancel = async (interview) => {
+    if (!window.confirm("Cancel this interview?")) return;
+    try {
+      await api.delete(`/employee/interviews/${interview.id}/`);
+      loadInterviews();
+    } catch (err) {
+      console.error(err);
+      alert("Failed to cancel interview.");
+    }
+  };
+
+  const handleCloseModal = () => {
+    setOpenModal(false);
+    setEditingInterview(null);
+    setModalMode("create");
+  };
+
   const filteredInterviews = interviews.filter(
     (item) =>
       (item.candidate_name || "").toLowerCase().includes(search.toLowerCase()) ||
@@ -65,7 +91,11 @@ const Interviews = () => {
 
           {/* Schedule Button */}
           <button
-            onClick={() => setOpenModal(true)}
+            onClick={() => {
+              setEditingInterview(null);
+              setModalMode("create");
+              setOpenModal(true);
+            }}
             className="flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-xl"
           >
             <CalendarPlus className="w-5 h-5" />
@@ -89,6 +119,8 @@ const Interviews = () => {
                 candidate: interview.candidate_name,
                 job: interview.job_title,
               }}
+              onEdit={() => handleEdit(interview)}
+              onCancel={() => handleCancel(interview)}
             />
           ))}
         </div>
@@ -108,7 +140,9 @@ const Interviews = () => {
       {/* Modal */}
       <ScheduleInterviewModal
         open={openModal}
-        onClose={() => setOpenModal(false)}
+        mode={modalMode}
+        initialData={editingInterview}
+        onClose={handleCloseModal}
         onSuccess={loadInterviews}
       />
     </div>
