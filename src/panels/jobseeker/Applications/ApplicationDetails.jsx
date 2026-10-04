@@ -117,6 +117,52 @@ export default function ApplicationDetails() {
                     </div>
                 )}
 
+                {application.certificates && (
+                    <div>
+                        <p className="text-sm text-gray-500">
+                            Certificates
+                        </p>
+
+                        <a
+                            href={application.certificates}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="text-blue-600 hover:underline"
+                        >
+                            View Certificates
+                        </a>
+                    </div>
+                )}
+
+                {application.citizenship_copy && (
+                    <div>
+                        <p className="text-sm text-gray-500">
+                            Citizenship Copy
+                        </p>
+
+                        <a
+                            href={application.citizenship_copy}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="text-blue-600 hover:underline"
+                        >
+                            View Citizenship
+                        </a>
+                    </div>
+                )}
+
+                {application.rejection_reason && (
+                    <div>
+                        <p className="text-sm text-gray-500">
+                            Rejection Reason
+                        </p>
+
+                        <div className="mt-2 rounded-lg border p-4">
+                            {application.rejection_reason}
+                        </div>
+                    </div>
+                )}
+
             </div>
 
         </div>

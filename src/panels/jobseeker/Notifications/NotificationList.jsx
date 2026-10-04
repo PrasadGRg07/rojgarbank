@@ -2,9 +2,11 @@ import { Bell, Search } from "lucide-react";
 import NotificationCard from "../components/NotificationCard";
 
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { fetchNotifications } from "../../../lib/notificationApi";
 
 export default function NotificationList() {
+  const navigate = useNavigate();
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -104,6 +106,7 @@ export default function NotificationList() {
             time={notification.time}
             type={notification.type}
             unread={notification.unread}
+            onClick={() => navigate(`/jobseeker/dashboard/notifications/${notification.id}`)}
           />
         ))}
       </div>
