@@ -1,4 +1,4 @@
-import React from "react";
+
 import CandidateCard from "./CandidateCard";
 
 const stageColors = {
@@ -11,7 +11,7 @@ const stageColors = {
   rejected: "bg-red-100 text-red-700",
 };
 
-const PipelineColumn = ({ title, stage, candidates }) => {
+const PipelineColumn = ({ title, stage, candidates, onView, onMove }) => {
   return (
     <div className="bg-gray-100 rounded-2xl p-4 min-w-[320px]">
       {/* Header */}
@@ -34,6 +34,8 @@ const PipelineColumn = ({ title, stage, candidates }) => {
             <CandidateCard
               key={candidate.id}
               candidate={candidate}
+              onView={onView}
+              onMove={onMove}
             />
           ))
         ) : (

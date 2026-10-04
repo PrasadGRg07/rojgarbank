@@ -1,4 +1,6 @@
-import React from "react";
+
+
+
 import {
   User,
   Mail,
@@ -8,7 +10,7 @@ import {
   ChevronDown,
 } from "lucide-react";
 
-const CandidateCard = ({ candidate }) => {
+const CandidateCard = ({ candidate, onView, onMove }) => {
   return (
     <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-4 hover:shadow-md transition-all duration-200">
       {/* Name */}
@@ -47,12 +49,18 @@ const CandidateCard = ({ candidate }) => {
 
       {/* Buttons */}
       <div className="flex gap-2">
-        <button className="flex-1 flex items-center justify-center gap-2 border border-gray-300 rounded-lg py-2 text-sm hover:bg-gray-100 transition">
+        <button
+          onClick={onView ? () => onView(candidate) : undefined}
+          className="flex-1 flex items-center justify-center gap-2 border border-gray-300 rounded-lg py-2 text-sm hover:bg-gray-100 transition"
+        >
           <Eye className="w-4 h-4" />
           View
         </button>
 
-        <button className="flex items-center gap-1 bg-blue-600 text-white rounded-lg px-3 py-2 hover:bg-blue-700 transition">
+        <button
+          onClick={onMove ? () => onMove(candidate) : undefined}
+          className="flex items-center gap-1 bg-blue-600 text-white rounded-lg px-3 py-2 hover:bg-blue-700 transition"
+        >
           Move
           <ChevronDown className="w-4 h-4" />
         </button>

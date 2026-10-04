@@ -79,6 +79,49 @@ const Pipeline = () => {
 
   const refresh = () => { setSelectedJob((s) => s); };
 
+  const handleView = (candidate) => {
+    // Basic view action - could navigate or open modal
+    alert(`Viewing ${candidate.name}`);
+  };
+
+  const handleMove = async (candidate) => {
+    const statuses = [
+      "pending",
+      "applied",
+      "reviewing",
+      "shortlisted",
+      "interview",
+      "offered",
+      "rejected",
+      "hired",
+    ];
+    const current = (allApplications.find((a) => a.id === candidate.id)?.status || "pending").toLowerCase();
+    const options = statuses
+      .filter((s, i) => statuses.indexOf(s) === i)
+      .map((s) => s.charAt(0).toUpperCase() + s.slice(1))
+      .join(", ");
+
+    const newStatus = window.prompt(`Move ${candidate.name} to status:\n(${options})`, current);
+    if (!newStatus) return;
+    const normalized = newStatus.toLowerCase().trim();
+    if (!statuses.includes(normalized)) {
+      alert("Invalid status");
+      return;
+    }
+    try {
+      await api.patch(`/employee/applications/${candidate.id}/status/`, { status: normalized });
+      refresh();
+      // reload applications
+      if (selectedJob) {
+        const res = await api.get(`/employee/jobs/${selectedJob}/applications/`);
+        setAllApplications(res.data);
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Failed to update status");
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 p-6">
       {/* Header */}
@@ -133,12 +176,12 @@ const Pipeline = () => {
         </div>
       ) : (
         <div className="flex gap-5 overflow-x-auto pb-6">
-          <PipelineColumn title="Applied" stage="applied" candidates={grouped.applied} />
-          <PipelineColumn title="Shortlisted" stage="shortlisted" candidates={grouped.shortlisted} />
-          <PipelineColumn title="Interview" stage="interview" candidates={grouped.interview} />
-          <PipelineColumn title="Offered" stage="offered" candidates={grouped.offered} />
-          <PipelineColumn title="Hired" stage="hired" candidates={grouped.hired} />
-          <PipelineColumn title="Rejected" stage="rejected" candidates={grouped.rejected} />
+          <PipelineColumn title="Applied" stage="applied" candidates={grouped.applied} onView={handleView} onMove={handleMove} />
+          <PipelineColumn title="Shortlisted" stage="shortlisted" candidates={grouped.shortlisted} onView={handleView} onMove={handleMove} />
+          <PipelineColumn title="Interview" stage="interview" candidates={grouped.interview} onView={handleView} onMove={handleMove} />
+          <PipelineColumn title="Offered" stage="offered" candidates={grouped.offered} onView={handleView} onMove={handleMove} />
+          <PipelineColumn title="Hired" stage="hired" candidates={grouped.hired} onView={handleView} onMove={handleMove} />
+          <PipelineColumn title="Rejected" stage="rejected" candidates={grouped.rejected} onView={handleView} onMove={handleMove} />
         </div>
       )}
     </div>
