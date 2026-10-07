@@ -7,6 +7,23 @@ import Footer from "./Footer";
 import { Button } from "./ui/button";
 
 import { getBlogs } from "../lib/blogApi";
+import { htmlToPlainText } from "../lib/utils";
+
+const getExcerpt = (blog) => {
+  const text = htmlToPlainText(blog.content || "");
+  const title = htmlToPlainText(blog.title || "");
+  const normalize = (s) =>
+    s
+      .replace(/[‘’ʼ]/g, "'")
+      .replace(/[“”]/g, '"')
+      .toLowerCase();
+
+  const body =
+    title && normalize(text).startsWith(normalize(title))
+      ? text.slice(title.length).trim()
+      : text;
+  return body.slice(0, 120);
+};
 
 const Blogs = () => {
   const blogSectionRef = useRef(null);
@@ -120,7 +137,7 @@ const Blogs = () => {
                   </h3>
 
                   <p className="text-gray-600 mb-4 line-clamp-3">
-                    {(blog.content || "").replace(/<[^>]+>/g, "").slice(0, 120)}...
+                    {getExcerpt(blog)}
                   </p>
 
                         <Link
